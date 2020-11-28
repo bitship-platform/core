@@ -1,0 +1,927 @@
+@media only screen and (max-width: 767px) {
+  /* Default CSS */
+  body {
+    font-size: 14px;
+  }
+  .ptb-100 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .pt-100 {
+    padding-top: 50px;
+  }
+  .ptb-70 {
+    padding-top: 20px;
+    padding-bottom: 50px;
+  }
+  .pb-100 {
+    padding-bottom: 50px;
+  }
+  .pt-70 {
+    padding-top: 30px;
+  }
+  .pb-70 {
+    padding-bottom: 20px;
+  }
+  .pt-45 {
+    padding-top: 30px;
+  }
+  .default-btn {
+    padding: 10px 30px;
+  }
+  .section-title span {
+    font-size: 14px;
+  }
+  .section-title h2 {
+    font-size: 26px;
+    margin-top: 0;
+  }
+  h3 {
+    font-size: 21px;
+  }
+  .header-right {
+    text-align: center;
+  }
+  .header-right ul li {
+    margin: 10px 5px 0;
+  }
+  .top-heder-right {
+    text-align: center;
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+  /* Navbar CSS */
+  .mobile-nav .logo img {
+    max-width: 120px;
+    height: 40px;
+    margin-top: -5px;
+  }
+  .other-option {
+    display: none;
+  }
+  .d-in-line {
+    display: none;
+  }
+  .side-nav-responsive {
+    display: block;
+  }
+  .side-nav-responsive .container {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .side-nav-responsive .container .container {
+    position: absolute;
+    top: 55px;
+    right: -20px;
+    max-width: 290px;
+    margin-left: auto;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: 0.7s;
+    transition: 0.7s;
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    z-index: 2;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  /* Navbar CSS End */
+  /* Main Banner CSS */
+  .banner-content {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .banner-content h1 {
+    font-size: 35px;
+    margin-top: 5px;
+  }
+  .banner-content .banner-btn .get-btn {
+    padding: 10px 28px;
+  }
+  .banner-content .banner-btn .register-btn {
+    padding: 9px 28px;
+    margin-left: 15px;
+  }
+  .banner-img {
+    max-width: 100%;
+    margin-left: auto;
+    margin-top: 20px;
+  }
+  .banner-area {
+    padding-top: 140px;
+    padding-bottom: 70px;
+  }
+  .banner-area-two {
+    padding-top: 140px;
+    padding-bottom: 70px;
+  }
+  .banner-form-area {
+    text-align: center;
+  }
+  .banner-form-area h1 {
+    font-size: 35px;
+  }
+  .banner-form-area .banner-list li {
+    margin-right: 10px;
+  }
+  .banner-form-area .banner-list li::before {
+    display: none;
+  }
+  .banner-form-area .banner-list li a span {
+    margin-left: 3px;
+  }
+  .banner-form-area .banner-form .form-group {
+    margin-bottom: 15px;
+  }
+  .banner-form-area .banner-form .p-0 {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-bottom: 15px;
+  }
+  .banner-content-two {
+    padding-top: 140px;
+    padding-bottom: 30px;
+    text-align: center;
+  }
+  .banner-content-two h1 {
+    font-size: 35px;
+    margin-top: 20px;
+  }
+  .banner-content-two .banner-btn-area .get-btn {
+    padding: 10px 28px;
+  }
+  .banner-content-two .banner-btn-area .register-btn {
+    padding: 9px 28px;
+    margin-left: 15px;
+  }
+  .banner-img-three {
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 70px;
+  }
+  /* Main Banner CSS End */
+  /* Inner Banner CSS */
+  .inner-banner-area {
+    padding-bottom: 90px;
+  }
+  .inner-content {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .inner-content h1 {
+    font-size: 35px;
+  }
+  /* Inner Banner CSS End */
+  .service-area-two {
+    padding-bottom: 20px;
+  }
+  .services-item {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 30px;
+  }
+  .services-border {
+    border: none;
+  }
+  .services-border:hover {
+    border: none;
+  }
+  .services-border-bottom {
+    border: none;
+  }
+  .services-border-bottom:hover {
+    border: none;
+  }
+  /* Pricing Area CSS */
+  .pricing-card .pricing-title {
+    border-bottom: 2px solid #212C71;
+    padding-bottom: 30px;
+  }
+  .pricing-card .pricing-title::before {
+    display: none;
+  }
+  .pricing-item {
+    margin-left: 15px;
+    margin-right: 15px;
+    border: none;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title {
+    width: 200px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title h2 {
+    font-size: 18px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title span {
+    font-size: 14px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title .pricing-content {
+    margin-right: 30px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title .pricing-content h3 {
+    font-size: 35px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title .pricing-content .content {
+    position: absolute;
+    top: 5px;
+    left: 60px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title .pricing-content .content span {
+    font-size: 14px;
+  }
+  .pricing-wraps .pricing-table table thead tr th .pricing-table-title .pricing-content .content p {
+    font-size: 14px;
+    line-height: 1;
+  }
+  .pricing-wraps .pricing-table table tbody tr td .get-btn-tb {
+    width: 120px;
+  }
+  /* Pricing Area CSS End */
+  .choose-item-two {
+    margin-bottom: 30px;
+  }
+  /* Domain Area CSS */
+  .domain-content .section-title {
+    margin-bottom: 20px;
+  }
+  .domain-content .domain-name li {
+    margin-right: 14px;
+  }
+  .domain-content .domain-name li::before {
+    display: none;
+  }
+  .domain-content .domain-name li a span {
+    margin-left: 5px;
+  }
+  .domain-content .domain-form {
+    padding: 30px 15px;
+    border-radius: 5px;
+  }
+  .domain-content .domain-form .p-0 {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  .domain-content .domain-form .form-group {
+    margin-bottom: 15px;
+  }
+  .domain-content .domain-form .form-group .responsive-form {
+    margin-bottom: 15px;
+  }
+  .domain-area-two {
+    padding-top: 50px;
+  }
+  .domain-name-content {
+    margin-top: 0px;
+    background-color: #111A57;
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px 20px 10px;
+  }
+  .domain-name-content::before {
+    display: none;
+  }
+  .domain-name-content .domain-name-form {
+    padding: 30px 15px;
+  }
+  .domain-name-content .domain-name-form .p-0 {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-bottom: 15px;
+  }
+  .domain-name-content .domain-name-form .form-group {
+    margin-bottom: 15px;
+  }
+  .domain-name-content .domain-name-list li {
+    margin-right: 10px;
+    padding: 7px 15px;
+    margin-bottom: 10px;
+  }
+  .domain-name-content .domain-name-list li:last-child {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .domain-name-content .domain-name-list li a span {
+    margin-left: 5px;
+  }
+  /* Domain Area CSS End */
+  .blog-item-bg .content h3 {
+    font-size: 20px;
+  }
+  .blog-article .article-content .blockquote p {
+    font-size: 15px;
+  }
+  .blog-article .blog-article-share {
+    padding: 25px 30px 30px;
+  }
+  .blog-article .blog-article-share .blog-tag ul li {
+    padding: 0 5px;
+  }
+  .blog-article .blog-article-share .social-icon {
+    float: left;
+    margin-top: 15px;
+  }
+  .comments-wrap ul li {
+    padding-left: 0;
+  }
+  .comments-wrap ul li img {
+    position: inherit;
+    margin-bottom: 15px;
+  }
+  .comments-wrap ul li span {
+    position: inherit;
+    top: auto;
+    left: 0;
+  }
+  .comments-wrap ul li p {
+    margin-top: 10px;
+  }
+  .pagination-area .page-numbers {
+    font-size: 16px;
+  }
+  .contact-list {
+    padding: 40px 25px 10px;
+  }
+  .contact-list ul li {
+    max-width: 300px;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .contact-list ul li::before {
+    display: none;
+  }
+  .user-all-form .contact-form .forget {
+    float: none;
+  }
+  .user-all-form .contact-form .user-all-btn .user-btn {
+    padding: 8px 24px;
+  }
+  .faq-img {
+    margin-bottom: 10px;
+    max-width: 100%;
+    margin-left: auto;
+  }
+  .faq-accordion {
+    max-width: 100%;
+    margin-left: auto;
+  }
+  .footer-widget .footer-list-contact {
+    margin: 0 0 40px;
+  }
+  .footer-widget h3 {
+    margin-bottom: 15px;
+  }
+  .social-icon {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .copy-right-area .copy-right-text {
+    text-align: center;
+  }
+  /* Error Area */
+  .error-area::after {
+    display: none;
+  }
+  .error-area .error-content h1 {
+    font-size: 110px;
+  }
+  .error-area .error-content h3 {
+    font-size: 26px;
+    margin: 30px 0 0;
+  }
+  .error-area .error-content p {
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 0 15px;
+  }
+  /* Error Area End */
+  /* Coming Soon */
+  .coming-soon-area .coming-soon-content {
+    padding: 30px 15px;
+  }
+  .coming-soon-area .coming-soon-content h1 {
+    font-size: 35px;
+    line-height: 1.1;
+    margin-top: 0;
+  }
+  .coming-soon-area .coming-soon-content p {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  .coming-soon-area .coming-soon-content #timer {
+    margin-top: 10px;
+  }
+  .coming-soon-area .coming-soon-content #timer div {
+    font-size: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .coming-soon-area .coming-soon-content #timer div span {
+    font-size: 14px;
+    margin-top: -5px;
+  }
+  .coming-soon-area .coming-soon-content #timer div::before {
+    display: none;
+  }
+  .coming-soon-area .coming-soon-content .newsletter-form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .coming-soon-area .coming-soon-content .newsletter-form .input-newsletter {
+    height: 55px;
+    padding-left: 13px;
+    font-size: 15px;
+  }
+  .coming-soon-area .coming-soon-content .newsletter-form button {
+    position: relative;
+    font-size: 14px;
+    height: 55px;
+    margin-top: 15px;
+    width: 100%;
+  }
+  /* Coming Soon End */
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .user-all-form .contact-form .forget {
+    float: right;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  /* Default CSS */
+  body {
+    font-size: 14px;
+  }
+  .ptb-100 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .pt-100 {
+    padding-top: 50px;
+  }
+  .ptb-70 {
+    padding-top: 20px;
+    padding-bottom: 50px;
+  }
+  .pb-100 {
+    padding-bottom: 50px;
+  }
+  .pt-70 {
+    padding-top: 30px;
+  }
+  .pb-70 {
+    padding-bottom: 20px;
+  }
+  .pt-45 {
+    padding-top: 30px;
+  }
+  .default-btn {
+    padding: 12px 30px;
+  }
+  .section-title span {
+    font-size: 14px;
+  }
+  .section-title h2 {
+    font-size: 26px;
+    margin-top: 0;
+  }
+  h3 {
+    font-size: 21px;
+  }
+  /* Navbar CSS */
+  .mobile-nav .logo img {
+    max-width: 120px;
+    height: 40px;
+    margin-top: -5px;
+  }
+  .nav-btn {
+    display: none;
+  }
+  .other-option {
+    display: none;
+  }
+  .d-in-line {
+    display: none;
+  }
+  .side-nav-responsive {
+    display: block;
+  }
+  .side-nav-responsive .container {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .side-nav-responsive .container .container {
+    position: absolute;
+    top: 55px;
+    right: -20px;
+    max-width: 290px;
+    margin-left: auto;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: 0.7s;
+    transition: 0.7s;
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    z-index: 2;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  /* Navbar CSS End */
+  /* Main Banner CSS */
+  .banner-content {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 600px;
+  }
+  .banner-content h1 {
+    font-size: 35px;
+    margin-top: 5px;
+  }
+  .banner-content .banner-btn .get-btn {
+    padding: 10px 28px;
+  }
+  .banner-content .banner-btn .register-btn {
+    padding: 9px 28px;
+    margin-left: 15px;
+  }
+  .banner-img {
+    max-width: 100%;
+    margin-left: auto;
+    margin-top: 20px;
+  }
+  .banner-area {
+    padding-top: 140px;
+    padding-bottom: 70px;
+  }
+  .banner-area-two {
+    padding-top: 140px;
+    padding-bottom: 70px;
+  }
+  .banner-form-area {
+    text-align: center;
+  }
+  .banner-form-area h1 {
+    font-size: 35px;
+  }
+  .banner-form-area .banner-list li {
+    margin-right: 10px;
+  }
+  .banner-form-area .banner-list li::before {
+    display: none;
+  }
+  .banner-form-area .banner-list li a span {
+    margin-left: 3px;
+  }
+  .banner-content-two {
+    padding-top: 140px;
+    padding-bottom: 30px;
+    text-align: center;
+  }
+  .banner-content-two h1 {
+    font-size: 35px;
+    margin-top: 20px;
+  }
+  .banner-content-two .banner-btn-area .get-btn {
+    padding: 10px 28px;
+  }
+  .banner-content-two .banner-btn-area .register-btn {
+    padding: 9px 28px;
+    margin-left: 15px;
+  }
+  .banner-img-three {
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 70px;
+  }
+  /* Main Banner CSS End */
+  /* Inner Banner CSS */
+  .inner-banner-area {
+    padding-bottom: 90px;
+  }
+  .inner-content {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .inner-content h1 {
+    font-size: 35px;
+  }
+  /* Inner Banner CSS End */
+  .service-area-two {
+    padding-bottom: 25px;
+  }
+  .services-item {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 30px;
+  }
+  .services-border {
+    border: none;
+  }
+  .services-border:hover {
+    border: none;
+  }
+  .services-border-bottom {
+    border: none;
+  }
+  .services-border-bottom:hover {
+    border: none;
+  }
+  /* Pricing Area CSS */
+  .pricing-card .pricing-title::before {
+    height: 37px;
+  }
+  .pricing-item {
+    margin-left: 15px;
+    margin-right: 15px;
+    border: none;
+  }
+  /* Pricing Area CSS End */
+  .choose-item-two {
+    margin-bottom: 30px;
+  }
+  /* Domain Area CSS */
+  .domain-content .section-title {
+    margin-bottom: 20px;
+  }
+  .domain-content .domain-form {
+    padding: 30px 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  .domain-area-two {
+    padding-top: 50px;
+  }
+  .domain-name-content {
+    margin-top: 0px;
+    background-color: #111A57;
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px 20px 10px;
+  }
+  .domain-name-content::before {
+    display: none;
+  }
+  .domain-name-content .domain-name-list li {
+    margin-right: 10px;
+    padding: 7px 15px;
+    margin-bottom: 10px;
+  }
+  .domain-name-content .domain-name-list li:last-child {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .domain-name-content .domain-name-list li a span {
+    margin-left: 5px;
+  }
+  /* Domain Area CSS End */
+  .contact-list {
+    padding: 30px 30px 0;
+  }
+  .contact-list ul li {
+    margin-right: 30px;
+  }
+  .contact-list ul li::before {
+    display: none;
+  }
+  .contact-list ul li .content h3 {
+    font-size: 18px;
+  }
+  .user-all-form .contact-form .user-all-btn .user-btn {
+    padding: 8px 24px;
+  }
+  .faq-area .container-fluid {
+    width: 720px;
+  }
+  .faq-img {
+    margin-bottom: 10px;
+    max-width: 100%;
+    margin-left: auto;
+  }
+  .faq-accordion {
+    max-width: 100%;
+    margin-left: auto;
+  }
+  .blog-item .content {
+    padding: 25px 13px 30px;
+  }
+  .blog-item-bg .blog-item-img .blog-date {
+    padding: 10px 15px;
+  }
+  .blog-item-bg .content {
+    padding: 25px 15px 30px;
+  }
+  .blog-item-bg .content h3 {
+    font-size: 20px;
+  }
+  .footer-widget .footer-list-contact {
+    margin: 0 0 40px;
+  }
+  .footer-widget h3 {
+    margin-bottom: 15px;
+  }
+  /* Error Area */
+  .error-area .error-content h1 {
+    font-size: 130px;
+  }
+  .error-area .error-content h3 {
+    font-size: 26px;
+    margin: 30px 0 0;
+  }
+  .error-area .error-content p {
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 0 15px;
+  }
+  /* Error Area End */
+  /* Coming Soon */
+  .coming-soon-area .coming-soon-content {
+    padding: 30px 15px;
+  }
+  .coming-soon-area .coming-soon-content h1 {
+    font-size: 40px;
+    line-height: 1.1;
+    margin-top: 0;
+  }
+  .coming-soon-area .coming-soon-content p {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  .coming-soon-area .coming-soon-content #timer {
+    margin-top: 10px;
+  }
+  .coming-soon-area .coming-soon-content #timer div {
+    font-size: 40px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  .coming-soon-area .coming-soon-content #timer div span {
+    font-size: 14px;
+    margin-top: -5px;
+  }
+  .coming-soon-area .coming-soon-content #timer div::before {
+    display: none;
+  }
+  .coming-soon-area .coming-soon-content .newsletter-form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .coming-soon-area .coming-soon-content .newsletter-form .input-newsletter {
+    height: 55px;
+    padding-left: 13px;
+    font-size: 15px;
+  }
+  .coming-soon-area .coming-soon-content .newsletter-form button {
+    position: relative;
+    height: auto;
+    font-size: 14px;
+    margin-top: 15px;
+    width: 100%;
+  }
+  /* Coming Soon End */
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  /* Navbar CSS */
+  .other-option {
+    display: none;
+  }
+  .d-in-line {
+    display: none;
+  }
+  .side-nav-responsive {
+    display: block;
+  }
+  .side-nav-responsive .container {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .side-nav-responsive .container .container {
+    position: absolute;
+    top: 55px;
+    right: -20px;
+    max-width: 290px;
+    margin-left: auto;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: 0.7s;
+    transition: 0.7s;
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    z-index: 2;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .side-nav-responsive .dot-menu {
+    top: 22px;
+    right: 0;
+  }
+  .side-nav-responsive .dot-menu .circle-inner .circle {
+    background-color: #ffffff;
+  }
+  .side-nav-three .dot-menu {
+    right: 10px;
+    top: -52px;
+  }
+  .side-nav-three .dot-menu .circle-inner .circle {
+    background-color: #111A57;
+  }
+  .side-nav-three .container .container {
+    top: 0px;
+  }
+  .sticky-nav .side-nav-three .container .container {
+    top: 75px !important;
+  }
+  .sticky-nav .dot-menu {
+    top: 24px;
+  }
+  /* Navbar CSS End */
+  .banner-content {
+    max-width: 450px;
+    margin-left: auto;
+  }
+  .banner-content h1 {
+    font-size: 50px;
+  }
+  .banner-content-two h1 {
+    margin-top: 15px;
+    font-size: 50px;
+    line-height: 1.2;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+  .pricing-card .pricing-title::before {
+    height: 34px;
+  }
+  .pricing-card ul li {
+    padding: 0 25px;
+  }
+  .pricing-item-two .pricing-title {
+    padding: 30px 20px;
+  }
+  .pricing-item-two .pricing-title span {
+    font-size: 15px;
+  }
+  .pricing-item-two ul li {
+    padding: 0 20px;
+  }
+  .pricing-item-two .get-item-btn {
+    margin-left: 20px;
+  }
+  .client-card .client-content {
+    padding-left: 97px;
+  }
+  .client-card .client-content h3 {
+    font-size: 18px;
+  }
+  .client-card .client-content span {
+    font-size: 15px;
+  }
+  .client-item-style h2 {
+    padding: 30px 20px 0;
+  }
+  .client-item-style p {
+    padding: 0 20px 15px;
+  }
+  .client-item-style .client-content {
+    padding-left: 90px;
+  }
+  .client-item-style .client-content img {
+    left: 20px;
+  }
+  .client-item-style .client-content h3 {
+    font-size: 18px;
+  }
+  .client-item-style .client-content span {
+    font-size: 14px;
+  }
+  .contact-list {
+    padding: 60px 40px 30px;
+  }
+  .contact-list ul li {
+    margin-right: 110px;
+  }
+  .contact-list ul li::before {
+    right: -55px;
+  }
+  .blog-item .content ul li {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .blog-item .content ul li:last-child {
+    margin-bottom: 0;
+  }
+}
+/*# sourceMappingURL=responsive.css.map */

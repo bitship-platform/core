@@ -1,0 +1,121 @@
+{% load static %}
+<!doctype html>
+<html lang="zxx">
+    <head>
+        <!-- Required Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <!-- Animate Min CSS -->
+        <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+        <!-- Flaticon CSS -->
+        <link rel="stylesheet" href="{% static 'fonts/flaticon.css' %}">
+        <!-- Boxicons CSS -->
+        <link rel="stylesheet" href="{% static 'css/boxicons.min.css' %}">
+        <!-- Magnific Popup CSS -->
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+        <!-- Owl Carousel Min CSS -->
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+        <!-- Nice Select Min CSS -->
+        <link rel="stylesheet" href="{% static 'css/nice-select.min.css' %}">
+        <!-- Meanmenu CSS -->
+        <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+        <!-- Style CSS -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <!-- Responsive CSS -->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+        {% block stylesheets %}{% endblock stylesheets %}
+
+        <title>Durel - Domain & Hosting Agency HTML Template</title>
+    </head>
+
+    <body>
+        <div class="preloader">
+            <div class="loader-in">Loading...</div>
+        </div>
+
+        <!-- Top Header Start -->
+        <header class="top-header top-header-bg">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-9 col-md-9">
+                        <div class="header-right">
+                            <ul>
+                                <li>
+                                    <i class='bx bxs-envelope'></i>
+                                    <a href="mailto:support@novanodes.com">support@novanodes.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3">
+                        <div class="top-heder-right">
+                            <ul>
+                                <li>
+                                    <a href="register.html">Register</a>
+                                </li>
+                                <li>
+                                    <a href="log-in.html">Log In</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Top Header End -->
+
+        {% include 'includes/navigation.html' %}
+
+        {% block content %}
+        {% endblock content %}
+
+        {% include 'includes/footer.html' %}
+
+        <!-- Copy Right Area -->
+        <div class="copy-right-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="social-icon">
+                            <ul class="social-link">
+                                <li>
+                                    <a href="#" target="_blank"><i class='bx bxl-facebook'></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" target="_blank"><i class='bx bxl-twitter'></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" target="_blank"><i class='bx bxl-google-plus'></i></a>
+                                </li>
+                                <li>
+                                    <a href="#" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8 col-md-8">
+                        <div class="copy-right-text">
+                            <p>
+                                Copyright @2020 NovaNodes. All Rights Reserved
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copy Right Area End -->
+
+    {% include 'includes/scripts.html' %}
+
+    </body>
+</html>
