@@ -1,1 +1,327 @@
-﻿
+﻿{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+        <!-- Banner Area Two -->
+        <div class="banner-area-two">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4">
+                        <div class="banner-img2">
+                            <img src="{% static 'img/home-two/home-two-img.png' %}" alt="Images">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="banner-form-area">
+                            <span class="sub-title">We Provide The Best Domain </span>
+                            <h1>Looking For Unique Domain Name?</h1>
+                            <ul class="banner-list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Banner Area Two End -->
+
+        <!-- Service Area Two -->
+        <section class="service-area-two section-bg pt-100">
+            <div class="container">
+                <div class="section-title text-center">
+                    <h2>We Provide Hosting Solution</h2>
+                </div>
+                <div class="row pt-45">
+                    <div class="col-lg-4 col-md-6 p-0">
+                        <div class="services-item services-border services-border-bottom">
+                            <div class="services-item-icon services-item-icon-bg">
+                                <i class="flaticon-cloud"></i>
+                            </div>
+                            <a href="wordpress-hosting.html">
+                                <h3>Discord Bot Hosting</h3>
+                            </a>
+                            <p>We provide <b>dedicated</b> discord bot hosting with 100% resource usage allowances.</p>
+                            <a href="wordpress-hosting.html" class="discover-btn">Discover</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 p-0">
+                        <div class="services-item services-border services-border-bottom">
+                            <div class="services-item-icon services-item-icon-bg2">
+                                <i class="flaticon-hosting-services"></i>
+                            </div>
+                            <a href="shared-hosting.html">
+                                <h3>MineCraft Hosting</h3>
+                            </a>
+                            <p>You can also host your own Minecraft Server with us.</p>
+                            <a href="shared-hosting.html" class="discover-btn">Discover</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 p-0">
+                        <div class="services-item services-border-bottom">
+                            <div class="services-item-icon services-item-icon-bg3">
+                                <i class="flaticon-database"></i>
+                            </div>
+                            <a href="dedicated-hosting.html">
+                                <h3>Database Hosting</h3>
+                            </a>
+                            <p>We also provide popular database hosting services postgres and mysql</p>
+                            <a href="dedicated-hosting.html" class="discover-btn">Discover</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Service Area Two End -->
+
+        <!-- Pricing Area -->
+        <section class="pricing-area pt-100 pb-70">
+            <div class="container">
+                <div class="section-title text-center">
+                    <h2>Pricing Plan</h2>
+                </div>
+
+                <div class="row pt-45">
+                    <div class="col-lg-4 col-md-6 p-0">
+                        <div class="pricing-item">
+                            <h2>Basic Package</h2>
+                            <span>For bots in or less than 20 servers </span>
+                            <div class="pricing-item-content">
+                                <h3>$1</h3>
+                                <div class="content">
+                                    <span>.2</span>
+                                    <p>/Month</p>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>0.5 Core <i class='bx bx-check icon-color'></i></li>
+                                <li>512GB  Ram<i class='bx bx-check icon-color'></i></li>
+                                <li>1GB SSD <i class='bx bx-check icon-color'></i></li>
+                                <li>100% CPU and RAM usage.<i class='bx bx-check icon-color'></i></li>
+                                <li>Unmetered Bandwidth <i class='bx bx-check icon-color'></i></li>
+                                <li>1x Performance and Speed <i class='bx bx-check icon-color'></i></li>
+                                <li>Intel Xeon™ Instances<i class='bx bx-check icon-color'></i></li>
+                            </ul>
+                            <div class="get-btn-area">
+                                <a href="#" class="get-btn">Get It Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 p-0">
+                        <div class="pricing-item">
+                            <h2>Professional Package </h2>
+                            <span>For bots on or less 50 servers.</span>
+                            <div class="pricing-item-content">
+                                <h3>$2</h3>
+                                <div class="content">
+                                    <span>.2</span>
+                                    <p>/Month</p>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>1 Core <i class='bx bx-check icon-color'></i></li>
+                                <li>1GB  Ram<i class='bx bx-check icon-color'></i></li>
+                                <li>2GB SSD <i class='bx bx-check icon-color'></i></li>
+                                <li>100% CPU and RAM usage.<i class='bx bx-check icon-color'></i></li>
+                                <li>Unmetered Bandwidth <i class='bx bx-check icon-color'></i></li>
+                                <li>2x Performance and Speed <i class='bx bx-check icon-color'></i></li>
+                                <li>Intel Xeon™ Instances<i class='bx bx-check icon-color'></i></li>
+                            </ul>
+                            <div class="get-btn-area">
+                                <a href="#" class="get-btn">Get It Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 p-0">
+                        <div class="pricing-item">
+                            <h2>Threadripper Package</h2>
+                            <span>For bots on over 200+ servers.</span>
+                            <div class="pricing-item-content">
+                                <h3>$4</h3>
+                                <div class="content">
+                                    <span>.99</span>
+                                    <p>/Month</p>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>2 Core <i class='bx bx-check icon-color'></i></li>
+                                <li>3GB  Ram<i class='bx bx-check icon-color'></i></li>
+                                <li>3GB SSD <i class='bx bx-check icon-color'></i></li>
+                                <li>100% CPU and RAM usage.<i class='bx bx-check icon-color'></i></li>
+                                <li>Unmetered Bandwidth <i class='bx bx-check icon-color'></i></li>
+                                <li>5x Performance and Speed <i class='bx bx-check icon-color'></i></li>
+                                <li>Ryzen™ Threadripper Instances<i class='bx bx-check icon-color'></i></li>
+                            </ul>
+                            <div class="get-btn-area">
+                                <a href="#" class="get-btn">Get It Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Pricing Area End -->
+
+        <!-- Choose Area -->
+        <section class="choose-area pb-70">
+            <div class="container">
+                <div class="section-title text-center">
+                    <h2>Why Choose Us</h2>
+                    <p class="margin-auto">
+                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+                        sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                    </p>
+                </div>
+                <div class="row pt-45">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="choose-item">
+                            <i class="flaticon-web-hosting"></i>
+                            <h3>Data Analysis</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et  accusam et
+                               justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="choose-item">
+                            <i class="flaticon-server"></i>
+                            <h3>Secure Data Server</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et  accusam et
+                               justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="choose-item">
+                            <i class="flaticon-backup-copy"></i>
+                            <h3>Backup Data Limit</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et  accusam et
+                               justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="choose-item">
+                            <i class="flaticon-24-hours"></i>
+                            <h3>24/7 Support</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et  accusam et
+                               justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Choose Area End -->
+
+
+        <!-- FAQ Area -->
+        <div class="faq-area-two pt-100 pb-70">
+            <div class="container">
+                <div class="section-title text-center">
+                    <h2>Frequently Asked Question</h2>
+                </div>
+
+                <div class="row pt-45 align-items-center">
+                    <div class="col-lg-5">
+                        <div class="faq-img-2">
+                            <img src="assets\img\faq\faq-img2.png" alt="Images">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="faq-accordion faq-max">
+                            <ul class="accordion">
+                                <li class="accordion-item">
+                                    <a class="accordion-title active" href="javascript:void(0)">
+                                        <i class='bx bx-plus'></i>
+                                        How To Host A Domain?
+                                    </a>
+
+                                    <div class="accordion-content show">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonu my
+                                            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                        </p>
+                                    </div>
+                                </li>
+
+                                <li class="accordion-item">
+                                    <a class="accordion-title" href="javascript:void(0)">
+                                        <i class='bx bx-plus'></i>
+                                        What Is The Purpose Of Web Hosting?
+                                    </a>
+
+                                    <div class="accordion-content">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonu my
+                                            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                        </p>
+                                    </div>
+                                </li>
+
+                                <li class="accordion-item">
+                                    <a class="accordion-title" href="javascript:void(0)">
+                                        <i class='bx bx-plus'></i>
+                                        How To Secure Your Data?
+                                    </a>
+
+                                    <div class="accordion-content">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonu my
+                                            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                        </p>
+                                    </div>
+                                </li>
+
+                                <li class="accordion-item">
+                                    <a class="accordion-title" href="javascript:void(0)">
+                                        <i class='bx bx-plus'></i>
+                                        What Is Our Work Process?
+                                    </a>
+
+                                    <div class="accordion-content">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonu my
+                                            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                        </p>
+                                    </div>
+                                </li>
+
+                                <li class="accordion-item">
+                                    <a class="accordion-title" href="javascript:void(0)">
+                                        <i class='bx bx-plus'></i>
+                                        How Install WordPress?
+                                    </a>
+
+                                    <div class="accordion-content">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonu my
+                                            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FAQ Area End -->
+
+{% endblock content %}
