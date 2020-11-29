@@ -11,14 +11,14 @@
     <div class="main-nav">
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light ">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="{% url 'home' %}">
                     <img src="/static/img/logos/logo-1.png" alt="Logo">
                 </a>
 
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto">
                         <li class="nav-item">
-                            <a href="contact.html" class="nav-link">
+                            <a href="{% url 'home' %}" class="nav-link">
                                 Home
                             </a>
                         </li>
@@ -30,7 +30,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{% url 'discord' %}" class="nav-link">
                                         Discord Bot Hosting
                                     </a>
                                 </li>
@@ -49,26 +49,26 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a href="about.html" class="nav-link">
+                                    <a href="{% url 'about' %}" class="nav-link">
                                         About
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="terms-condition.html" class="nav-link">
+                                    <a href="{% url 'terms' %}" class="nav-link">
                                         Terms & Conditions
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="privacy-policy.html" class="nav-link">
+                                    <a href="{% url 'privacy' %}" class="nav-link">
                                         Privacy Policy
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="contact.html" class="nav-link">
+                            <a href="{% url 'contact' %}" class="nav-link">
                                 Contact
                             </a>
                         </li>
