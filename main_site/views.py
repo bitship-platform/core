@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, "terms-condition.html")
+    return render(request, "about.html")
