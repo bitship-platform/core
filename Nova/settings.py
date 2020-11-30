@@ -11,19 +11,29 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# reading .env file
+environ.Env.read_env()
+
+env = environ.Env(
+DEBUG=(bool, False)
+)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zt)g@w$2p!(0_7oxa6z87rv14laz&&brbi0u6yq4wrri^%$k$a'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
+
 
 ALLOWED_HOSTS = []
 
@@ -114,6 +124,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+WEBHOOK_SECRET = env("WEBHOOK_SECRET")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

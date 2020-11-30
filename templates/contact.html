@@ -36,7 +36,8 @@
                 <div class="row pt-45">
                     <div class="col-lg-12">
                         <div class="contact-form">
-                            <form id="contactForm">
+                            <form id="contactForm" method="post" action="{% url 'contact' %}">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6">
                                         <div class="form-group">
@@ -54,7 +55,7 @@
 
                                     <div class="col-lg-6 col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" name="phone_number" id="phone_number" required="" data-error="Please enter your number" class="form-control" placeholder="Phone">
+                                            <input type="text" name="discord" id="phone_number" required="" data-error="Please enter your number" class="form-control" placeholder="Discord username (name#1234)">
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
