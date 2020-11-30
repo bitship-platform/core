@@ -19,12 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # reading .env file
-environ.Env.read_env()
-
 env = environ.Env(
 DEBUG=(bool, False)
 )
 
+env_path = environ.Path(__file__) - 2
+environ.Env.read_env(env_file=env_path('.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
