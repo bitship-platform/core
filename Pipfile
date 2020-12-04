@@ -13,6 +13,3 @@ gunicorn = "*"
 
 [requires]
 python_version = "3.8"
-
-[scripts]
-production = 'gunicorn --workers 3 --bind unix:/home/ubuntu/Website/NovaNodes/app.sock Nova.wsgi:application'
