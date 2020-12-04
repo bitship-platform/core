@@ -10,6 +10,7 @@ django = "*"
 requests = "*"
 django-environ = "*"
 gunicorn = "*"
+django-hosts = "*"
 
 [requires]
 python_version = "3.8"
