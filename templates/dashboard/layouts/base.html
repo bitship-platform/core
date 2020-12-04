@@ -45,17 +45,17 @@
 
 <body class="">
 
-  {% include "dashboard/templates/includes/sidenav.html" %}
+  {% include "dashboard/includes/sidenav.html" %}
 
   <div class="main-content">
 
-    {% include "dashboard/templates/includes/navigation.html" %}
+    {% include "dashboard/includes/navigation.html" %}
 
     {% block content %}{% endblock content %}
 
   </div>
 
-  {% include "dashboard/templates/includes/scripts.html" %}
+  {% include "dashboard/includes/scripts.html" %}
 
   <!-- Specific JS goes HERE --> 
   {% block javascripts %}{% endblock javascripts %}

@@ -28,7 +28,7 @@
   </title>
 
   <!-- Favicon - loaded as static -->
-  <link href="{% static 'assets/img/brand/favicon.png' %}" rel="icon" type="image/png">
+  <link href="{% static 'dashboard/img/brand/favicon.png' %}" rel="icon" type="image/png">
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -36,7 +36,7 @@
   <link href="/static/dashboard/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
   <link href="/static/dashboard/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
   <!-- CSS Files -->
-  <link href="/static/dashboard/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link href="/static/dashboard/css/argon-dashboard.css" rel="stylesheet" />
 
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
@@ -47,7 +47,7 @@
 
   <div class="main-content">
 
-    {% include "includes/navigation-fullscreen.html" %}
+    {% include "dashboard/includes/navigation-fullscreen.html" %}
 
     <!-- Header -->
     <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -76,11 +76,11 @@
     
     {% block content %}{% endblock content %}
 
-    {% include "dashboard/templates/includes/footer-fullscreen.html" %}
+    {% include "dashboard/includes/footer-fullscreen.html" %}
 
   </div>
     
-  {% include "dashboard/templates/includes/scripts-fullscreen.html" %}
+  {% include "dashboard/includes/scripts-fullscreen.html" %}
 
 </body>
 
