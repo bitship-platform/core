@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^pages/privacy/', DynamicView.as_view(template_name="privacy-policy.html"), name='privacy'),
     url(r'^pages/discord-hosting/', DynamicView.as_view(template_name="discord-hosting.html"), name='discord'),
     url(r'^pages/contact/', ContactView.as_view(), name='contact'),
-    url(r'^pages/dash/', DynamicView.as_view(template_name="dashboard/templates/index.html"), name='dash'),
-    url(r'^pages/log/', DynamicView.as_view(template_name="dashboard/templates/index.html"), name='logout'),
+    url(r'^pages/dash/', DynamicView.as_view(template_name="dashboard/index.html"), name='dash'),
+    url(r'^pages/log/', DynamicView.as_view(template_name="dashboard/index.html"), name='logout'),
 ]
