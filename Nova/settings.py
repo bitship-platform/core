@@ -130,6 +130,10 @@ USE_L10N = True
 USE_TZ = True
 
 WEBHOOK_SECRET = env("WEBHOOK_SECRET")
+OAUTH_CLIENT_ID = env("OAUTH_CLIENT_ID")
+OAUTH_CLIENT_SECRET = env("OAUTH_CLIENT_SECRET")
+ENCRYPTION_SALT = env("ENCRYPTION_SALT")
+ENCRYPTION_ITERATION = env("ENCRYPTION_ITERATION")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

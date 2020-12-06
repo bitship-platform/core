@@ -1,11 +1,13 @@
 from django.urls import path
-from .views import DashView, BillingView, ProfileView, TestView
+from .views import DashView, BillingView, ProfileView, LoginView
 from django.conf.urls import url
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
 
-    path('', DashView.as_view(), name='home'),
-    url(r'^pages/profile/', ProfileView.as_view(), name='test'),
-    url(r'^pages/bill/', BillingView.as_view(), name='bill'),
-    url(r'^pages/s/', TestView.as_view(), name='logout'),
+    path('', LoginView.as_view(), name='home'),
+    path('login/', LoginView.as_view()),
+    url(r'^profile/', ProfileView.as_view(), name='profile'),
+    url(r'^billing/', BillingView.as_view(), name='billing'),
+    url(r'^logout/', LogoutView.as_view(), name='logout'),
 ]

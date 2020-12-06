@@ -14,7 +14,7 @@
           <div class="card bg-secondary shadow border-0">
             <div class="card-header bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-3">
-                Sign IN
+                Sign in with discord
               </div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
@@ -22,54 +22,19 @@
 
                 {% if msg %}
                   <p>{{ msg }}</p>
-                {% else %}
-                  <p>
-                    Use default credentials: test / ApS12_ZZs8
-                    <br />
-                    OR <a href={% url 'register' %} >create your own user</a>
-                  </p>
-                {% endif %}  
-
+                {% endif %}
               </div>
-
-              <form method="POST">
-
-                {% csrf_token %}
-
-                <div class="form-group mb-3">
-                  <div class="input-group input-group-alternative">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
-                    </div>
-                    {{ form.username }}
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group input-group-alternative">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                    </div>
-                    {{ form.password }}
-                  </div>
-                </div>
-                <div class="custom-control custom-control-alternative custom-checkbox">
-                  <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
-                  <label class="custom-control-label" for=" customCheckLogin">
-                    <span class="text-muted">Remember me</span>
-                  </label>
-                </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                    <a href="{{ Oauth.discord_login_url }}"><button type="submit" class="btn btn-primary my-4">Sign in</button></a>
                 </div>
-              </form>
             </div>
           </div>
           <div class="row mt-3">
             <div class="col-6">
-              <a href="{% url 'register' %}" class="text-light"><small>Register</small></a>
+{#              <a href="{% url 'register' %}" class="text-light"><small>Register</small></a>#}
             </div>
             <div class="col-6 text-right">
-              <a href="https://appseed.us/support" class="text-light"><small>Get Support</small></a>
+              <a href="https://discord.gg/EydXhNNfmd" class="text-light"><small>Get Support</small></a>
             </div>
           </div>
         </div>
