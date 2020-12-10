@@ -1,14 +1,5 @@
 from django.contrib.auth.models import User
-from nova_dash.models import Customer
-
-def get_avatar_url(user_id, avatar_hash):
-    """
-    formats and returns user's avatar url
-    :param user_id: discord user id
-    :param avatar_hash: discord avatar hash
-    :return: str: User's avatar url
-    """
-    return f"https://cdn.discordapp.com/avatars/{user_id}/{avatar_hash}.png"
+from nova_dash.models import Customer, Address
 
 
 def create_customer(user_json: dict, password: str):
@@ -19,16 +10,30 @@ def create_customer(user_json: dict, password: str):
     :return: user: Customer
     """
     user_id = user_json["id"]
-    user, created = User.objects.update_or_create(username=user_id,
-                                                  password=password,
-                                                  is_staff=True,
-                                                  first_name=user_json["username"],
-                                                  email=user_json["email"]
-                                                  )
+    user = User.objects.create_user(username=user_id,
+                                    password=password,
+                                    is_staff=True,
+                                    first_name=user_json["username"],
+                                    email=user_json["email"]
+                                    )
     customer = Customer.objects.create(id=user_id,
                                        user=user,
                                        credits=0,
-                                       avatar=get_avatar_url(user_id, user_json["avatar"]))
+                                       tag=user_json["discriminator"],
+                                       avatar=user_json["avatar"])
+    Address.objects.create(customer=customer)
     return customer
 
 
+def update_customer(user_json: dict):
+    user_id = user_json["id"]
+    try:
+        user = Customer.objects.get(id=user_id)
+        user.avatar = user_json["avatar"]
+        user.tag = str(user_json["discriminator"])
+        user.user.first_name = user_json["username"]
+        user.save()
+
+    except Exception as e:
+        print("Exception", e)
+        # TODO:  attach webhook

@@ -12,8 +12,8 @@
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
           <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">Hello {{ request.user.username }}</h1>
-            <p class="text-white mt-0 mb-5">This is your profile page. You can edit your billing info here.</p>
+            <h1 class="display-2 text-white">Hello {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }}{% else %}{{ request.user.first_name }}{% endif %}</h1>
+            <p class="text-white mt-0 mb-5">This is your profile page. You can edit your billing address here.</p>
           </div>
         </div>
       </div>
@@ -28,52 +28,33 @@
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                   <a href="#">
-                    <img src="/static/assets/img/theme/team-4-800x800.jpg" class="rounded-circle">
+                    <img src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
                   </a>
                 </div>
               </div>
             </div>
             <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
               <div class="d-flex justify-content-between">
-                <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
-                <a href="#" class="btn btn-sm btn-default float-right">Message</a>
+                <a href="#" class="btn btn-sm btn-info mr-4">Activity</a>
+                <a href="#" class="btn btn-sm btn-default float-right">Settings</a>
               </div>
             </div>
             <div class="card-body pt-0 pt-md-4">
-              <div class="row">
-                <div class="col">
-                  <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                    <div>
-                      <span class="heading">22</span>
-                      <span class="description">Friends</span>
-                    </div>
-                    <div>
-                      <span class="heading">10</span>
-                      <span class="description">Photos</span>
-                    </div>
-                    <div>
-                      <span class="heading">89</span>
-                      <span class="description">Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="text-center">
                 <h3>
-                  {{ request.user.username }}
+                  {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }} {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}{% else %}{{ request.user.first_name }}{% endif %}
                 </h3>
                 <div class="h5 font-weight-300">
                   {{ request.user.email }}
                 </div>
                 <div class="h5 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+                  <i class="ni business_briefcase-24 mr-2"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
                 </div>
                 <div>
-                  <i class="ni education_hat mr-2"></i>University of Computer Science
+                  <i class="ni education_hat mr-2"></i>Balance Credits: ${{ request.user.customer.credits }}
                 </div>
                 <hr class="my-4" />
-                <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-                <a href="#">Show more</a>
+                <a href="{% url 'logout' %}">Logout</a>
               </div>
             </div>
           </div>
@@ -86,52 +67,32 @@
                   <h3 class="mb-0">My account</h3>
                 </div>
                 <div class="col-4 text-right">
-                  <a href="#" type="submit" class="btn btn-sm btn-primary">Save</a>
+                  <button type="submit" form="billing" class="btn btn-sm btn-primary">Save</button>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <form>
-                <h6 class="heading-small text-muted mb-4">User information</h6>
-                <div class="pl-lg-4">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-username">Username</label>
-                        <input type="text" id="input-username" class="form-control form-control-alternative" placeholder="Username"
-                               value="{{ request.user.username }}" disabled>
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-email">Email address</label>
-                        <input type="email" id="input-email" class="form-control form-control-alternative"
-                               placeholder="{{ request.user.email }}" disabled>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr class="my-4" />
-                <!-- Address -->
+              <form id="billing" method="POST" action="{% url 'profile' %}">
+                  {% csrf_token %}
                 <h6 class="heading-small text-muted mb-4">Billing Address</h6>
                 <div class="pl-lg-4">
                   <div class="row">
                       <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-first-name">First name</label>
-                        <input type="text" id="input-first-name" class="form-control form-control-alternative" >
+                        <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.firstname }}" name="firstname">
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-last-name">Last name</label>
-                        <input type="text" id="input-last-name" class="form-control form-control-alternative" >
+                        <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.lastname }}" name="lastname">
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-address">Address</label>
-                        <input id="input-address" class="form-control form-control-alternative" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
+                        <input id="input-address" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.location }}" type="text" name="location">
                       </div>
                     </div>
                   </div>
@@ -139,22 +100,28 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="input-city">City</label>
-                        <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="City" value="New York">
+                        <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.city }}" name="city">
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="input-country">Country</label>
-                        <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Country" value="United States">
+                        <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.country }}" name="country">
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="input-country">Postal code</label>
-                        <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="Postal code">
+                        <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.pincode }}" name="pincode">
                       </div>
                     </div>
                   </div>
+                  {% if alert %}
+                    <div class="alert {{ alert.type }} alert-dismissible fade show" role="alert">
+                        <a href="#" class="close" data-dismiss="alert"><strong>&times;</strong></a>
+                        <strong>{{ alert.name }}</strong> {{ alert.message }}
+                    </div>
+                  {% endif %}
                 </div>
                 <hr class="my-4" />
               </form>
@@ -162,7 +129,13 @@
           </div>
         </div>
       </div>
-
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 2000);
+        </script>
       {% include "dashboard/includes/footer.html" %}
 
     </div>
@@ -171,4 +144,3 @@
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}{% endblock javascripts %}
-sub

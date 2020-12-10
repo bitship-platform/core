@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from utils.handlers import WebhookHandler
-from django.contrib.auth import authenticate, login
+from .models import Address
+from django.contrib.auth import authenticate, login, logout
 from utils.hashing import Hasher
 from utils.oauth import Oauth
-from utils.operations import create_customer
+from utils.operations import create_customer, update_customer
 from django.contrib.auth.mixins import LoginRequiredMixin
-oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="guilds%20identify%20email")
+oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
+
+
+class LogoutView(View):
+
+    def get(self, request):
+        logout(request)
+        return LoginView.as_view()(self.request)
 
 
 class LoginView(View):
@@ -22,7 +30,6 @@ class LoginView(View):
         code = request.GET.get('code', None)
         self.email = None
         msg = None
-        customer = None
         if code is not None:
             self.access_token = oauth.get_access_token(code)
             self.user_json = oauth.get_user_json(self.access_token)
@@ -33,8 +40,11 @@ class LoginView(View):
             user = authenticate(username=self.user_id, password=password)
             if user is None:
                 customer = create_customer(self.user_json, password)
-            login(request, customer.user)
-            return redirect(f"/user/{self.user_id}/")
+                login(request, customer.user)
+            else:
+                login(request, user)
+                update_customer(user_json=self.user_json)
+            return redirect("/panel")
         return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
 
 
@@ -58,8 +68,19 @@ class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, self.template_name)
 
+    def post(self, request):
+        fields = ["firstname", "lastname", "city", "country", "pincode", "location"]
+        address = Address.objects.get(customer__user=request.user)
+        for field in fields:
+            data = request.POST.get(field, None)
+            # TODO: Add checks and prompt
+            if data != "":
+                setattr(address, field, data)
+        address.save()
+        return render(request, self.template_name)
 
-class ManageView(View, LoginRequiredMixin):
+
+class ManageView(LoginRequiredMixin, View):
     template_name = "dashboard/manage.html"
 
     def get(self, request):
