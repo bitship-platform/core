@@ -117,9 +117,9 @@
                     </div>
                   </div>
                   {% if alert %}
-                    <div class="alert {{ alert.type }} alert-dismissible fade show" role="alert">
+                    <div class="alert {{ alert.bs_class }} alert-dismissible fade show" role="alert">
                         <a href="#" class="close" data-dismiss="alert"><strong>&times;</strong></a>
-                        <strong>{{ alert.name }}</strong> {{ alert.message }}
+                        <strong>{{ alert.atype }}</strong>: {{ alert.msg }}
                     </div>
                   {% endif %}
                 </div>

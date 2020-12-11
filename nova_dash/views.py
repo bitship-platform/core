@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from utils.handlers import WebhookHandler
-from .models import Address
+from utils.handlers import AlertHandler as alert
+from django.views.generic import ListView
+from .models import Address, App
 from django.contrib.auth import authenticate, login, logout
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import ValidationError
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
 
@@ -48,22 +50,21 @@ class LoginView(View):
         return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
 
 
-class DashView(LoginRequiredMixin, View):
+class DashView(LoginRequiredMixin, ListView, View):
     template_name = "dashboard/index.html"
+    paginate_by = 5
+    status_order = ["Running", "Paused", "Stopped", "Terminated"]
+    order = {pos: status for status, pos in enumerate(status_order)}
 
-    def get(self, request, user_id=None):
-        return render(request, self.template_name)
-
-
-class BillingView(LoginRequiredMixin, View):
-    template_name = "dashboard/billing.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
+    def get_queryset(self):
+        queryset = App.objects.filter(owner=self.request.user.customer)
+        ordered_queryset = sorted(queryset, key=lambda query: self.order.get(query.get_status_display(), 0))
+        return ordered_queryset
 
 
 class ProfileView(LoginRequiredMixin, View):
     template_name = "dashboard/profile.html"
+    context = {}
 
     def get(self, request):
         return render(request, self.template_name)
@@ -73,15 +74,32 @@ class ProfileView(LoginRequiredMixin, View):
         address = Address.objects.get(customer__user=request.user)
         for field in fields:
             data = request.POST.get(field, None)
-            # TODO: Add checks and prompt
             if data != "":
                 setattr(address, field, data)
-        address.save()
+        if address.pincode is not None and len(str(address.pincode)) < 5:
+            self.context["alert"] = alert("Error", "Zip Code looks invalid.")
+        elif address.location is not None and len(address.location) < 8:
+            self.context["alert"] = alert("Error", "Address looks invalid.")
+        else:
+            try:
+                address.save()
+                self.context["alert"] = alert("Success", "Data saved successfully!")
+            except ValidationError:
+                self.context["alert"] = alert("Error", "Failed to save data... Try again.")
+        return render(request, self.template_name, self.context)
+
+
+class BillingView(LoginRequiredMixin, View):
+    template_name = "dashboard/billing.html"
+
+    def get(self, request):
         return render(request, self.template_name)
 
 
 class ManageView(LoginRequiredMixin, View):
     template_name = "dashboard/manage.html"
+    context = {}
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def get(self, request, app_id):
+        self.context["app"] = App.objects.get(pk=int(app_id))
+        return render(request, self.template_name, self.context)

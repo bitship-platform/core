@@ -27,3 +27,24 @@ class WebhookHandler:
     def send_message(self, message: str):
         payload = {"content": message}
         self._send_to_webhook(payload)
+
+
+class AlertHandler:
+    _type: str
+    bs_class: str
+
+    def __init__(self, atype, msg):
+        self.atype = atype
+        self.msg = msg
+
+    @property
+    def atype(self):
+        return self._type
+
+    @atype.setter
+    def atype(self, value):
+        self._type = value
+        if value == "Error":
+            self.bs_class = "alert-danger"
+        elif value == "Success":
+            self.bs_class = "alert-success"
