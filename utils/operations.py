@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from nova_dash.models import Customer, Address
+# from django.contrib.admin.decorators import register
 
 
 def create_customer(user_json: dict, password: str):

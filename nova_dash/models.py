@@ -49,7 +49,27 @@ class App(models.Model):
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
     plan = models.FloatField(choices=TYPE_CHOICES)
     cpu = models.IntegerField(default=0)
+    ram = models.IntegerField(default=0)
+    disk = models.IntegerField(default=0)
+    network = models.IntegerField(default=0)
+    glacier = models.IntegerField(default=0)
 
+    @staticmethod
+    def get_status_color(value):
+        if value > 20:
+            if value > 40:
+                if value > 60:
+                    if value > 80:
+                        color_cls = "bg-gradient-danger"
+                    else:
+                        color_cls = "bg-gradient-warning"
+                else:
+                    color_cls = "bg-gradient-primary"
+            else:
+                color_cls = "bg-gradient-info"
+        else:
+            color_cls = "bg-gradient-success"
+        return color_cls
 
 class Address(models.Model):
     """

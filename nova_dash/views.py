@@ -12,7 +12,6 @@ from django.forms import ValidationError
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
 
-
 class LogoutView(View):
 
     def get(self, request):
@@ -103,3 +102,5 @@ class ManageView(LoginRequiredMixin, View):
     def get(self, request, app_id):
         self.context["app"] = App.objects.get(pk=int(app_id))
         return render(request, self.template_name, self.context)
+
+
