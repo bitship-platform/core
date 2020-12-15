@@ -9,6 +9,7 @@ from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ValidationError
+from django.db import DatabaseError
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
 
@@ -103,4 +104,15 @@ class ManageView(LoginRequiredMixin, View):
         self.context["app"] = App.objects.get(pk=int(app_id))
         return render(request, self.template_name, self.context)
 
+    def post(self, request):
+        # TODO: add validation
+        try:
+            self.context["app"] = App.objects.create(name=request.POST.get("name", "nova-app"),
+                                                     owner=request.user.customer,
+                                                     stack=request.POST.get("stack"),
+                                                     plan=request.POST.get("plan"),
+                                                     status="Running")
+        except DatabaseError:
+            return render(request, "dashboard/index.html", self.context)
 
+        return render(request, self.template_name, self.context)

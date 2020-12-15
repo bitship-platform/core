@@ -10,7 +10,7 @@ class Customer(models.Model):
     tag = models.CharField(max_length=5, default="0000")
     avatar = models.CharField(max_length=50, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    credits = models.IntegerField(default=0)
+    credits = models.FloatField(default=0)
     join_date = models.DateTimeField(auto_now_add=True)
 
     def get_avatar_url(self):
@@ -70,6 +70,7 @@ class App(models.Model):
         else:
             color_cls = "bg-gradient-success"
         return color_cls
+
 
 class Address(models.Model):
     """

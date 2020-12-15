@@ -31,9 +31,9 @@
                   <div class="btn-group">
                       <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Launch</button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#"><i class="fab fa-python"></i>Python</a>
-                        <a class="dropdown-item" href="#"><i class="fab fa-node-js"></i>Node.js</a>
-                        <a class="dropdown-item" href="#"><i class="ni ni-diamond"></i>Ruby</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" data-val="Python"><i class="fab fa-python"></i>Python</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" data-val="Node.js"><i class="fab fa-node-js"></i>Node.js</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" data-val="Ruby"><i class="ni ni-diamond"></i>Ruby</a>
                       </div>
                   </div>
                   </p>
@@ -142,7 +142,7 @@
                         </a>
                       {% endif %}
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="#">Manage</a>
+                          <a class="dropdown-item" href="/manage/{{ app.pk }}">Manage</a>
                           <a class="dropdown-item" href="#">Restart</a>
                         </div>
                       </div>
@@ -180,6 +180,67 @@
           </div>
         </div>
       </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Launch new app</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="app-launch" method="post" action="{% url 'launch' %}">
+                {% csrf_token %}
+              <div class="form-row">
+                <div class="form-group col-md-8">
+                  <label for="inputCity">Name of your app</label>
+                  <input type="text" class="form-control" name="name" id="inputCity" required>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputState">Plan</label>
+                  <select id="inputState" class="form-control" name="planSelect" onchange="adjustRate()">
+                    <option selected disabled>Choose...</option>
+                    <option value="Base">Base</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Premium">Premium</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="inputCity">Stack</label>
+                  <input type="text" id="stack" class="form-control" name="stack" readonly>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="inputCity">Rate</label>
+                  <input type="text" class="form-control" name="rate" id="rate" disabled>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" form="app-launch" class="btn btn-primary">Launch</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+        function adjustRate() {
+          var x = document.getElementById("inputState").value;
+          if(x==="Base"){
+          document.getElementById("rate").value = "1.2$";}
+          else if(x==="Standard"){
+          document.getElementById("rate").value = "2.2$";}
+          else if(x==="Premium"){
+          document.getElementById("rate").value = "4.99$";}
+        }
+        $('#exampleModalCenter').on('show.bs.modal', function (event) {
+          let myVal = $(event.relatedTarget).data('val');
+          $(this).find(".modal-body #stack").val(myVal);
+        });
+    </script>
       <!-- Dark table -->
       {% include "dashboard/includes/footer.html" %}
 
