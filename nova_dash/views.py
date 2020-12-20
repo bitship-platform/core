@@ -105,6 +105,7 @@ class ManageView(LoginRequiredMixin, View):
 
     def get(self, request, app_id):
         self.context["app"] = App.objects.get(pk=int(app_id))
+        print(self.context["app"].folder.master.all())
         return render(request, self.template_name, self.context)
 
     def post(self, request):

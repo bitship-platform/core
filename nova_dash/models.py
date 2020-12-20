@@ -55,7 +55,7 @@ class App(models.Model):
     disk = models.IntegerField(default=0)
     network = models.IntegerField(default=0)
     glacier = models.IntegerField(default=0)
-    data = models.OneToOneField("Folder", on_delete=models.SET_NULL, null=True, related_name="data")
+    folder = models.OneToOneField("Folder", on_delete=models.SET_NULL, null=True, blank=True)
 
     @staticmethod
     def get_status_color(value):
@@ -96,14 +96,14 @@ class Folder(models.Model):
     """
     Emulates an app folder
     """
-    owner = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    folder = models.OneToOneField('self', on_delete=models.CASCADE, null=True, related_name="master")
+    folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="master", blank=True)
 
 
 class File(models.Model):
-    folder = models.OneToOneField(Folder, on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
     name = models.CharField(max_length=25)
     size = models.FloatField(default=0)
     item = models.FileField(upload_to=upload_location)

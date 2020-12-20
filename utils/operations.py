@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
-from nova_dash.models import Customer, Address
-# from django.contrib.admin.decorators import register
-
+from nova_dash.models import Customer, Address, Folder, App
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 def create_customer(user_json: dict, password: str):
     """
@@ -38,3 +38,11 @@ def update_customer(user_json: dict):
     except Exception as e:
         print("Exception", e)
         # TODO:  attach webhook
+
+
+@receiver(post_save, sender=App)
+def create_app_folder(sender, instance, created, **kwargs):
+    if created:
+        folder = Folder.objects.create(owner=instance.owner, name=instance.name)
+        instance.folder = folder
+        instance.save()
