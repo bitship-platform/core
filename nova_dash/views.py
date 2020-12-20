@@ -12,6 +12,9 @@ from django.forms import ValidationError
 from django.db import DatabaseError
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
+icon_cache = {v: k for k, v in App.STACK_CHOICES}
+status_cache = {v: k for k, v in App.STATUS_CHOICES}
+
 
 class LogoutView(View):
 
@@ -53,7 +56,7 @@ class LoginView(View):
 class DashView(LoginRequiredMixin, ListView, View):
     template_name = "dashboard/index.html"
     paginate_by = 5
-    status_order = ["Running", "Paused", "Stopped", "Terminated"]
+    status_order = ["Not Started", "Running", "Paused", "Stopped", "Terminated"]
     order = {pos: status for status, pos in enumerate(status_order)}
 
     def get_queryset(self):
@@ -105,13 +108,16 @@ class ManageView(LoginRequiredMixin, View):
         return render(request, self.template_name, self.context)
 
     def post(self, request):
-        # TODO: add validation
         try:
+            rate = request.POST.get("rate")
+            if rate not in ["1.2", "2.4", "4.99"]:
+                raise ValueError
             self.context["app"] = App.objects.create(name=request.POST.get("name", "nova-app"),
                                                      owner=request.user.customer,
-                                                     stack=request.POST.get("stack"),
-                                                     plan=request.POST.get("plan"),
-                                                     status="Running")
+                                                     stack=icon_cache.get(request.POST.get("stack")),
+                                                     plan=rate,
+                                                     status=status_cache.get("Not Started")
+                                                     )
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 

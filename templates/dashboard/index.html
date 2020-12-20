@@ -31,9 +31,9 @@
                   <div class="btn-group">
                       <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Launch</button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" data-val="Python"><i class="fab fa-python"></i>Python</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" data-val="Node.js"><i class="fab fa-node-js"></i>Node.js</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" data-val="Ruby"><i class="ni ni-diamond"></i>Ruby</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Python')"><i class="fab fa-python"></i>Python</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Node.js')"><i class="fab fa-node-js"></i>Node.js</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Ruby')"><i class="ni ni-diamond"></i>Ruby</a>
                       </div>
                   </div>
                   </p>
@@ -199,7 +199,7 @@
                 </div>
                 <div class="form-group col-md-4">
                   <label for="inputState">Plan</label>
-                  <select id="inputState" class="form-control" name="planSelect" onchange="adjustRate()">
+                  <select id="inputState" class="form-control" name="plan" onchange="adjustRate()">
                     <option selected disabled>Choose...</option>
                     <option value="Base">Base</option>
                     <option value="Standard">Standard</option>
@@ -209,12 +209,12 @@
               </div>
               <div class="form-row">
                 <div class="form-group col-md-3">
-                  <label for="inputCity">Stack</label>
+                  <label for="stack">Stack</label>
                   <input type="text" id="stack" class="form-control" name="stack" readonly>
                 </div>
                 <div class="form-group col-md-3">
-                  <label for="inputCity">Rate</label>
-                  <input type="text" class="form-control" name="rate" id="rate" disabled>
+                  <label for="rate">Rate</label>
+                  <input type="text" class="form-control" name="rate" value="0" id="rate" readonly>
                 </div>
               </div>
             </form>
@@ -230,17 +230,18 @@
         function adjustRate() {
           var x = document.getElementById("inputState").value;
           if(x==="Base"){
-          document.getElementById("rate").value = "1.2$";}
+          document.getElementById("rate").value = "1.2";}
           else if(x==="Standard"){
-          document.getElementById("rate").value = "2.2$";}
+          document.getElementById("rate").value = "2.4";}
           else if(x==="Premium"){
-          document.getElementById("rate").value = "4.99$";}
+          document.getElementById("rate").value = "4.99";}
         }
-        $('#exampleModalCenter').on('show.bs.modal', function (event) {
-          let myVal = $(event.relatedTarget).data('val');
-          $(this).find(".modal-body #stack").val(myVal);
-        });
     </script>
+        <script>
+            function setStack(x) {
+                    document.getElementById("stack").value = x;
+            }
+        </script>
       <!-- Dark table -->
       {% include "dashboard/includes/footer.html" %}
 

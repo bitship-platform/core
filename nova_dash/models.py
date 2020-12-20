@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 class Customer(models.Model):
@@ -20,7 +21,7 @@ class Customer(models.Model):
             return "https://cdn.discordapp.com/embed/avatars/1.png"
 
     def get_active_app_count(self):
-        return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger"]))
+        return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger", "bg-warning"]))
 
 
 class App(models.Model):
@@ -28,6 +29,7 @@ class App(models.Model):
     User's running applications.
     """
     STATUS_CHOICES = [
+        ("bg-warning", "Not Started"),
         ("bg-success", "Running"),
         ("bg-info", "Paused"),
         ("bg-danger", "Stopped"),
@@ -84,3 +86,22 @@ class Address(models.Model):
     country = models.CharField(max_length=100, null=True)
     pincode = models.IntegerField(null=True)
 
+
+def upload_location(instance, filename):
+    return f"{instance.folder.owner.id}/{instance.folder.name}/{filename}"
+
+
+class Folder(models.Model):
+    """
+    Emulates an app folder
+    """
+    owner = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+
+
+class File(models.Model):
+    folder = models.OneToOneField(Folder, on_delete=models.CASCADE)
+    name = models.CharField(max_length=25)
+    size = models.FloatField(default=0)
+    item = models.FileField(upload_to=upload_location)
