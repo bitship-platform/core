@@ -55,6 +55,7 @@ class App(models.Model):
     disk = models.IntegerField(default=0)
     network = models.IntegerField(default=0)
     glacier = models.IntegerField(default=0)
+    data = models.OneToOneField("Folder", on_delete=models.SET_NULL, null=True, related_name="data")
 
     @staticmethod
     def get_status_color(value):
@@ -98,6 +99,7 @@ class Folder(models.Model):
     owner = models.OneToOneField(Customer, on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
+    folder = models.OneToOneField('self', on_delete=models.CASCADE, null=True, related_name="master")
 
 
 class File(models.Model):

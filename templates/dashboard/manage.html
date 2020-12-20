@@ -7,16 +7,14 @@
 {% load custom %}
 
     <!-- Header -->
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" 
-         style="min-height: 600px; background-image: url(/static/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
       <!-- Mask -->
-      <span class="mask bg-gradient-default opacity-8"></span>
+      <span class="mask bg-gradient-success opacity-8"></span>
       <!-- Header container -->
-      <div class="container-fluid d-flex align-items-center">
+      <div class="container-fluid align-items-center">
         <div class="row">
           <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">Hello  Your app name</h1>
-            <p class="text-white mt-0 mb-5">You can manage your python application from here. If you need help deploying please click here or if you are facing any issues please contact one of our staff for assistance.</p>
+            <h1 class="text-white">Your app name</h1>
           </div>
         </div>
       </div>
@@ -38,42 +36,80 @@
                 <div class="pl-lg-4">
                     <div class="row">
                         <div class="col-lg-9">
-                        <di1v class="row">
-                            <div class="col-lg-3">
-                              <div class="form-group">
-                                <label class="form-control-label" for="input-username">App name</label>
-                                <input type="text" id="input-username" class="form-control form-control-alternative" placeholder="Username"
-                                       value="{{ request.user.username }}">
-                              </div>
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                  <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Creation date</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">
+                                            <button type="button" class="btn btn-outline-primary btn-sm">upload files</button>
+{#                                            <button type="button" class="btn btn-outline-primary btn-sm">new folder</button>#}
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <th scope="row">
+                                          <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <a href="#"><span class="mb-0 text-sm"><i class="fa fa-folder fa-lg"></i> Argon Design System</span></a>
+                                            </div>
+                                          </div>
+                                        </th>
+                                        <td>
+                                          $2,500 USD
+                                        </td>
+                                        <td>
+                                          <span class="badge badge-dot mr-4">25kb</span>
+                                        </td>
+                                        <td class="text-right">
+                                          <div class="dropdown">
+                                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                              <a class="dropdown-item" href="#">Rename</a>
+                                              <a class="dropdown-item" href="#">Download</a>
+                                              <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">
+                                          <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <a href="#"><span class="mb-0 text-sm"><i class="fa fa-file-code fa-lg"></i> Argon Design System</span></a>
+                                            </div>
+                                          </div>
+                                        </th>
+                                        <td>
+                                          $2,500 USD
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-dot mr-4">25kb</span>
+                                        </td>
+                                        <td class="text-right">
+                                          <div class="dropdown">
+                                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                              <a class="dropdown-item" href="#">Rename</a>
+                                              <a class="dropdown-item" href="#">Download</a>
+                                              <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
                             </div>
-                            <div class="col-lg-3">
-                              <div class="form-group">
-                                <label class="form-control-label" for="input-email">Email address</label>
-                                <input type="email" id="input-email" class="form-control form-control-alternative"
-                                       placeholder="{{ request.user.email }}" disabled>
-                              </div>
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="form-group">
-                                <label class="form-control-label" for="input-email">Email address</label>
-                                <input type="email" id="input-email" class="form-control form-control-alternative"
-                                       placeholder="{{ request.user.email }}" disabled>
-                              </div>
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="form-group">
-                                <label class="form-control-label" for="input-first-name">First name</label>
-                                <input type="text" id="input-first-name" class="form-control form-control-alternative" >
-                              </div>
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="form-group">
-                                <label class="form-control-label" for="input-last-name">Last name</label>
-                                <input type="text" id="input-last-name" class="form-control form-control-alternative" >
-                              </div>
-                            </div>
-                        </di1v>
-                      </div>
+                        </div>
                         <div class="col-lg-3">
                           <div class="card shadow">
                         <div class="card-header border-0">
