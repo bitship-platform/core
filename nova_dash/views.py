@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from utils.handlers import AlertHandler as alert
 from django.views.generic import ListView
-from .models import Address, App
+from .models import Address, App, Folder, File
 from django.contrib.auth import authenticate, login, logout
 from utils.hashing import Hasher
 from utils.oauth import Oauth
@@ -58,11 +58,30 @@ class DashView(LoginRequiredMixin, ListView, View):
     paginate_by = 5
     status_order = ["Not Started", "Running", "Paused", "Stopped", "Terminated"]
     order = {pos: status for status, pos in enumerate(status_order)}
+    context = {}
 
     def get_queryset(self):
         queryset = App.objects.filter(owner=self.request.user.customer)
         ordered_queryset = sorted(queryset, key=lambda query: self.order.get(query.get_status_display(), 0))
         return ordered_queryset
+
+    def post(self, request):
+        try:
+            rate = request.POST.get("rate")
+            if rate not in ["1.2", "2.4", "4.99"]:
+                raise ValueError
+            app = App.objects.create(name=request.POST.get("name", "nova-app"),
+                                     owner=request.user.customer,
+                                     stack=icon_cache.get(request.POST.get("stack")),
+                                     plan=rate,
+                                     status=status_cache.get("Not Started")
+                                     )
+            self.context["app"] = app
+            self.context["folder"] = app.folder
+        except DatabaseError:
+            return render(request, self.template_name, self.context)
+
+        return render(request, "dashboard/manage.html", self.context)
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -103,23 +122,41 @@ class ManageView(LoginRequiredMixin, View):
     template_name = "dashboard/manage.html"
     context = {}
 
-    def get(self, request, app_id):
-        self.context["app"] = App.objects.get(pk=int(app_id))
-        print(self.context["app"].folder.master.all())
+    def get(self, request, app_id, folder_id=None):
+        app = App.objects.get(pk=int(app_id))
+        self.context["app"] = app
+        if folder_id:
+            try:
+                self.context["folder"] = Folder.objects.get(id=folder_id)
+            except:
+                self.context["folder"] = app.folder
+        else:
+            self.context["folder"] = app.folder
         return render(request, self.template_name, self.context)
 
-    def post(self, request):
+    def post(self, request, app_id, folder_id=None):
         try:
-            rate = request.POST.get("rate")
-            if rate not in ["1.2", "2.4", "4.99"]:
-                raise ValueError
-            self.context["app"] = App.objects.create(name=request.POST.get("name", "nova-app"),
-                                                     owner=request.user.customer,
-                                                     stack=icon_cache.get(request.POST.get("stack")),
-                                                     plan=rate,
-                                                     status=status_cache.get("Not Started")
-                                                     )
+            files = request.FILES.getlist('files_to_upload')
+            folder_name = request.POST.get("folder")
+            master = request.POST.get("master")
+            if master:
+                master = Folder.objects.get(id=master)
+            if folder_name:
+                Folder.objects.create(name=folder_name, owner=request.user.customer, folder=master)
+            if files:
+                for file in files:
+                    File.objects.create(folder=master, item=file, name=file.name, size=file.size)
+            app = App.objects.get(pk=int(app_id))
+            self.context["app"] = app
+            if folder_id:
+                try:
+                    self.context["folder"] = Folder.objects.get(id=folder_id)
+                except:
+                    self.context["folder"] = app.folder
+            else:
+                self.context["folder"] = app.folder
+            return render(request, self.template_name, self.context)
+
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
-        return render(request, self.template_name, self.context)

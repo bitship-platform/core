@@ -89,7 +89,18 @@ class Address(models.Model):
 
 
 def upload_location(instance, filename):
-    return f"{instance.folder.owner.id}/{instance.folder.name}/{filename}"
+    folder = instance.folder
+    path = ""
+    while folder is not None:
+        print(folder)
+        if folder.name:
+            path = f"/{folder.name}" + path
+        try:
+            folder = folder.master.all()[0]
+        except IndexError:
+            break
+    x = f"{instance.folder.owner.id}" + path + f"/{filename}"
+    return x
 
 
 class Folder(models.Model):
@@ -100,6 +111,11 @@ class Folder(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="master", blank=True)
+    size = models.FloatField(default=0)
+    creation_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    def get_master(self):
+        return self.folder
 
 
 class File(models.Model):
@@ -107,3 +123,17 @@ class File(models.Model):
     name = models.CharField(max_length=25)
     size = models.FloatField(default=0)
     item = models.FileField(upload_to=upload_location)
+    creation_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    def get_absolute_path(self):
+        folder = self.folder
+        path = ""
+        while folder is not None:
+            if folder.name:
+                path = f"/{folder.name}" + path
+            try:
+                folder = folder.master
+            except AttributeError:
+                folder = None
+
+        return f"/{self.folder.owner.id}" + path + f"/{self.name}"
