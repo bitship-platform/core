@@ -92,15 +92,10 @@ def upload_location(instance, filename):
     folder = instance.folder
     path = ""
     while folder is not None:
-        print(folder)
         if folder.name:
             path = f"/{folder.name}" + path
-        try:
-            folder = folder.master.all()[0]
-        except IndexError:
-            break
-    x = f"{instance.folder.owner.id}" + path + f"/{filename}"
-    return x
+        folder = folder.folder
+    return f"{instance.folder.owner.id}" + path + f"/{filename}"
 
 
 class Folder(models.Model):
