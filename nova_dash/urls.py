@@ -15,3 +15,4 @@ urlpatterns = [
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),
 ]
+urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

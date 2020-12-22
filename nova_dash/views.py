@@ -10,6 +10,7 @@ from utils.operations import create_customer, update_customer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ValidationError
 from django.db import DatabaseError
+from django.conf import settings
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
@@ -145,7 +146,8 @@ class ManageView(LoginRequiredMixin, View):
                 Folder.objects.create(name=folder_name, owner=request.user.customer, folder=master)
             if files:
                 for file in files:
-                    File.objects.create(folder=master, item=file, name=file.name, size=file.size)
+                    if file.size < settings.MAX_FILE_SIZE:
+                        File.objects.create(folder=master, item=file, name=file.name, size=file.size)
             app = App.objects.get(pk=int(app_id))
             self.context["app"] = app
             if folder_id:

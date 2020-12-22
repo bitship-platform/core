@@ -136,7 +136,7 @@ OAUTH_CLIENT_ID = env("OAUTH_CLIENT_ID")
 OAUTH_CLIENT_SECRET = env("OAUTH_CLIENT_SECRET")
 ENCRYPTION_SALT = env("ENCRYPTION_SALT")
 ENCRYPTION_ITERATION = env("ENCRYPTION_ITERATION")
-
+MAX_FILE_SIZE = 2500000
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 

@@ -55,7 +55,6 @@ class App(models.Model):
     disk = models.IntegerField(default=0)
     network = models.IntegerField(default=0)
     glacier = models.IntegerField(default=0)
-    folder = models.OneToOneField("Folder", on_delete=models.SET_NULL, null=True, blank=True)
 
     @staticmethod
     def get_status_color(value):
@@ -103,12 +102,19 @@ class Folder(models.Model):
     Emulates an app folder
     """
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+    app = models.OneToOneField(App, on_delete=models.CASCADE, null=True, blank=True, related_name="folder")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="master", blank=True)
     size = models.FloatField(default=0)
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
 
+    def get_size(self):
+        mb_size = self.size//1000000
+        if not mb_size:
+            return f"{self.size/1000}kb"
+        else:
+            return f"{mb_size}mb"
 
 
 class File(models.Model):
@@ -130,3 +136,10 @@ class File(models.Model):
                 folder = None
 
         return f"/{self.folder.owner.id}" + path + f"/{self.name}"
+
+    def get_size(self):
+        mb_size = self.size//1000000
+        if not mb_size:
+            return f"{self.size/1000}kb"
+        else:
+            return f"{mb_size}mb"

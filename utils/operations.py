@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
-from nova_dash.models import Customer, Address, Folder, App
-from django.db.models.signals import post_save
+from nova_dash.models import Customer, Address, Folder, App, File
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+import os
 
 def create_customer(user_json: dict, password: str):
     """
@@ -43,6 +44,27 @@ def update_customer(user_json: dict):
 @receiver(post_save, sender=App)
 def create_app_folder(sender, instance, created, **kwargs):
     if created:
-        folder = Folder.objects.create(owner=instance.owner, name=instance.name)
-        instance.folder = folder
-        instance.save()
+        Folder.objects.create(owner=instance.owner, name=instance.name, app=instance)
+        print("Folder Created")
+
+
+@receiver(post_save, sender=File)
+def upldate_folder_size_on_create(sender, instance, created, **kwargs):
+    if created:
+        folder = instance.folder
+        while folder.folder:
+            folder.size += instance.size
+            folder.save()
+            folder = folder.folder
+
+
+@receiver(post_delete, sender=File)
+def upldate_folder_size_on_delete(sender, instance, **kwargs):
+    folder = instance.folder
+    while folder.folder:
+        folder.size -= instance.size
+        folder.save()
+        folder = folder.folder
+    if instance.item:
+        if os.path.isfile(instance.item.path):
+            os.remove(instance.item.path)
