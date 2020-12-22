@@ -109,8 +109,6 @@ class Folder(models.Model):
     size = models.FloatField(default=0)
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
 
-    def get_master(self):
-        return self.folder
 
 
 class File(models.Model):
