@@ -84,7 +84,7 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                               <a class="dropdown-item" href="#">Rename</a>
-                                              <a class="dropdown-item" href="#">Delete</a>
+                                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderName('{{ dir.name }}','{{ dir.id }}')" data-target="#deleteModalCenter">Delete</a>
                                             </div>
                                           </div>
                                         </td>
@@ -113,7 +113,7 @@
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                               <a class="dropdown-item" href="#">Rename</a>
                                               <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
-                                              <a class="dropdown-item" href="#">Delete</a>
+                                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileName('{{ file.name }}','{{ file.pk }}')" data-target="#deleteModalCenter">Delete</a>
                                             </div>
                                           </div>
                                         </td>
@@ -241,7 +241,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form id="app-launch" enctype="multipart/form-data" method="post">
+                <form id="app-launch" enctype="multipart/form-data" method="post" action="{% url 'browse' app_id=app.id folder_id=folder.id %}">
                     {% csrf_token %}
                   <div class="form-row">
                     <label for="stack">Create new folder </label>
@@ -250,8 +250,11 @@
                       <input type="hidden" value="{{ folder.id }}" name="master">
                       <input type="hidden" value="{{ app.id }}" name="app_id">
                       <div class="input-group-append">
+                        {% if request.user.customer.ajax_enabled %}
+                        <button class="btn btn-primary folderButton">Create</button>
+                        {% else %}
                         <button class="btn btn-primary" type="submit">Create</button>
-                          <button class="btn btn-primary folderButton">xxx</button>
+                        {% endif %}
                       </div>
                     </div>
                   </div>
@@ -273,7 +276,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form id="app-launch" enctype="multipart/form-data" method="post">
+                <form id="app-launch" enctype="multipart/form-data" method="post" action="{% url 'browse' app_id=app.id folder_id=folder.id %}">
                     {% csrf_token %}
                   <div class="form-row">
                     <div class="input-group mb-3">
@@ -284,8 +287,11 @@
                         <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
                       </div>
                       <div class="input-group-append">
-                        <button class="input-group-text btn btn-primary" id="">Upload</button>
+                        {% if request.user.customer.ajax_enabled %}
                         <button class="input-group-text btn btn-primary fileButton" id="">Upload</button>
+                        {% else %}
+                        <button class="input-group-text btn btn-primary" id="">Upload</button>
+                        {% endif %}
                       </div>
                     </div>
                   </div>
@@ -297,6 +303,37 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  Are you sure you want to delete <span id="itemName"></span>?<br>This action cannot be undone unless deploy backups are turned on.
+              </div>
+              <div class="modal-footer">
+                <input type="hidden" id="folder_id" name="folder_id" value="">
+                <input type="hidden" name="file_id" id="file_id" value="">
+                <button type="button" class="btn btn-primary deleteButton">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+            function setFileName(x,y) {
+                    document.getElementById("itemName").textContent = x;
+                    document.getElementById("file_id").value = y;
+            }
+            function setFolderName(x,y) {
+                    document.getElementById("itemName").textContent = x;
+                    document.getElementById("folder_id").value = y;
+            }
+        </script>
       {% include "dashboard/includes/footer.html" %}
 
     </div>

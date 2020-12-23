@@ -81,10 +81,9 @@ class DashView(LoginRequiredMixin, ListView, View):
                                      )
             self.context["app"] = app
             self.context["folder"] = app.folder
+            return redirect(to=f"/manage/{app.id}/{app.folder.id}")
         except DatabaseError:
             return render(request, self.template_name, self.context)
-
-        return render(request, "dashboard/manage.html", self.context)
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -159,7 +158,21 @@ class ManageView(LoginRequiredMixin, View):
                     self.context["folder"] = app.folder
             else:
                 self.context["folder"] = app.folder
-            return render(request, 'dashboard/filesection.html', self.context)
+            if request.user.customer.ajax_enabled:
+                return render(request, 'dashboard/filesection.html', self.context)
+            else:
+                return render(request, self.template_name, self.context)
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
+    def delete(self, request, app_id=None, folder_id=None):
+        folder = request.GET.get("folder_id", None)
+        file = request.GET.get("file_id", None)
+        if file:
+            File.objects.get(pk=file).delete()
+        if folder:
+            Folder.objects.get(id=folder).delete()
+        app = App.objects.get(pk=int(app_id))
+        self.context["app"] = app
+        self.context["folder"] = app.folder
+        return render(request, 'dashboard/filesection.html', self.context)

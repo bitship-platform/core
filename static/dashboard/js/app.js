@@ -23,7 +23,7 @@ $('.custom-file input').change(function (e) {
 
 $(document).ready(function() {
 
-    $('.folderButton').on('click', function(e) {
+    $(document).on('click','.folderButton', function(e) {
         e.preventDefault();
         var folder_id = $('input[name="master"]').val();
         var app_id = $('input[name="app_id"]').val();
@@ -75,4 +75,29 @@ $(document).ready(function() {
         $('#fileModalCenter').modal('hide');
     })
 });
+});
+
+$(document).ready(function() {
+
+    $(document).on('click','.deleteButton', function(e) {
+        e.preventDefault();
+        var folder_id = $('input[name="folder_id"]').val();
+        $('#folder_id').val("");
+        var file_id = $('input[name="file_id"]').val();
+        $('#file_id').val("");
+        var app_id = $('input[name="file_app_id"]').val();
+        const csrftoken = getCookie('csrftoken');
+
+        req = $.ajax({
+            url : `/manage/${app_id}/${folder_id}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id}),
+            headers: {'X-CSRFToken': csrftoken},
+            type : 'DELETE',
+            data : { file_id: file_id, folder_id: folder_id}
+        });
+        req.done(function (data) {
+            $('#refreshSection').html(data);
+            $('#deleteModalCenter').modal('hide');
+        })
+    });
+
 });

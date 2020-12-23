@@ -13,6 +13,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credits = models.FloatField(default=0)
     join_date = models.DateTimeField(auto_now_add=True)
+    ajax_enabled = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.avatar is not None:
