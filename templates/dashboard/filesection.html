@@ -1,0 +1,196 @@
+{% load custom %}
+<div class="pl-lg-4">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                  <div class="row align-items-center">
+                  <div>
+                      {% if folder.folder.id %}
+                      <a href="/manage/{{ app.id }}/{{ folder.folder.id }} "><button type="button" class="btn btn-outline-primary btn-sm">Go back</button></a>
+                      {% endif %}
+                  </div>
+                    <div class="col text-right">
+                        <button type="button" href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-primary btn-sm">new folder</button>
+                        <button type="button" href="#" data-toggle="modal" data-target="#fileModalCenter" class="btn btn-outline-primary btn-sm">upload files</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Creation date</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">
+{#                                            <button type="button" class="btn btn-outline-primary btn-sm">new folder</button>#}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for dir in folder.master.all %}
+                      <tr>
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                                <a href="/manage/{{ app.id }}/{{ dir.id }}"><span class="mb-0 text-sm"><i class="fa fa-folder fa-lg"></i> {{ dir.name }}</span></a>
+                            </div>
+                          </div>
+                        </th>
+                        <td>
+                          {{ dir.creation_date }}
+                        </td>
+                        <td>
+                          <span class="badge badge-dot mr-4">{{ dir.get_size }}</span>
+                        </td>
+                        <td class="text-right">
+                          <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                              <a class="dropdown-item" href="#">Rename</a>
+                              <a class="dropdown-item" href="#">Delete</a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    {% for file in folder.file_set.all %}
+                      <tr>
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                                <a href="#"><span class="mb-0 text-sm"><i class="fa fa-file-code fa-lg"></i> {{ file.name }}</span></a>
+                            </div>
+                          </div>
+                        </th>
+                        <td>
+                          {{ file.creation_date }}
+                        </td>
+                        <td>
+                            <span class="badge badge-dot mr-4">{{ file.get_size }}</span>
+                        </td>
+                        <td class="text-right">
+                          <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                              <a class="dropdown-item" href="#">Rename</a>
+                              <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
+                              <a class="dropdown-item" href="#">Delete</a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h4 class="mb-0 text-uppercase">performance</h4>
+            </div>
+            <div class="col text-right">
+              <a href="#" class="btn btn-sm btn-primary">optimize</a>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">resource</th>
+                <th scope="col">% utilization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  CPU
+                </th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{ app.cpu }}%</span>
+                    <div>
+                      <div class="progress">
+                        <div class="progress-bar {{ app|get_status_color:app.cpu}}" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ app.cpu }}%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  RAM
+                </th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{ app.ram }}%</span>
+                    <div>
+                      <div class="progress">
+                        <div class="progress-bar {{ app|get_status_color:app.ram}}" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{ app.ram }}%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  DISK
+                </th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{ app.disk }}%</span>
+                    <div>
+                      <div class="progress">
+                        <div class="progress-bar {{ app|get_status_color:app.disk}}" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: {{ app.disk }}%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  NETWORK
+                </th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{ app.network }}%</span>
+                    <div>
+                      <div class="progress">
+                        <div class="progress-bar {{ app|get_status_color:app.network}}" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{ app.network }}%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  GLACIER
+                </th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{ app.glacier }}%</span>
+                    <div>
+                      <div class="progress">
+                        <div class="progress-bar {{ app|get_status_color:app.glacier}}" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: {{ app.glacier }}%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+     </div>
+    </div>
+</div>

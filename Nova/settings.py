@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'django_hosts',
     'nova_dash',
     'main_site',
+    'nova_api.apps.NovaApiConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

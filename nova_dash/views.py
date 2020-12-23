@@ -11,6 +11,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ValidationError
 from django.db import DatabaseError
 from django.conf import settings
+from django.http import JsonResponse, HttpResponse
+import json
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
@@ -157,8 +159,7 @@ class ManageView(LoginRequiredMixin, View):
                     self.context["folder"] = app.folder
             else:
                 self.context["folder"] = app.folder
-            return render(request, self.template_name, self.context)
-
+            return render(request, 'dashboard/filesection.html', self.context)
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
