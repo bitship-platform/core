@@ -51,7 +51,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                               <a class="dropdown-item" href="#">Rename</a>
-                              <a class="dropdown-item" href="#">Delete</a>
+                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderName('{{ dir.name }}','{{ dir.id }}')" data-target="#deleteModalCenter">Delete</a>
                             </div>
                           </div>
                         </td>
@@ -80,7 +80,7 @@
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                               <a class="dropdown-item" href="#">Rename</a>
                               <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
-                              <a class="dropdown-item" href="#">Delete</a>
+                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileName('{{ file.name }}','{{ file.pk }}')" data-target="#deleteModalCenter">Delete</a>
                             </div>
                           </div>
                         </td>
