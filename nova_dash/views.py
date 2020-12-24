@@ -166,6 +166,7 @@ class ManageView(LoginRequiredMixin, View):
             return render(request, "dashboard/index.html", self.context)
 
     def delete(self, request, app_id=None, folder_id=None):
+        # print(folder_id)
         folder = request.GET.get("folder_id", None)
         file = request.GET.get("file_id", None)
         if file:
@@ -174,5 +175,5 @@ class ManageView(LoginRequiredMixin, View):
             Folder.objects.get(id=folder).delete()
         app = App.objects.get(pk=int(app_id))
         self.context["app"] = app
-        self.context["folder"] = app.folder
+        self.context["folder"] = Folder.objects.get(id=folder_id)
         return render(request, 'dashboard/filesection.html', self.context)
