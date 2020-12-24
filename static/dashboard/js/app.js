@@ -82,9 +82,7 @@ $(document).ready(function() {
     $(document).on('click','.deleteButton', function(e) {
         e.preventDefault();
         var folder_id = $('input[name="folder_id"]').val();
-        $('#folder_id').val("");
         var file_id = $('input[name="file_id"]').val();
-        $('#file_id').val("");
         var app_id = $('input[name="file_app_id"]').val();
         const csrftoken = getCookie('csrftoken');
 

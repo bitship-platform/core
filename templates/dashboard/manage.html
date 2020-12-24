@@ -328,10 +328,12 @@
             function setFileName(x,y) {
                     document.getElementById("itemName").textContent = x;
                     document.getElementById("file_id").value = y;
+                    document.getElementById("folder_id").value = "";
             }
             function setFolderName(x,y) {
                     document.getElementById("itemName").textContent = x;
                     document.getElementById("folder_id").value = y;
+                    document.getElementById("file_id").value = "";
             }
         </script>
       {% include "dashboard/includes/footer.html" %}
