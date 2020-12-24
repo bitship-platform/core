@@ -85,16 +85,19 @@ $(document).ready(function() {
         var current_folder = $('input[name="master"]').val();
         var file_id = $('input[name="file_id"]').val();
         var app_id = $('input[name="file_app_id"]').val();
+        var ajax = $('input[name="ajax"]').val();
         const csrftoken = getCookie('csrftoken');
 
         req = $.ajax({
-            url : `/manage/${app_id}/${current_folder}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id}),
+            url : `/manage/${app_id}/${current_folder}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id, "ajax": ajax}),
             headers: {'X-CSRFToken': csrftoken},
             type : 'DELETE',
-            data : { file_id: file_id, folder_id: folder_id}
         });
+
         req.done(function (data) {
-            $('#refreshSection').html(data);
+            if (ajax=="True"){
+            $('#refreshSection').html(data);}
+            else{location.reload()}
             $('#deleteModalCenter').modal('hide');
         })
     });

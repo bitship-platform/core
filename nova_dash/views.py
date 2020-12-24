@@ -149,24 +149,23 @@ class ManageView(LoginRequiredMixin, View):
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
                         File.objects.create(folder=master, item=file, name=file.name, size=file.size)
-            app = App.objects.get(pk=int(app_id))
-            self.context["app"] = app
-            if folder_id:
-                try:
-                    self.context["folder"] = Folder.objects.get(id=folder_id)
-                except:
-                    self.context["folder"] = app.folder
-            else:
-                self.context["folder"] = app.folder
             if request.user.customer.ajax_enabled:
+                app = App.objects.get(pk=int(app_id))
+                self.context["app"] = app
+                if folder_id:
+                    try:
+                        self.context["folder"] = Folder.objects.get(id=folder_id)
+                    except:
+                        self.context["folder"] = app.folder
+                else:
+                    self.context["folder"] = app.folder
                 return render(request, 'dashboard/filesection.html', self.context)
             else:
-                return render(request, self.template_name, self.context)
+                return redirect(to=f"/manage/{app_id}/{folder_id}")
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
     def delete(self, request, app_id=None, folder_id=None):
-        # print(folder_id)
         folder = request.GET.get("folder_id", None)
         file = request.GET.get("file_id", None)
         if file:
@@ -175,5 +174,14 @@ class ManageView(LoginRequiredMixin, View):
             Folder.objects.get(id=folder).delete()
         app = App.objects.get(pk=int(app_id))
         self.context["app"] = app
-        self.context["folder"] = Folder.objects.get(id=folder_id)
-        return render(request, 'dashboard/filesection.html', self.context)
+        if folder_id:
+            try:
+                self.context["folder"] = Folder.objects.get(id=folder_id)
+            except Folder.DoesNotExist:
+                self.context["folder"] = app.folder
+        else:
+            self.context["folder"] = app.folder
+        if request.user.customer.ajax_enabled:
+            return render(request, 'dashboard/filesection.html', self.context)
+        else:
+            return render(request, self.template_name, self.context)
