@@ -34,6 +34,55 @@
             <div class="card-body" id="refreshSection">
                 <div class="pl-lg-4">
                     <div class="row">
+                        <div class="col-lg-12 form-group">
+                            <div class="card shadow">
+                                <div class="card-header border-0">
+                                <div class="row">
+                                  <div class="col-lg-3">
+                                    <div class="input-group mb-3">
+                                      <input type="text" class="form-control" placeholder="{{ app.name }}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                      <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button">Change</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-3">
+                                    <div class="input-group">
+                                      <select class="custom-select" id="inputGroupSelect04">
+                                        <option value="1">Base</option>
+                                        <option value="3">Standard</option>
+                                      </select>
+                                      <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button">Scale</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-2">
+                                      <input class="form-control" type="text" value="{{ app.get_status_display }}" disabled>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                      <label class="btn btn-outline-dark active">
+                                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Start
+                                      </label>
+                                      <label class="btn btn-outline-dark">
+                                        <input type="radio" name="options" id="option2" autocomplete="off"> Pause
+                                      </label>
+                                      <label class="btn btn-outline-dark">
+                                        <input type="radio" name="options" id="option3" autocomplete="off"> Stop
+                                      </label>
+                                      <label class="btn btn-outline-danger">
+                                        <input type="radio" name="options" id="option3" autocomplete="off"> Terminate
+                                      </label>
+                                    </div>
+                                  </div>
+{#                                  <div class="col-lg-1">#}
+{#                                      <button class="btn btn-outline-danger">Terminate</button>#}
+{#                                  </div>#}
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-9">
                             <div class="card shadow">
                                 <div class="card-header border-0">
@@ -132,7 +181,7 @@
                               <h4 class="mb-0 text-uppercase">performance</h4>
                             </div>
                             <div class="col text-right">
-                              <a href="#" class="btn btn-sm btn-primary">optimize</a>
+                              <a href="#" class="btn btn-sm btn-primary">restart</a>
                             </div>
                           </div>
                         </div>
