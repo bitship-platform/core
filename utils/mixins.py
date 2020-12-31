@@ -1,53 +1,63 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 
+
 class Response:
+
     code_204 = {"response": "204", "message": "No Content"}
     code_400 = {"response": "400", "message": "Bad Gateway"}
     code_401 = {"response": "401", "message": "Unauthorized"}
+    code_403 = {"response": "403", "message": "Forbidden"}
+    code_404 = {"response": "404", "message": "Not Found"}
+    code_405 = {"response": "405", "message": "Method Not Allowed"}
+    code_500 = {"response": "500", "message": "Internal Server Error"}
+    code_501 = {"response": "501", "message": "Not Implemented"}
+    code_502 = {"response": "502", "message": "Bad Gateway"}
+    code_503 = {"response": "503", "message": "Service Unavailable"}
+    code_504 = {"response": "504", "message": "Gateway Timeout"}
 
 
 class ResponseMixin(object):
 
     @staticmethod
     def json_response_204():
-        return JsonResponse({"response": "Not Content"}, status=204)
+        return JsonResponse(Response.code_204, status=204)
 
     @staticmethod
     def json_response_400():
-        return JsonResponse({"response": "Bad Request"}, status=400)
+        return JsonResponse(Response.code_400, status=400)
 
     @staticmethod
     def json_response_401():
-        return JsonResponse({"response": "Unauthorized"}, status=401)
+        return JsonResponse(Response.code_401, status=401)
 
     @staticmethod
     def json_response_404():
-        return JsonResponse({"response": "Not Found"}, status=404)
+        return JsonResponse(Response.code_404, status=404)
 
     @staticmethod
     def json_response_405():
-        return JsonResponse({"response": "Method Not Allowed"}, status=405)
+        return JsonResponse(Response.code_405, status=405)
 
     @staticmethod
     def json_response_500():
-        return JsonResponse({"response": "Internal Server Error"}, status=500)
+        return JsonResponse(Response.code_500, status=500)
 
     @staticmethod
     def json_response_501():
-        return JsonResponse({"response": "Not Implemented"}, status=501)
+        return JsonResponse(Response.code_501, status=501)
 
     @staticmethod
     def json_response_502():
-        return JsonResponse({"response": "Bad Gateway"}, status=502)
+        return JsonResponse(Response.code_502, status=502)
 
     @staticmethod
     def json_response_503():
-        return JsonResponse({"response": "Internal Server Error"}, status=503)
+        return JsonResponse(Response.code_503, status=503)
 
     @staticmethod
     def json_response_504():
-        return JsonResponse({"response": "Gateway Timeout"}, status=504)
+        return JsonResponse(Response.code_504, status=504)
 
     @staticmethod
     def http_responce_400(request):
@@ -58,13 +68,13 @@ class ResponseMixin(object):
         return render(request, Response.code_401, status=401)
 
     @staticmethod
-    def http_responce_403():
-        return HttpResponse("<h1>Forbidden (403)</h1>", status=403)
+    def http_responce_403(request):
+        return render(request, Response.code_403, status=403)
 
     @staticmethod
-    def http_responce_404():
-        return HttpResponse("<h1>Page not found (404)</h1>", status=404)
+    def http_responce_404(request):
+        return render(request, Response.code_404, status=404)
 
     @staticmethod
-    def http_responce_405():
-        return HttpResponse("<h1>Method Not Allowed (405)", status=405)
+    def http_responce_405(request):
+        return render(request, Response.code_405, status=405)
