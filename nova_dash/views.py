@@ -11,8 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ValidationError
 from django.db import DatabaseError
 from django.conf import settings
-from django.http import JsonResponse, HttpResponse
-import json
+from utils.mixins import ResponseMixin
 oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
 hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
@@ -120,13 +119,22 @@ class BillingView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
 
-class ManageView(LoginRequiredMixin, View):
+class SettingView(LoginRequiredMixin, View):
+    template_name = "dashboard/settings.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+
+class ManageView(LoginRequiredMixin, View, ResponseMixin):
     template_name = "dashboard/manage.html"
     context = {}
 
     def get(self, request, app_id, folder_id=None):
         app = App.objects.get(pk=int(app_id))
         self.context["app"] = app
+        if app.owner != request.user.customer:
+            return self.http_responce_400(request)
         if folder_id:
             try:
                 self.context["folder"] = Folder.objects.get(id=folder_id)
@@ -141,14 +149,12 @@ class ManageView(LoginRequiredMixin, View):
             files = request.FILES.getlist('files_to_upload')
             folder_name = request.POST.get("folder")
             master = request.POST.get("master")
-            if master:
-                master = Folder.objects.get(id=master)
             if folder_name:
-                Folder.objects.create(name=folder_name, owner=request.user.customer, folder=master)
+                Folder.objects.create(name=folder_name, owner=request.user.customer, folder_id=master)
             if files:
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
-                        File.objects.create(folder=master, item=file, name=file.name, size=file.size)
+                        File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
             if request.user.customer.ajax_enabled:
                 app = App.objects.get(pk=int(app_id))
                 self.context["app"] = app
@@ -169,9 +175,17 @@ class ManageView(LoginRequiredMixin, View):
         folder = request.GET.get("folder_id", None)
         file = request.GET.get("file_id", None)
         if file:
-            File.objects.get(pk=file).delete()
+            file = File.objects.get(pk=file)
+            if file.folder.owner == request.user.customer:
+                file.delete()
+            else:
+                return self.json_response_401()
         if folder:
-            Folder.objects.get(id=folder).delete()
+            folder = Folder.objects.get(id=folder)
+            if folder.owner == request.user.customer:
+                folder.delete()
+            else:
+                return self.json_response_401()
         app = App.objects.get(pk=int(app_id))
         self.context["app"] = app
         if folder_id:

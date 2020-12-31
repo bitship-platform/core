@@ -1,0 +1,154 @@
+{% extends 'dashboard/layouts/base.html' %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+      <!-- Mask -->
+      <span class="mask bg-gradient-gray opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
+      <div class="row">
+        <div class="col-xl-12 order-xl-2">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Account Settings</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+            <div class="row">
+              <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                  <a class="list-group-item list-group-item-action active" id="list-dashboard-list" data-toggle="list" href="#list-dashboard" role="tab" aria-controls="home">Dashboard</a>
+                  <a class="list-group-item list-group-item-action" id="list-notification-list" data-toggle="list" href="#list-notification" role="tab" aria-controls="messages">Notification</a>
+                  <a class="list-group-item list-group-item-action" id="list-account-list" data-toggle="list" href="#list-account" role="tab" aria-controls="settings">Account</a>
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="list-dashboard" role="tabpanel" aria-labelledby="list-dashboard-list">
+                      <div class="card">
+                          <div class="card-body">
+                            <dl class="row">
+                              <dt class="col-sm-3">Reactive File Manager</dt>
+                              <dd class="col-sm-9">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                            </dl>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="list-notification" role="tabpanel" aria-labelledby="list-notification-list">
+                      <div class="card">
+                          <div class="card-body">
+                            <dl class="row">
+
+                              <dt class="col-sm-3">Email notifications</dt>
+                              <dd class="col-sm-2">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dd class="col-sm-7">
+                                  <p>Notification and alerts will be sent to your mail address.</p>
+                              </dd>
+                              <dt class="col-sm-3">Discord notifications</dt>
+                              <dd class="col-sm-2">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dd class="col-sm-7">
+                                  <p>Notification and alerts will be sent to your discord account.</p>
+                              </dd>
+                              <dt class="col-sm-3">App status alerts</dt>
+                              <dd class="col-sm-2">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dd class="col-sm-7">
+                                  <p>Alerts will be pushed when app status changes</p>
+                              </dd>
+                              <dt class="col-sm-3">Down time alerts</dt>
+                              <dd class="col-sm-2">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dd class="col-sm-7">
+                                  <p>You'll be notified of unexpected downtimes.</p>
+                              </dd>
+                              <dt class="col-sm-3">Maintenance break alerts</dt>
+                              <dd class="col-sm-2">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dd class="col-sm-7">
+                                  <p>You'll be notified of scheduled maintenance breaks.</p>
+                              </dd>
+                              <dt class="col-sm-3">New offers and deals</dt>
+                              <dd class="col-sm-2">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dd class="col-sm-7">
+                                  <p>You'll be the first to hear when there is a new offer or sale.</p>
+                              </dd>
+                            </dl>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="list-account" role="tabpanel" aria-labelledby="list-account-list">
+                      <div class="card">
+                          <div class="card-body">
+                            <dl class="row">
+
+                              <dt class="col-sm-3">Name: </dt>
+                              <dd class="col-sm-9">
+                                {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }} {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}{% else %}{{ request.user.first_name }}{% endif %}
+                              </dd>
+                              <dt class="col-sm-3">Email: </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.email }}
+                              </dd>
+                              <dt class="col-sm-3">Account no: </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.username }}
+                              </dd>
+                              <dt class="col-sm-3">Creation date </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.date_joined }}
+                              </dd>
+                              <dt class="col-sm-3">Discord id: </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.first_name }} #{{ request.user.customer.tag }}
+                              </dd>
+                              <dt class="col-sm-3">Credits </dt>
+                              <dd class="col-sm-9">
+                                ${{ request.user.customer.credits }}
+                              </dd>
+                              <dt class="col-sm-3">Last login </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.last_login }}
+                              </dd>
+                            </dl>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% include "dashboard/includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

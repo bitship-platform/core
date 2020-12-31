@@ -12,7 +12,7 @@ class Customer(models.Model):
     avatar = models.CharField(max_length=50, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credits = models.FloatField(default=0)
-    join_date = models.DateTimeField(auto_now_add=True)
+    verified = models.BooleanField(default=False)
     ajax_enabled = models.BooleanField(default=False)
 
     def get_avatar_url(self):

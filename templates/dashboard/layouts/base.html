@@ -53,7 +53,14 @@
     {% include "dashboard/includes/navigation.html" %}
 
     {% block content %}{% endblock content %}
-
+    <div style="position: fixed; bottom: 0; right: 0;" class="col-lg-3">
+      {% if alert %}
+        <div class="alert {{ alert.bs_class }} alert-dismissible fade show" role="alert">
+            <a href="#" class="close" data-dismiss="alert"><strong>&times;</strong></a>
+            <strong>{{ alert.atype }}</strong>: {{ alert.msg }}
+        </div>
+      {% endif %}
+    </div>
   </div>
 
   {% include "dashboard/includes/scripts.html" %}
