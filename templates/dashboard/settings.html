@@ -42,11 +42,11 @@
                             <dl class="row">
                               <dt class="col-sm-3">Reactive UI</dt>
                               <dd class="col-sm-9">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="ajax_option" {% if request.user.customer.settings.ajax_enabled %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dt class="col-sm-3">Display terminated apps</dt>
                               <dd class="col-sm-9">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="terminated_apps" {% if request.user.customer.settings.display_terminated_apps %}checked{% endif %} checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                             </dl>
                           </div>
@@ -59,35 +59,34 @@
 
                               <dt class="col-sm-3">Email notifications</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
-                              </dd>
+                                <input type="checkbox" id="email_alert_option" {% if request.user.customer.settings.email_notification %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               <dd class="col-sm-7">
                                   <p>Notification and alerts will be sent to your mail address.</p>
                               </dd>
                               <dt class="col-sm-3">App status alerts</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="app_status_option" {% if request.user.customer.settings.app_status_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p>Alerts will be pushed when app status changes</p>
                               </dd>
                               <dt class="col-sm-3">Down time alerts</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="down_time_option" {% if request.user.customer.settings.down_time_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p>You'll be notified of unexpected downtimes.</p>
                               </dd>
                               <dt class="col-sm-3">Maintenance break alerts</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="maintenance_option" {% if request.user.customer.settings.maintenance_break_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p>You'll be notified of scheduled maintenance breaks.</p>
                               </dd>
                               <dt class="col-sm-3">New offers and deals</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="offers_option" {% if request.user.customer.settings.new_offers_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p>You'll be the first to hear when there is a new offer or sale.</p>

@@ -18,6 +18,8 @@ hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
 from django.http import HttpResponse
+from django.http import QueryDict
+
 
 class LogoutView(View):
 
@@ -126,7 +128,24 @@ class SettingView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, self.template_name)
 
-    def delete(self, request, app_id=None, folder_id=None):
+    def put(self, request):
+        data = QueryDict(request.body)
+        try:
+            option = list(data)[0]
+        except IndexError:
+            option = None
+        if option:
+            status = data.get(option, None)
+            if status:
+                if status == "true":
+                    setattr(request.user.customer.settings, option, True)
+                    request.user.customer.settings.save()
+                elif status == "false":
+                    setattr(request.user.customer.settings, option, False)
+                    request.user.customer.settings.save()
+        return HttpResponse("Data Saved")
+
+    def delete(self, request):
         User.objects.get(username=request.user.username).delete()
         return HttpResponse("Account Deleted")
 

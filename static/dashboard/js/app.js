@@ -119,3 +119,45 @@ $(document).ready(function() {
         })
     });
 });
+
+
+$(document).ready(function () {
+    const csrftoken = getCookie('csrftoken');
+
+    $.ajaxSetup({
+        url: '/settings/',
+        headers: {'X-CSRFToken': csrftoken},
+        type : 'PUT',
+    });
+
+    $('#ajax_option').on('change',function() {
+            req=$.ajax({data: {ajax_enabled: this.checked}});
+            req.done(function()
+                {location.reload()}
+            )
+    });
+
+    $('#offers_option').on('change',function() {
+            $.ajax({data: {new_offers_alert: this.checked}});
+    });
+
+    $('#down_time_option').on('change',function() {
+            $.ajax({data: {down_time_alert: this.checked}});
+    });
+
+    $('#maintenance_option').on('change',function() {
+            $.ajax({data: {maintenance_break_alert: this.checked}});
+    });
+
+    $('#email_alert_option').on('change',function() {
+            $.ajax({data: {email_notification: this.checked}});
+    });
+
+    $('#app_status_option').on('change',function() {
+            $.ajax({data: {app_status_alert: this.checked}});
+    });
+
+    $('#terminated_apps').on('change',function() {
+            $.ajax({data: {display_terminated_apps: this.checked}});
+    });
+})
