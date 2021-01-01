@@ -40,7 +40,11 @@
                       <div class="card">
                           <div class="card-body">
                             <dl class="row">
-                              <dt class="col-sm-3">Reactive File Manager</dt>
+                              <dt class="col-sm-3">Reactive UI</dt>
+                              <dd class="col-sm-9">
+                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
+                              <dt class="col-sm-3">Display terminated apps</dt>
                               <dd class="col-sm-9">
                                 <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
@@ -59,13 +63,6 @@
                               </dd>
                               <dd class="col-sm-7">
                                   <p>Notification and alerts will be sent to your mail address.</p>
-                              </dd>
-                              <dt class="col-sm-3">Discord notifications</dt>
-                              <dd class="col-sm-2">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
-                              </dd>
-                              <dd class="col-sm-7">
-                                  <p>Notification and alerts will be sent to your discord account.</p>
                               </dd>
                               <dt class="col-sm-3">App status alerts</dt>
                               <dd class="col-sm-2">
@@ -116,22 +113,41 @@
                               <dd class="col-sm-9">
                                 {{ request.user.username }}
                               </dd>
-                              <dt class="col-sm-3">Creation date </dt>
+                              <dt class="col-sm-3">Creation date: </dt>
                               <dd class="col-sm-9">
                                 {{ request.user.date_joined }}
+                              </dd>
+                              <dt class="col-sm-3">Status: </dt>
+                              <dd class="col-sm-9">
+                                {% if request.user.customer.verified %}Verified{% else %}Unverified{% endif %}
                               </dd>
                               <dt class="col-sm-3">Discord id: </dt>
                               <dd class="col-sm-9">
                                 {{ request.user.first_name }} #{{ request.user.customer.tag }}
                               </dd>
-                              <dt class="col-sm-3">Credits </dt>
+                              <dt class="col-sm-3">Credits: </dt>
                               <dd class="col-sm-9">
                                 ${{ request.user.customer.credits }}
                               </dd>
-                              <dt class="col-sm-3">Last login </dt>
+                              <dt class="col-sm-3">Last login: </dt>
                               <dd class="col-sm-9">
                                 {{ request.user.last_login }}
                               </dd>
+                            {% if request.user.customer.address.location %}
+                              <dt class="col-sm-3">Billing address: </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.customer.address.location }}<br>{{ request.user.customer.address.city }} {{ request.user.customer.address.country }}<br>
+                              {% if request.user.customer.address.pincode %}
+                                  Zip: {{ request.user.customer.address.pincode }}
+                              {% endif %}
+                              </dd>
+                            {% endif %}
+                            <dt class="col-sm-12"><hr class="my-4"></dt>
+                            <dt class="col-sm-3">
+                                <h3 class="heading-small">Danger Zone</h3><br>
+                                <button class="btn btn-danger">Close Account</button>
+                            </dt>
+                            <dd class="col-sm-9"></dd>
                             </dl>
                           </div>
                       </div>
