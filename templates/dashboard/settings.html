@@ -145,7 +145,7 @@
                             <dt class="col-sm-12"><hr class="my-4"></dt>
                             <dt class="col-sm-3">
                                 <h3 class="heading-small">Danger Zone</h3><br>
-                                <button class="btn btn-danger">Close Account</button>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModalCenter">Close Account</button>
                             </dt>
                             <dd class="col-sm-9"></dd>
                             </dl>
@@ -159,6 +159,26 @@
           </div>
         </div>
       </div>
+        <div class="modal fade" id="deleteAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Close your account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  Are you sure you want to delete your account?<br><br>
+                  <strong>Warning!</strong> This actions is irreversible, you will lose all your data, apps and all the files and backups related to it.<br>Any credits left in your account won't be refunded.<br><br>Press confirm to delete.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger deleteAccountButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
       {% include "dashboard/includes/footer.html" %}
 

@@ -103,3 +103,19 @@ $(document).ready(function() {
     });
 
 });
+
+$(document).ready(function() {
+
+    $(document).on('click','.deleteAccountButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+        e.preventDefault();
+        req = $.ajax({
+            url : `/settings`,
+            headers: {'X-CSRFToken': csrftoken},
+            type : 'DELETE',
+        });
+        req.done(function (data) {
+            location.reload()
+        })
+    });
+});

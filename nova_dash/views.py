@@ -4,6 +4,7 @@ from utils.handlers import AlertHandler as alert
 from django.views.generic import ListView
 from .models import Address, App, Folder, File
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
@@ -16,7 +17,7 @@ oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="i
 hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
-
+from django.http import HttpResponse
 
 class LogoutView(View):
 
@@ -125,6 +126,10 @@ class SettingView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, self.template_name)
 
+    def delete(self, request, app_id=None, folder_id=None):
+        User.objects.get(username=request.user.username).delete()
+        return HttpResponse("Account Deleted")
+
 
 class ManageView(LoginRequiredMixin, View, ResponseMixin):
     template_name = "dashboard/manage.html"
@@ -155,7 +160,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
                         File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
-            if request.user.customer.ajax_enabled:
+            if request.user.customer.settings.ajax_enabled:
                 app = App.objects.get(pk=int(app_id))
                 self.context["app"] = app
                 if folder_id:
@@ -195,7 +200,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 self.context["folder"] = app.folder
         else:
             self.context["folder"] = app.folder
-        if request.user.customer.ajax_enabled:
+        if request.user.customer.settings.ajax_enabled:
             return render(request, 'dashboard/filesection.html', self.context)
         else:
             return render(request, self.template_name, self.context)

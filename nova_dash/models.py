@@ -13,7 +13,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
-    ajax_enabled = models.BooleanField(default=False)
+
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -86,6 +86,16 @@ class Address(models.Model):
     city = models.CharField(max_length=100, null=True)
     country = models.CharField(max_length=100, null=True)
     pincode = models.IntegerField(null=True)
+
+
+class Setting(models.Model):
+    customer = models.OneToOneField(Customer, primary_key=True, on_delete=models.CASCADE, related_name="settings")
+    email_notification = models.BooleanField(default=False)
+    app_status_alert = models.BooleanField(default=False)
+    down_time_alert = models.BooleanField(default=False)
+    maintenance_break_alert = models.BooleanField(default=False)
+    new_offers_alert = models.BooleanField(default=False)
+    ajax_enabled = models.BooleanField(default=False)
 
 
 def upload_location(instance, filename):

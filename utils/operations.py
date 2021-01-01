@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from nova_dash.models import Customer, Address, Folder, App, File
+from nova_dash.models import Customer, Address, Folder, App, File, Setting
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import os
@@ -24,6 +24,7 @@ def create_customer(user_json: dict, password: str):
                                        tag=user_json["discriminator"],
                                        avatar=user_json["avatar"])
     Address.objects.create(customer=customer)
+    Setting.objects.create(customer=customer)
     return customer
 
 
