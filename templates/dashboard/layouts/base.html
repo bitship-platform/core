@@ -59,6 +59,11 @@
             <a href="#" class="close" data-dismiss="alert"><strong>&times;</strong></a>
             <strong>{{ alert.atype }}</strong>: {{ alert.msg }}
         </div>
+      {% else %}
+        <div class="alert alert-dismissible collapse" role="alert">
+            <a href="#" class="close" data-dismiss="alert"><strong>&times;</strong></a>
+            <strong>Success</strong>: Test
+        </div>
       {% endif %}
     </div>
   </div>

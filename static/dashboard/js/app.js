@@ -96,7 +96,9 @@ $(document).ready(function() {
 
         req.done(function (data) {
             if (ajax=="True"){
-            $('#refreshSection').html(data);}
+            $('#refreshSection').html(data);
+            $('.alert').toggleClass('alert-danger').fadeIn('slow').delay(2000).fadeOut('slow');
+            }
             else{location.reload()}
             $('#deleteModalCenter').modal('hide');
         })
