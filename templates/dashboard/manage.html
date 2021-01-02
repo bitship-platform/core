@@ -49,8 +49,8 @@
                                   <div class="col-lg-3">
                                     <div class="input-group">
                                       <select class="custom-select" id="inputGroupSelect04">
-                                        <option value="1">Base</option>
-                                        <option value="3">Standard</option>
+                                        <option value="Base" {% if app.get_plan_display == "Base" %}selected{% endif %}>Base</option>
+                                        <option value="Standard" {% if app.get_plan_display == "Standard" %}selected{% endif %}>Standard</option>
                                       </select>
                                       <div class="input-group-append">
                                         <button class="btn btn-outline-primary" type="button">Scale</button>
