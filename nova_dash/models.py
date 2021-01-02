@@ -96,6 +96,7 @@ class Setting(models.Model):
     maintenance_break_alert = models.BooleanField(default=False)
     new_offers_alert = models.BooleanField(default=False)
     ajax_enabled = models.BooleanField(default=False)
+    display_terminated_apps = models.BooleanField(default=False)
 
 
 def upload_location(instance, filename):
