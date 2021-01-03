@@ -174,8 +174,8 @@ $(document).ready(function () {
         success: function (data) {
                 alertSuccess("Your preference is saved!");
         },
-        error: function () {
-            alertDanger("Something went wrong!x");
+        error: function (jqXHR, textStatus, errorThrown) {
+            alertDanger(errorThrown)
         }
     });
 

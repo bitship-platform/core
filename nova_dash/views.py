@@ -145,7 +145,7 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
                 request.user.customer.settings.save()
             except DatabaseError:
                 return self.json_response_500()
-            return self.json_response_200()
+            return self.json_response_401()
         else:
             return self.json_response_500()
 
