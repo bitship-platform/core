@@ -19,7 +19,7 @@ icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
 from django.http import HttpResponse, JsonResponse
 from django.http import QueryDict
-
+from django.urls import reverse
 
 class LogoutView(View):
 
@@ -151,7 +151,7 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
 
     def delete(self, request):
         User.objects.get(username=request.user.username).delete()
-        return HttpResponse("Account Deleted")
+        return self.json_response_200()
 
 
 class ManageView(LoginRequiredMixin, View, ResponseMixin):

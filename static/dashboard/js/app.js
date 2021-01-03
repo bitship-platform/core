@@ -4,7 +4,6 @@ function getCookie(name) {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
@@ -80,7 +79,6 @@ $(document).ready(function() {
     $(document).on('click','.fileButton', function(e) {
         e.preventDefault();
 
-    // const axios = require('axios');
     const csrftoken = getCookie('csrftoken');
     var formData = new FormData();
     var ins = document.getElementById('file_upload').files.length;
@@ -101,7 +99,7 @@ $(document).ready(function() {
             "X-CSRFToken": csrftoken,
         },
         success: function () {
-            alertSuccess("File is created");
+            alertSuccess("File is uploaded");
         },
         error: function () {
             alertDanger("Something went wrong");
