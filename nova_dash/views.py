@@ -17,7 +17,7 @@ oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="i
 hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import QueryDict
 
 
@@ -122,7 +122,7 @@ class BillingView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
 
-class SettingView(LoginRequiredMixin, View):
+class SettingView(LoginRequiredMixin, View, ResponseMixin):
     template_name = "dashboard/settings.html"
 
     def get(self, request):
@@ -133,17 +133,22 @@ class SettingView(LoginRequiredMixin, View):
         try:
             option = list(data)[0]
         except IndexError:
-            option = None
-        if option:
-            status = data.get(option, None)
-            if status:
-                if status == "true":
-                    setattr(request.user.customer.settings, option, True)
-                    request.user.customer.settings.save()
-                elif status == "false":
-                    setattr(request.user.customer.settings, option, False)
-                    request.user.customer.settings.save()
-        return HttpResponse("Data Saved")
+            return self.json_response_500()
+
+        status = data.get(option, None)
+        if status in ["true", "false"]:
+            if status == "true":
+                setattr(request.user.customer.settings, option, True)
+            elif status == "false":
+                setattr(request.user.customer.settings, option, False)
+            try:
+                request.user.customer.settings.save()
+            except DatabaseError:
+                return self.json_response_500()
+            return self.json_response_200()
+        else:
+            return self.json_response_500()
+
 
     def delete(self, request):
         User.objects.get(username=request.user.username).delete()

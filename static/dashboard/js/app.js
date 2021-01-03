@@ -13,6 +13,31 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+function alertDanger(msg){
+    $('#alertType').text('Error');
+    $('#alertMsg').text(msg);
+    $('.alert').addClass('alert-danger').fadeIn('slow').delay(500).fadeOut('slow');
+}
+
+function alertSuccess(msg){
+    $('#alertType').text('Success');
+    $('#alertMsg').text(msg);
+    $('.alert').addClass('alert-success').fadeIn('slow').delay(500).fadeOut('slow');
+}
+
+function alertWarning(msg){
+    $('#alertType').text('Warning');
+    $('#alertMsg').text(msg);
+    $('.alert').addClass('alert-warning').fadeIn('slow').delay(1000).fadeOut('slow');
+}
+
+function alertInfo(msg){
+    $('#alertType').text('Info');
+    $('#alertMsg').text(msg);
+    $('.alert').addClass('alert-info').fadeIn('slow').delay(2000).fadeOut('slow');
+}
+
 $('.custom-file input').change(function (e) {
     var files = [];
     for (var i = 0; i < $(this)[0].files.length; i++) {
@@ -77,6 +102,7 @@ $(document).ready(function() {
 });
 });
 
+
 $(document).ready(function() {
 
     $(document).on('click','.deleteButton', function(e) {
@@ -97,7 +123,7 @@ $(document).ready(function() {
         req.done(function (data) {
             if (ajax=="True"){
             $('#refreshSection').html(data);
-            $('.alert').toggleClass('alert-danger').fadeIn('slow').delay(2000).fadeOut('slow');
+            alertSuccess('Item deleted successfully');
             }
             else{location.reload()}
             $('#deleteModalCenter').modal('hide');
@@ -130,6 +156,12 @@ $(document).ready(function () {
         url: '/settings/',
         headers: {'X-CSRFToken': csrftoken},
         type : 'PUT',
+        success: function (data) {
+                alertSuccess("Your preference is saved!");
+        },
+        error: function () {
+            alertDanger("Something went wrong!x");
+        }
     });
 
     $('#ajax_option').on('change',function() {

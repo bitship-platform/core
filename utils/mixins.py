@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 class Response:
 
+    code_200 = {"response": "200", "message": "Ok"}
     code_204 = {"response": "204", "message": "No Content"}
     code_400 = {"response": "400", "message": "Bad Gateway"}
     code_401 = {"response": "401", "message": "Unauthorized"}
@@ -18,6 +19,10 @@ class Response:
 
 
 class ResponseMixin(object):
+
+    @staticmethod
+    def json_response_200():
+        return JsonResponse(Response.code_200, status=200)
 
     @staticmethod
     def json_response_204():
