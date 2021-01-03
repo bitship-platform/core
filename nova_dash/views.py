@@ -149,7 +149,6 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
         else:
             return self.json_response_500()
 
-
     def delete(self, request):
         User.objects.get(username=request.user.username).delete()
         return HttpResponse("Account Deleted")

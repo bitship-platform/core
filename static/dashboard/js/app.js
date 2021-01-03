@@ -59,7 +59,13 @@ $(document).ready(function() {
             url : `/manage/${app_id}/${folder_id}`,
             headers: {'X-CSRFToken': csrftoken},
             type : 'POST',
-            data : { folder: folder_name, master: folder_id}
+            data : { folder: folder_name, master: folder_id},
+            success: function () {
+                alertSuccess("Folder is created");
+            },
+            error: function () {
+                alertDanger("Something went wrong");
+            }
         });
         req.done(function (data) {
             $('#refreshSection').html(data);
@@ -93,6 +99,12 @@ $(document).ready(function() {
         contentType: false,
         headers: {
             "X-CSRFToken": csrftoken,
+        },
+        success: function () {
+            alertSuccess("File is created");
+        },
+        error: function () {
+            alertDanger("Something went wrong");
         }
     });
     req.done(function (data) {
@@ -118,12 +130,17 @@ $(document).ready(function() {
             url : `/manage/${app_id}/${current_folder}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id, "ajax": ajax}),
             headers: {'X-CSRFToken': csrftoken},
             type : 'DELETE',
+            success: function () {
+                alertSuccess("Item is deleted")
+            },
+            error: function () {
+                alertDanger("Something went wrong!")
+            }
         });
 
         req.done(function (data) {
             if (ajax=="True"){
             $('#refreshSection').html(data);
-            alertSuccess('Item deleted successfully');
             }
             else{location.reload()}
             $('#deleteModalCenter').modal('hide');
