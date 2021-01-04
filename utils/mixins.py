@@ -37,6 +37,10 @@ class ResponseMixin(object):
         return JsonResponse(Response.code_401, status=401)
 
     @staticmethod
+    def json_response_403():
+        return JsonResponse(Response.code_403, status=403)
+
+    @staticmethod
     def json_response_404():
         return JsonResponse(Response.code_404, status=404)
 

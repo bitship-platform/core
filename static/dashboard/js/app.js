@@ -14,25 +14,21 @@ function getCookie(name) {
 }
 
 function alertDanger(msg){
-    $('.alertType').text('Error');
     $('.alertMsg').text(msg);
     $('#dangerAlert').fadeIn('slow').delay(500).fadeOut('slow');
 }
 
 function alertSuccess(msg){
-    $('.alertType').text('Success');
     $('.alertMsg').text(msg);
     $('#successAlert').fadeIn('slow').delay(500).fadeOut('slow');
 }
 
 function alertWarning(msg){
-    $('.alertType').text('Warning');
     $('.alertMsg').text(msg);
     $('#warningAlert').fadeIn('slow').delay(1000).fadeOut('slow');
 }
 
 function alertInfo(msg){
-    $('.alertType').text('Info');
     $('.alertMsg').text(msg);
     $('#infoAlert').fadeIn('slow').delay(2000).fadeOut('slow');
 }
@@ -59,17 +55,23 @@ $(document).ready(function() {
             headers: {'X-CSRFToken': csrftoken},
             type : 'POST',
             data : { folder: folder_name, master: folder_id},
-            success: function () {
+            success: function (data) {
+                $('#refreshSection').html(data);
+                $('#exampleModalCenter').modal('hide');
                 alertSuccess("Folder is created");
             },
-            error: function () {
-                alertDanger("Something went wrong");
+            error: function (response) {
+                switch (response.status) {
+                    case 403: alertWarning("Folder name should not contain spaces"); break;
+                    case 500: alertDanger("Internal server error"); break;
+                    default: alertDanger("Something went wrong");
+                }
+
             }
         });
-        req.done(function (data) {
-            $('#refreshSection').html(data);
-            $('#exampleModalCenter').modal('hide');
-        })
+        // req.done(function (data) {
+        //
+        // })
     });
 
 });

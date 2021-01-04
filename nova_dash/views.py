@@ -179,6 +179,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             folder_name = request.POST.get("folder")
             master = request.POST.get("master")
             if folder_name:
+                if " " in folder_name:
+                    return self.json_response_403()
                 Folder.objects.create(name=folder_name, owner=request.user.customer, folder_id=master)
             if files:
                 for file in files:
