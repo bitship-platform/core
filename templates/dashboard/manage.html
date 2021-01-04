@@ -290,11 +290,7 @@
                       <input type="hidden" value="{{ folder.id }}" name="master">
                       <input type="hidden" value="{{ app.id }}" name="app_id">
                       <div class="input-group-append">
-                        {% if request.user.customer.settings.ajax_enabled %}
                         <button class="btn btn-primary folderButton">Create</button>
-                        {% else %}
-                        <button class="btn btn-primary" type="submit">Create</button>
-                        {% endif %}
                       </div>
                     </div>
                   </div>
@@ -327,11 +323,7 @@
                         <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
                       </div>
                       <div class="input-group-append">
-                        {% if request.user.customer.settings.ajax_enabled %}
                         <button class="input-group-text btn btn-primary fileButton" id="">Upload</button>
-                        {% else %}
-                        <button class="input-group-text btn btn-primary" id="">Upload</button>
-                        {% endif %}
                       </div>
                     </div>
                   </div>
