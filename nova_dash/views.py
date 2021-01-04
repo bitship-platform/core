@@ -75,15 +75,19 @@ class DashView(LoginRequiredMixin, ListView, View):
             rate = request.POST.get("rate")
             if rate not in ["1.2", "2.4", "4.99"]:
                 raise ValueError
-            app = App.objects.create(name=request.POST.get("name", "nova-app"),
-                                     owner=request.user.customer,
-                                     stack=icon_cache.get(request.POST.get("stack")),
-                                     plan=rate,
-                                     status=status_cache.get("Not Started")
-                                     )
-            self.context["app"] = app
-            self.context["folder"] = app.folder
-            return redirect(to=f"/manage/{app.id}/{app.folder.id}")
+            name = request.POST.get("name", None)
+            if name:
+                if " " in name:
+                    name = name.replace(" ", "-")
+                app = App.objects.create(name=name,
+                                         owner=request.user.customer,
+                                         stack=icon_cache.get(request.POST.get("stack")),
+                                         plan=rate,
+                                         status=status_cache.get("Not Started")
+                                         )
+                self.context["app"] = app
+                self.context["folder"] = app.folder
+                return redirect(to=f"/manage/{app.id}/{app.folder.id}")
         except DatabaseError:
             return render(request, self.template_name, self.context)
 
@@ -145,7 +149,7 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
                 request.user.customer.settings.save()
             except DatabaseError:
                 return self.json_response_500()
-            return self.json_response_401()
+            return self.json_response_200()
         else:
             return self.json_response_500()
 
@@ -181,7 +185,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             if folder_name:
                 if " " in folder_name:
                     return self.json_response_403()
-                if Folder.objects.filter(name=folder_name).exists():
+                if Folder.objects.filter(name=folder_name, folder_id=master).exists():
                     return self.json_response_405()
                 Folder.objects.create(name=folder_name, owner=request.user.customer, folder_id=master)
             if files:
