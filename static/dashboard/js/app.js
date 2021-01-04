@@ -143,11 +143,7 @@ $(document).ready(function() {
         });
 
         req.done(function (data) {
-            if (ajax=="True"){
             $('#refreshSection').html(data);
-            }
-            else{location.reload()}
-            $('#deleteModalCenter').modal('hide');
         })
     });
 
@@ -183,13 +179,6 @@ $(document).ready(function () {
         error: function (jqXHR, textStatus, errorThrown) {
             alertDanger(errorThrown);
         }
-    });
-
-    $('#ajax_option').on('change',function() {
-            req=$.ajax({data: {ajax_enabled: this.checked}});
-            req.done(function()
-                {location.reload()}
-            )
     });
 
     $('#offers_option').on('change',function() {

@@ -95,7 +95,6 @@ class Setting(models.Model):
     down_time_alert = models.BooleanField(default=False)
     maintenance_break_alert = models.BooleanField(default=False)
     new_offers_alert = models.BooleanField(default=False)
-    ajax_enabled = models.BooleanField(default=False)
     display_terminated_apps = models.BooleanField(default=False)
 
 

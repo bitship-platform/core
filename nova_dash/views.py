@@ -188,22 +188,19 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                         File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
                     else:
                         file_size_exceeded = True
-            if request.user.customer.settings.ajax_enabled:
-                app = App.objects.get(pk=int(app_id))
-                self.context["app"] = app
-                if folder_id:
-                    try:
-                        self.context["folder"] = Folder.objects.get(id=folder_id)
-                    except:
-                        self.context["folder"] = app.folder
-                else:
+            app = App.objects.get(pk=int(app_id))
+            self.context["app"] = app
+            if folder_id:
+                try:
+                    self.context["folder"] = Folder.objects.get(id=folder_id)
+                except:
                     self.context["folder"] = app.folder
-                if file_size_exceeded:
-                    return render(request, 'dashboard/filesection.html', self.context, status=403)
-                else:
-                    return render(request, 'dashboard/filesection.html', self.context, status=200)
             else:
-                return redirect(to=f"/manage/{app_id}/{folder_id}")
+                self.context["folder"] = app.folder
+            if file_size_exceeded:
+                return render(request, 'dashboard/filesection.html', self.context, status=403)
+            else:
+                return render(request, 'dashboard/filesection.html', self.context, status=200)
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
@@ -231,7 +228,4 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 self.context["folder"] = app.folder
         else:
             self.context["folder"] = app.folder
-        if request.user.customer.settings.ajax_enabled:
-            return render(request, 'dashboard/filesection.html', self.context)
-        else:
-            return render(request, self.template_name, self.context)
+        return render(request, 'dashboard/filesection.html', self.context)
