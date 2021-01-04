@@ -69,9 +69,6 @@ $(document).ready(function() {
 
             }
         });
-        // req.done(function (data) {
-        //
-        // })
     });
 
 });
@@ -134,17 +131,15 @@ $(document).ready(function() {
             url : `/manage/${app_id}/${current_folder}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id, "ajax": ajax}),
             headers: {'X-CSRFToken': csrftoken},
             type : 'DELETE',
-            success: function () {
+            success: function (data) {
+                $('#refreshSection').html(data);
+                $('#deleteModalCenter').modal('hide');
                 alertSuccess("Item is deleted")
             },
             error: function () {
                 alertDanger("Something went wrong!")
             }
         });
-
-        req.done(function (data) {
-            $('#refreshSection').html(data);
-        })
     });
 
 });
