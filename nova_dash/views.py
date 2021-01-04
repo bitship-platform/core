@@ -173,6 +173,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         return render(request, self.template_name, self.context)
 
     def post(self, request, app_id, folder_id=None):
+        file_size_exceeded = False
         try:
             files = request.FILES.getlist('files_to_upload')
             folder_name = request.POST.get("folder")
@@ -183,6 +184,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
                         File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
+                    else:
+                        file_size_exceeded = True
             if request.user.customer.settings.ajax_enabled:
                 app = App.objects.get(pk=int(app_id))
                 self.context["app"] = app
@@ -193,7 +196,10 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                         self.context["folder"] = app.folder
                 else:
                     self.context["folder"] = app.folder
-                return render(request, 'dashboard/filesection.html', self.context)
+                if file_size_exceeded:
+                    return render(request, 'dashboard/filesection.html', self.context, status=403)
+                else:
+                    return render(request, 'dashboard/filesection.html', self.context, status=200)
             else:
                 return redirect(to=f"/manage/{app_id}/{folder_id}")
         except DatabaseError:
