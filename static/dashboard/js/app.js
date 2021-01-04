@@ -62,9 +62,10 @@ $(document).ready(function() {
             },
             error: function (response) {
                 switch (response.status) {
-                    case 403: alertWarning("Folder name should not contain spaces"); break;
-                    case 500: alertDanger("Internal server error"); break;
-                    default: alertDanger("Something went wrong");
+                    case 403: alertWarning("Folder name should not contain spaces."); break;
+                    case 405: alertWarning("Folder by that name already exist."); break;
+                    case 500: alertDanger("Internal server error."); break;
+                    default: alertDanger("Something went wrong.");
                 }
 
             }
@@ -97,21 +98,21 @@ $(document).ready(function() {
         headers: {
             "X-CSRFToken": csrftoken,
         },
-        success: function () {
+        success: function (data) {
+            console.log(data)
+            $('#refreshSection').html(data);
+            $('#fileModalCenter').modal('hide');
             alertSuccess("File is uploaded");
         },
         error: function (response) {
             switch (response.status) {
-                case 500: alertDanger("Something went wrong"); break;
+                case 500: alertDanger("Internal server error"); break;
                 case 403: alertWarning("Some files exceed max upload limit."); break;
+                default: alertDanger("Something went wrong!");
             }
 
         }
     });
-    req.done(function (data) {
-        $('#refreshSection').html(data);
-        $('#fileModalCenter').modal('hide');
-    })
 });
 });
 
