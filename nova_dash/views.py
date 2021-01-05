@@ -19,7 +19,30 @@ icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
 from django.http import HttpResponse, JsonResponse
 from django.http import QueryDict
-from django.urls import reverse
+from django.http import HttpResponseForbidden
+
+
+def media_access(request, path):
+    access_granted = False
+
+    user = request.user
+    if user.is_authenticated:
+        if user.is_superuser:
+            # If admin, everything is granted
+            access_granted = True
+        else:
+            file = File.objects.filter(item__exact=path)[0]
+            if file.folder.owner == request.user.customer:
+                access_granted = True
+    if access_granted:
+        response = HttpResponse()
+        # Content-type will be detected by nginx
+        del response['Content-Type']
+        response['X-Accel-Redirect'] = '/protected/media/' + path
+        return response
+    else:
+        return HttpResponseForbidden('Not authorized to access this media.')
+
 
 class LogoutView(View):
 

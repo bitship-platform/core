@@ -1,6 +1,6 @@
 from django.urls import path
 from django.conf import settings
-from .views import DashView, BillingView, ProfileView, LoginView, LogoutView, ManageView, SettingView
+from .views import DashView, BillingView, ProfileView, LoginView, LogoutView, ManageView, SettingView, media_access
 from django.conf.urls import url
 from django.conf.urls.static import static
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^settings/', SettingView.as_view(), name='settings'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),
+    url(r'^media/(?P<path>.*)', media_access, name='media'),
 ]
-urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
