@@ -90,7 +90,7 @@ $(document).ready(function() {
     let files =  document.getElementById('file_upload').files
 
     for (var x = 0; x < files.length; x++) {
-      if(files[x].size > 2500000000000000000000000000000){
+      if(files[x].size > 2500000){
           exceeded_limit = true
       }
       else {
@@ -155,6 +155,7 @@ $(document).ready(function() {
 
     $(document).on('click','.deleteButton', function(e) {
         e.preventDefault();
+        $('#deleteModalCenter').modal('hide');
         var folder_id = $('input[name="folder_id"]').val();
         var current_folder = $('input[name="master"]').val();
         var file_id = $('input[name="file_id"]').val();
@@ -167,7 +168,6 @@ $(document).ready(function() {
             type : 'DELETE',
             success: function (data) {
                 $('#refreshSection').html(data);
-                $('#deleteModalCenter').modal('hide');
                 alertSuccess("Item is deleted")
             },
             error: function () {
