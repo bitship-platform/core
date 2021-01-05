@@ -78,18 +78,26 @@ $(document).ready(function() {
 
     $(document).on('click','.fileButton', function(e) {
         e.preventDefault();
-
+    let exceeded_limit = false
     const csrftoken = getCookie('csrftoken');
     var formData = new FormData();
-    var ins = document.getElementById('file_upload').files.length;
-    for (var x = 0; x < ins; x++) {
-    formData.append("files_to_upload", document.getElementById('file_upload').files[x]);
+    let files =  document.getElementById('file_upload').files
+
+    for (var x = 0; x < files.length; x++) {
+      if(files[x].size > 2500){
+          alertWarning("Some files exceed the max size limit");
+          exceeded_limit = true
+      }
+      else {
+          formData.append("files_to_upload", files[x]);
+      }
     }
     var app_id = $('input[name="file_app_id"]').val();
     var folder_id = $('input[name="master"]').val();
     formData.append('master', folder_id);
-
-    req = $.ajax({
+    if(exceeded_limit && files.length===1){console.log(files.length);}
+    else{
+    $.ajax({
         type: 'POST',
         url: `/manage/${app_id}/${folder_id}`,
         data: formData,
@@ -112,7 +120,7 @@ $(document).ready(function() {
             }
 
         }
-    });
+    });}
 });
 });
 
