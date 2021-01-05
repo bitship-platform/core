@@ -13,7 +13,7 @@ from django.forms import ValidationError
 from django.db import DatabaseError
 from django.conf import settings
 from utils.mixins import ResponseMixin
-oauth = Oauth(redirect_uri="http://dashboard.novanodes.co:8000/login/", scope="identify%20email")
+oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
