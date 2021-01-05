@@ -125,11 +125,10 @@ $(document).ready(function() {
         var current_folder = $('input[name="master"]').val();
         var file_id = $('input[name="file_id"]').val();
         var app_id = $('input[name="file_app_id"]').val();
-        var ajax = $('input[name="ajax"]').val();
         const csrftoken = getCookie('csrftoken');
 
         req = $.ajax({
-            url : `/manage/${app_id}/${current_folder}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id, "ajax": ajax}),
+            url : `/manage/${app_id}/${current_folder}`+ '?' + $.param({"folder_id": folder_id, "file_id" : file_id}),
             headers: {'X-CSRFToken': csrftoken},
             type : 'DELETE',
             success: function (data) {
