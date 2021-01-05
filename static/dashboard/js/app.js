@@ -14,22 +14,22 @@ function getCookie(name) {
 }
 
 function alertDanger(msg){
-    $('.alertMsg').text(msg);
+    $('#dAlertMsg').text(msg);
     $('#dangerAlert').fadeIn('slow').delay(500).fadeOut('slow');
 }
 
 function alertSuccess(msg){
-    $('.alertMsg').text(msg);
+    $('#sAlertMsg').text(msg);
     $('#successAlert').fadeIn('slow').delay(500).fadeOut('slow');
 }
 
 function alertWarning(msg){
-    $('.alertMsg').text(msg);
+    $('#wAlertMsg').text(msg);
     $('#warningAlert').fadeIn('slow').delay(1000).fadeOut('slow');
 }
 
 function alertInfo(msg){
-    $('.alertMsg').text(msg);
+    $('#iAlertMsg').text(msg);
     $('#infoAlert').fadeIn('slow').delay(2000).fadeOut('slow');
 }
 
@@ -84,8 +84,8 @@ $(document).ready(function() {
     let files =  document.getElementById('file_upload').files
 
     for (var x = 0; x < files.length; x++) {
-      if(files[x].size > 2500){
-          alertWarning("Some files exceed the max size limit");
+        console.log(files[x].size);
+      if(files[x].size > 2500000){
           exceeded_limit = true
       }
       else {
@@ -95,8 +95,11 @@ $(document).ready(function() {
     var app_id = $('input[name="file_app_id"]').val();
     var folder_id = $('input[name="master"]').val();
     formData.append('master', folder_id);
-    if(exceeded_limit && files.length===1){console.log(files.length);}
+    if(exceeded_limit===true && files.length===1){
+                  alertWarning("Some files exceed the max size limit");
+    }
     else{
+        if(exceeded_limit===true){alertWarning("Some files exceed the max size limit");}
     $.ajax({
         type: 'POST',
         url: `/manage/${app_id}/${folder_id}`,
