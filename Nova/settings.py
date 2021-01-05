@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'main_site',
     'nova_api.apps.NovaApiConfig',
     'rest_framework',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -147,4 +148,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CELERY_BROKER_URL = "redis://:pe5cb89add8e44c23a746d4e018f64fc63c20b035725d39429e58fc5ebbd692d3@ec2-54-90-41-172.compute-1.amazonaws.com:9529"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = "django-db"
 # STATIC_ROOT = os.path.join(BASE_DIR, 'assets')

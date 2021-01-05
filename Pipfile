@@ -12,6 +12,9 @@ django-environ = "*"
 gunicorn = "*"
 django-hosts = "*"
 djangorestframework = "*"
+celery = "*"
+redis = "*"
+django-celery-results = "*"
 
 [requires]
 python_version = "3.8"
