@@ -20682,4 +20682,27 @@ pre>code.highlight {
   margin-left: 1rem;
 }
 
+#progress-wrp {
+    border: 1px solid ghostwhite;
+    padding: 1px;
+    position: relative;
+    border-radius: 3px;
+    margin: 10px;
+    text-align: left;
+    background: #fff;
+    box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
+}
+#progress-wrp .progress-bar{
+	height: 20px;
+    border-radius: 3px;
+    width: 0;
+    box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.11);
+}
+#progress-wrp .status{
+	top:3px;
+	left:50%;
+	position:absolute;
+	display:inline-block;
+	color: #000000;
+}
 /*# sourceMappingURL=dashboard-free.css.map */

@@ -62,13 +62,19 @@ $(document).ready(function() {
             },
             error: function (response) {
                 switch (response.status) {
-                    case 403: alertWarning("Folder name should not contain spaces."); break;
-                    case 405: alertWarning("Folder by that name already exist."); break;
-                    case 500: alertDanger("Internal server error."); break;
-                    default: alertDanger("Something went wrong.");
+                    case 403:
+                        alertWarning("Folder name should not contain spaces.");
+                        break;
+                    case 405:
+                        alertWarning("Folder by that name already exist.");
+                        break;
+                    case 500:
+                        alertDanger("Internal server error.");
+                        break;
+                    default:
+                        alertDanger("Something went wrong.");
                 }
-
-            }
+            },
         });
     });
 
@@ -84,8 +90,7 @@ $(document).ready(function() {
     let files =  document.getElementById('file_upload').files
 
     for (var x = 0; x < files.length; x++) {
-        console.log(files[x].size);
-      if(files[x].size > 2500000){
+      if(files[x].size > 2500000000000000000000000000000){
           exceeded_limit = true
       }
       else {
@@ -122,7 +127,25 @@ $(document).ready(function() {
                 default: alertDanger("Something went wrong!");
             }
 
-        }
+        },
+            xhr: function(){
+                //upload Progress
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function(event) {
+                        var percent = 0;
+                        var position = event.loaded || event.position;
+                        var total = event.total;
+                        if (event.lengthComputable) {
+                            percent = Math.ceil(position / total * 100);
+                        }
+                        //update progressbar
+                        $("#progress-wrp" +" .progress-bar").css("width", + percent +"%");
+                        $("#progress-wrp" + " .status").text(percent +"%");
+                    }, true);
+                }
+                return xhr;
+            },
     });}
 });
 });
