@@ -88,7 +88,7 @@ $(document).ready(function() {
     const csrftoken = getCookie('csrftoken');
     var formData = new FormData();
     let files =  document.getElementById('file_upload').files
-
+    if(files.length===0){return}
     for (var x = 0; x < files.length; x++) {
       if(files[x].size > 2500000){
           exceeded_limit = true
