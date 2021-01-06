@@ -3,4 +3,4 @@ log.txt
 .idea
 __pycache__/
 media
-
+db.sqlite3
