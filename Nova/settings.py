@@ -153,4 +153,4 @@ CELERY_BROKER_URL = "redis://:pe5cb89add8e44c23a746d4e018f64fc63c20b035725d39429
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = "django-db"
-# STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
