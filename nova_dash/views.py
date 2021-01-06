@@ -217,15 +217,15 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                         File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
                     else:
                         file_size_exceeded = True
-            app = App.objects.get(pk=int(app_id))
-            self.context["app"] = app
-            if folder_id:
-                try:
-                    self.context["folder"] = Folder.objects.get(id=folder_id)
-                except:
-                    self.context["folder"] = app.folder
-            else:
-                self.context["folder"] = app.folder
+            # app = App.objects.get(pk=int(app_id))
+            # self.context["app"] = app
+            # if folder_id:
+            #     try:
+            #         self.context["folder"] = Folder.objects.get(id=folder_id)
+            #     except:
+            #         self.context["folder"] = app.folder
+            # else:
+            #     self.context["folder"] = app.folder
             if file_size_exceeded:
                 return render(request, 'dashboard/filesection.html', self.context, status=403)
             else:
