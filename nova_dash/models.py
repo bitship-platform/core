@@ -127,6 +127,19 @@ class Folder(models.Model):
         else:
             return f"{mb_size}mb"
 
+    def get_absolute_path(self):
+        folder = self.folder
+        path = ""
+        while folder is not None:
+            if folder.name:
+                path = f"/{folder.name}" + path
+            try:
+                folder = folder.master
+            except AttributeError:
+                folder = None
+
+        return f"/{self.folder.owner.id}" + path + f"/{self.name}"
+
 
 class File(models.Model):
     folder = models.ForeignKey(Folder, on_delete=models.CASCADE)

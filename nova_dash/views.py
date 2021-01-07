@@ -233,6 +233,12 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
+    def put(self, request):
+        data = QueryDict(request.body)
+        folder = Folder.objects.get(id=data["folder_id"])
+        print(folder.get_absolute_path())
+        return self.json_response_200()
+
     def delete(self, request, app_id=None, folder_id=None):
         folder = request.GET.get("folder_id", None)
         file = request.GET.get("file_id", None)

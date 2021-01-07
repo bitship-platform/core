@@ -123,7 +123,7 @@
                                               <i class="fas fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                              <a class="dropdown-item" href="#">Rename</a>
+                                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderId('{{ dir.id }}')" data-target="#renameFolderModal">Rename</a>
                                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderName('{{ dir.name }}','{{ dir.id }}')" data-target="#deleteModalCenter">Delete</a>
                                             </div>
                                           </div>
@@ -151,7 +151,7 @@
                                               <i class="fas fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                              <a class="dropdown-item" href="#">Rename</a>
+                                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileId('{{ file.pk }}')" data-target="#renameFileModal">Rename</a>
                                               <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
                                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileName('{{ file.name }}','{{ file.pk }}')" data-target="#deleteModalCenter">Delete</a>
                                             </div>
@@ -360,6 +360,69 @@
             </div>
           </div>
         </div>
+    <!--File rename model -->
+        <div class="modal fade" id="renameFileModal" tabindex="-1" role="dialog" aria-labelledby="renameFileModal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="renameFileModalTitle">Rename file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="file-rename">
+                    {% csrf_token %}
+                  <div class="form-row">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" name="folder" placeholder="Enter new name" aria-label="Name of your folder" id="newFileName" aria-describedby="basic-addon2">
+                      <input type="hidden" id="renameFileId">
+                      <div class="input-group-append">
+                        <button class="btn btn-primary renameFileButton">Rename</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--File rename model end-->
+
+        <!--Folder rename model -->
+        <div class="modal fade" id="renameFolderModal" tabindex="-1" role="dialog" aria-labelledby="renameFolderModal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="renameFolderModalTitle">Rename folder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="folder-rename">
+                    {% csrf_token %}
+                  <div class="form-row">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" name="rename_folder" placeholder="Enter new name" aria-label="Name of your folder" id="renameFolderName" aria-describedby="basic-addon2">
+                      <input type="hidden" id="renameFolderId">
+                      <div class="input-group-append">
+                        <button class="btn btn-primary renameFolderButton">Rename</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Folder rename model end-->
         <script>
             function setFileName(x,y) {
                     document.getElementById("itemName").textContent = x;
@@ -370,6 +433,12 @@
                     document.getElementById("itemName").textContent = x;
                     document.getElementById("folder_id").value = y;
                     document.getElementById("file_id").value = "";
+            }
+            function setFolderId(x){
+                document.getElementById("renameFolderId").value=x;
+            }
+            function setFileId(x){
+                document.getElementById("renameFileId").value=x;
             }
         </script>
       {% include "dashboard/includes/footer.html" %}
