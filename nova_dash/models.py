@@ -128,17 +128,17 @@ class Folder(models.Model):
             return f"{mb_size}mb"
 
     def get_absolute_path(self):
-        folder = self.folder
+        folder = self
         path = ""
         while folder is not None:
             if folder.name:
                 path = f"/{folder.name}" + path
             try:
-                folder = folder.master
+                folder = folder.folder
             except AttributeError:
                 folder = None
 
-        return f"/{self.folder.owner.id}" + path + f"/{self.name}"
+        return f"/{self.folder.owner.id}" + path
 
 
 class File(models.Model):

@@ -247,9 +247,10 @@ $(document).ready(function() {
             headers: {'X-CSRFToken': csrftoken},
             type: 'PUT',
             data: {folder: folder_name, folder_id: folder_id},
-            success:function ()
+            success:function (data)
             {
-              $('#renameFolderModal').modal('hide');
+              // $('#refreshSection').html(data);
+              // $('#renameFolderModal').modal('hide');
               alertSuccess('Folder renamed');
             },
             error:function () {

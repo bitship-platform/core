@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render, redirect
 from django.views import View
 from utils.handlers import AlertHandler as alert
@@ -235,9 +237,18 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def put(self, request):
         data = QueryDict(request.body)
-        folder = Folder.objects.get(id=data["folder_id"])
-        print(folder.get_absolute_path())
-        return self.json_response_200()
+        folder_id = data["folder_id"]
+        new_name = data["folder"]
+        if folder_id and new_name:
+            folder = Folder.objects.get(id=folder_id)
+            dir_path = folder.get_absolute_path()
+            new_path = dir_path.rsplit("/", 1)[0] + f"/{new_name}"
+            absolute_path = os.path.join(settings.BASE_DIR, 'media', dir_path[1:])
+            new_path = os.path.join(settings.BASE_DIR, 'media', new_path[1:])
+            os.rename(absolute_path, new_path)
+            folder.name = new_name
+            folder.save()
+            return self.json_response_200()
 
     def delete(self, request, app_id=None, folder_id=None):
         folder = request.GET.get("folder_id", None)
