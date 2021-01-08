@@ -259,3 +259,28 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function() {
+
+    $(document).on('click','.renameFilerButton', function(e) {
+        e.preventDefault();
+        let file_name = $('input[name="rename_folder"]').val();
+        let file_id = $('#renameFolderId').val();
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {folder: folder_name, folder_id: folder_id},
+            success:function (data)
+            {
+              $('#refreshSection').html(data);
+              $('#renameFolderModal').modal('hide');
+              alertSuccess('Folder renamed');
+            },
+            error:function () {
+                alertDanger('Something went wrong')
+            },
+        });
+    });
+});
