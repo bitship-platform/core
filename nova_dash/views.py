@@ -237,13 +237,16 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def put(self, request):
         data = QueryDict(request.body)
-        folder_id = data["folder_id"]
-        new_name = data["folder"]
-        if folder_id and new_name:
+        print(data)
+        folder_id = data.get("folder_id")
+        folder_name = data.get("folder")
+        file_id = data.get("file_id")
+        file_name = data.get("file_name")
+        if folder_id and folder_name:
             folder = Folder.objects.get(id=folder_id)
             if folder.owner == request.user.customer:
                 dir_path = folder.get_absolute_path()
-                new_path = dir_path.rsplit("/", 1)[0] + f"/{new_name}"
+                new_path = dir_path.rsplit("/", 1)[0] + f"/{folder_name}"
                 absolute_path = os.path.join(settings.BASE_DIR, 'media', dir_path[1:])
                 new_path = os.path.join(settings.BASE_DIR, 'media', new_path[1:])
                 try:
@@ -252,11 +255,37 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     return self.json_response_500()
                 except FileNotFoundError:
                     pass
-                folder.name = new_name
+                folder.name = folder_name
                 folder.save()
                 self.context["folder"] = folder.folder
                 return render(request, "dashboard/filesection.html", self.context, status=200)
             return self.json_response_401()
+        if file_id and file_name:
+            file = File.objects.get(pk=file_id)
+            if file.folder.owner == request.user.customer:
+                file_path = file.get_absolute_path()
+                file_extenstion = None
+                try:
+                    file_extenstion = file_path.rsplit(".", 1)[1]
+                except IndexError:
+                    pass
+                if file_extenstion:
+                    print(file_extenstion)
+                    new_name = f"/{file_name}.{file_extenstion}"
+                else:
+                    new_name = f"/{file_name}"
+                new_path = file_path.rsplit("/", 1)[0] + new_name
+                print(new_path)
+                try:
+                    os.rename(file_path, new_path)
+                except PermissionError:
+                    return self.json_response_500()
+                except FileNotFoundError:
+                    pass
+                file.name = file_name
+                file.save()
+                self.context["folder"] = file.folder
+                return render(request, "dashboard/filesection.html", self.context, status=200)
         return self.json_response_400()
 
     def delete(self, request, app_id=None, folder_id=None):
