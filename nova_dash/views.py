@@ -241,14 +241,20 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         new_name = data["folder"]
         if folder_id and new_name:
             folder = Folder.objects.get(id=folder_id)
-            dir_path = folder.get_absolute_path()
-            new_path = dir_path.rsplit("/", 1)[0] + f"/{new_name}"
-            absolute_path = os.path.join(settings.BASE_DIR, 'media', dir_path[1:])
-            new_path = os.path.join(settings.BASE_DIR, 'media', new_path[1:])
-            os.rename(absolute_path, new_path)
-            folder.name = new_name
-            folder.save()
-            return self.json_response_200()
+            if folder.owner == request.user.customer:
+                dir_path = folder.get_absolute_path()
+                new_path = dir_path.rsplit("/", 1)[0] + f"/{new_name}"
+                absolute_path = os.path.join(settings.BASE_DIR, 'media', dir_path[1:])
+                new_path = os.path.join(settings.BASE_DIR, 'media', new_path[1:])
+                try:
+                    os.rename(absolute_path, new_path)
+                    folder.name = new_name
+                    folder.save()
+                    return self.json_response_200()
+                except PermissionError:
+                    return self.json_response_500()
+            return self.json_response_401()
+        return self.json_response_400()
 
     def delete(self, request, app_id=None, folder_id=None):
         folder = request.GET.get("folder_id", None)

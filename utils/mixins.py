@@ -6,7 +6,7 @@ class Response:
 
     code_200 = {"response": "200", "message": "Ok"}
     code_204 = {"response": "204", "message": "No Content"}
-    code_400 = {"response": "400", "message": "Bad Gateway"}
+    code_400 = {"response": "400", "message": "Bad Request"}
     code_401 = {"response": "401", "message": "Unauthorized"}
     code_403 = {"response": "403", "message": "Forbidden"}
     code_404 = {"response": "404", "message": "Not Found"}
