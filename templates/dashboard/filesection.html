@@ -1,4 +1,5 @@
 {% load custom %}
+
 <div class="pl-lg-4">
     <div class="row">
         <div class="col-lg-12 form-group">
@@ -16,8 +17,8 @@
                   <div class="col-lg-3">
                     <div class="input-group">
                       <select class="custom-select" id="inputGroupSelect04">
-                        <option value="1">Base</option>
-                        <option value="3">Standard</option>
+                        <option value="Base" {% if app.get_plan_display == "Base" %}selected{% endif %}>Base</option>
+                        <option value="Standard" {% if app.get_plan_display == "Standard" %}selected{% endif %}>Standard</option>
                       </select>
                       <div class="input-group-append">
                         <button class="btn btn-outline-primary" type="button">Scale</button>
@@ -90,7 +91,7 @@
                               <i class="fas fa-ellipsis-v"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                              <a class="dropdown-item" href="#">Rename</a>
+                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderId('{{ dir.id }}')" data-target="#renameFolderModal">Rename</a>
                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderName('{{ dir.name }}','{{ dir.id }}')" data-target="#deleteModalCenter">Delete</a>
                             </div>
                           </div>
@@ -118,7 +119,7 @@
                               <i class="fas fa-ellipsis-v"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                              <a class="dropdown-item" href="#">Rename</a>
+                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileId('{{ file.pk }}')" data-target="#renameFileModal">Rename</a>
                               <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileName('{{ file.name }}','{{ file.pk }}')" data-target="#deleteModalCenter">Delete</a>
                             </div>

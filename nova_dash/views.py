@@ -248,11 +248,14 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 new_path = os.path.join(settings.BASE_DIR, 'media', new_path[1:])
                 try:
                     os.rename(absolute_path, new_path)
-                    folder.name = new_name
-                    folder.save()
-                    return self.json_response_200()
                 except PermissionError:
                     return self.json_response_500()
+                except FileNotFoundError:
+                    pass
+                folder.name = new_name
+                folder.save()
+                self.context["folder"] = folder.folder
+                return render(request, "dashboard/filesection.html", self.context, status=200)
             return self.json_response_401()
         return self.json_response_400()
 

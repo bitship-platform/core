@@ -249,8 +249,8 @@ $(document).ready(function() {
             data: {folder: folder_name, folder_id: folder_id},
             success:function (data)
             {
-              // $('#refreshSection').html(data);
-              // $('#renameFolderModal').modal('hide');
+              $('#refreshSection').html(data);
+              $('#renameFolderModal').modal('hide');
               alertSuccess('Folder renamed');
             },
             error:function () {
