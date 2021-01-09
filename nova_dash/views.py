@@ -253,8 +253,15 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     return self.json_response_500()
                 except FileNotFoundError:
                     pass
+                old_path = folder.get_absolute_path()
                 folder.name = folder_name
                 folder.save()
+                for file in folder.file_set.all():
+                    # print(old_path[1:])
+                    # print(folder.get_absolute_path()[1:])
+                    # print(file.item.name)
+                    file.item.name = file.item.name.replace(old_path[1:], folder.get_absolute_path()[1:])
+                    file.save()
                 self.context["folder"] = folder.folder
                 return render(request, "dashboard/filesection.html", self.context, status=200)
             return self.json_response_401()
