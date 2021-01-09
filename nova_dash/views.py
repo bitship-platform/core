@@ -237,7 +237,6 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def put(self, request):
         data = QueryDict(request.body)
-        print(data)
         folder_id = data.get("folder_id")
         folder_name = data.get("folder")
         file_id = data.get("file_id")
@@ -263,27 +262,26 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         if file_id and file_name:
             file = File.objects.get(pk=file_id)
             if file.folder.owner == request.user.customer:
-                file_path = file.get_absolute_path()
+                file_path = file.item.path
                 file_extenstion = None
                 try:
                     file_extenstion = file_path.rsplit(".", 1)[1]
                 except IndexError:
                     pass
                 if file_extenstion:
-                    print(file_extenstion)
                     new_name = f"/{file_name}.{file_extenstion}"
                 else:
                     new_name = f"/{file_name}"
-                new_path = file_path.rsplit("/", 1)[0] + new_name
-                print(new_path)
+                if os.name == "nt":
+                    new_path = file_path.rsplit("\\", 1)[0] + new_name
+                else:
+                    new_path = file_path.rsplit("/", 1)[0] + new_name
                 try:
                     os.rename(file_path, new_path)
+                    file.name = new_name[1:]
+                    file.save()
                 except PermissionError:
                     return self.json_response_500()
-                except FileNotFoundError:
-                    pass
-                file.name = file_name
-                file.save()
                 self.context["folder"] = file.folder
                 return render(request, "dashboard/filesection.html", self.context, status=200)
         return self.json_response_400()
