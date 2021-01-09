@@ -1,8 +1,6 @@
 from django.urls import path
-from django.conf import settings
 from .views import DashView, BillingView, ProfileView, LoginView, LogoutView, ManageView, SettingView, media_access
 from django.conf.urls import url
-from django.conf.urls.static import static
 urlpatterns = [
 
     path('', LoginView.as_view(), name='home'),

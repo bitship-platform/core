@@ -235,30 +235,30 @@ $(document).ready(function () {
     });
 })
 
-$(document).ready(function() {
-
-    $(document).on('click','.renameFolderButton', function(e) {
-        e.preventDefault();
-        let folder_name = $('input[name="rename_folder"]').val();
-        let folder_id = $('#renameFolderId').val();
-        const csrftoken = getCookie('csrftoken');
-        $.ajax({
-            url: `/manage/`,
-            headers: {'X-CSRFToken': csrftoken},
-            type: 'PUT',
-            data: {folder: folder_name, folder_id: folder_id},
-            success:function (data)
-            {
-              $('#refreshSection').html(data);
-              $('#renameFolderModal').modal('hide');
-              alertSuccess(`Folder renamed to ${folder_name}`);
-            },
-            error:function () {
-                alertDanger('Something went wrong')
-            },
-        });
-    });
-});
+// $(document).ready(function() {
+//
+//     $(document).on('click','.renameFolderButton', function(e) {
+//         e.preventDefault();
+//         let folder_name = $('input[name="rename_folder"]').val();
+//         let folder_id = $('#renameFolderId').val();
+//         const csrftoken = getCookie('csrftoken');
+//         $.ajax({
+//             url: `/manage/`,
+//             headers: {'X-CSRFToken': csrftoken},
+//             type: 'PUT',
+//             data: {folder: folder_name, folder_id: folder_id},
+//             success:function (data)
+//             {
+//               $('#refreshSection').html(data);
+//               $('#renameFolderModal').modal('hide');
+//               alertSuccess(`Folder renamed to ${folder_name}`);
+//             },
+//             error:function () {
+//                 alertDanger('Something went wrong')
+//             },
+//         });
+//     });
+// });
 
 $(document).ready(function() {
 
@@ -277,6 +277,27 @@ $(document).ready(function() {
               $('#refreshSection').html(data);
               $('#renameFileModal').modal('hide');
               alertSuccess(`File renamed to ${file_name}`);
+            },
+            error:function () {
+                alertDanger('Something went wrong')
+            },
+        });
+    });
+});
+
+$(document).ready(function() {
+
+    $(document).on('click','.downloadFileButton', function(e) {
+        let file_id = $(this).attr("data-value")
+        const csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: `/media/download/`+ '?' + $.param({"file_id" : file_id}),
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'GET',
+            success:function (data)
+            {
+              alertSuccess(`File will be download shortly`);
             },
             error:function () {
                 alertDanger('Something went wrong')

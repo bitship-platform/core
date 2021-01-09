@@ -45,6 +45,30 @@ def media_access(request, path):
         return HttpResponseForbidden('Not authorized to access this media.')
 
 
+# def media_download(request):
+#     access_granted = False
+#     user = request.user
+#     file = None
+#     if user.is_authenticated:
+#         if user.is_superuser:
+#             # If admin, everything is granted
+#             access_granted = True
+#         else:
+#             file_id = request.GET.get("file_id")
+#             if file_id:
+#                 file = File.objects.get(pk=file_id)
+#                 if file.folder.owner == request.user.customer:
+#                     access_granted = True
+#     if access_granted:
+#         response = HttpResponse()
+#         # Content-type will be detected by nginx
+#         del response['Content-Type']
+#         response['X-Accel-Redirect'] = '/protected/media/' + file.item.path.split("media")[1][1:].replace("\\", "/")
+#         return response
+#     else:
+#         return HttpResponseForbidden('Not authorized to access this media.')
+
+
 class LogoutView(View):
 
     def get(self, request):
@@ -253,15 +277,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     return self.json_response_500()
                 except FileNotFoundError:
                     pass
-                old_path = folder.get_absolute_path()
                 folder.name = folder_name
                 folder.save()
-                for file in folder.file_set.all():
-                    # print(old_path[1:])
-                    # print(folder.get_absolute_path()[1:])
-                    # print(file.item.name)
-                    file.item.name = file.item.name.replace(old_path[1:], folder.get_absolute_path()[1:])
-                    file.save()
                 self.context["folder"] = folder.folder
                 return render(request, "dashboard/filesection.html", self.context, status=200)
             return self.json_response_401()
