@@ -155,7 +155,7 @@ class File(models.Model):
             if folder.name:
                 path = f"/{folder.name}" + path
             try:
-                folder = folder.master
+                folder = folder.folder
             except AttributeError:
                 folder = None
 

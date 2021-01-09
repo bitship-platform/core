@@ -26,7 +26,6 @@ from django.http import HttpResponseForbidden
 
 def media_access(request, path):
     access_granted = False
-
     user = request.user
     if user.is_authenticated:
         if user.is_superuser:
@@ -278,6 +277,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     new_path = file_path.rsplit("/", 1)[0] + new_name
                 try:
                     os.rename(file_path, new_path)
+                    file.item.name = new_path.split("media")[1][1:].replace("\\", "/")
                     file.name = new_name[1:]
                     file.save()
                 except PermissionError:
