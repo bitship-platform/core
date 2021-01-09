@@ -34,8 +34,8 @@ function alertInfo(msg){
 }
 
 $('.custom-file input').change(function (e) {
-    var files = [];
-    for (var i = 0; i < $(this)[0].files.length; i++) {
+    let files = [];
+    for (let i = 0; i < $(this)[0].files.length; i++) {
         files.push($(this)[0].files[i].name);
     }
     $(this).next('.custom-file-label').html(files.join(', '));
@@ -45,9 +45,9 @@ $(document).ready(function() {
 
     $(document).on('click','.folderButton', function(e) {
         e.preventDefault();
-        var folder_id = $('input[name="master"]').val();
-        var app_id = $('input[name="app_id"]').val();
-        var folder_name = $('input[name="folder"]').val();
+        let folder_id = $('input[name="master"]').val();
+        let app_id = $('input[name="app_id"]').val();
+        let folder_name = $('input[name="folder"]').val();
         const csrftoken = getCookie('csrftoken');
 
         req = $.ajax({
@@ -86,10 +86,10 @@ $(document).ready(function() {
         e.preventDefault();
     let exceeded_limit = false
     const csrftoken = getCookie('csrftoken');
-    var formData = new FormData();
+    let formData = new FormData();
     let files =  document.getElementById('file_upload').files
-
-    for (var x = 0; x < files.length; x++) {
+    if(files.length===0){return}
+    for (let x = 0; x < files.length; x++) {
       if(files[x].size > 2500000){
           exceeded_limit = true
       }
@@ -97,8 +97,8 @@ $(document).ready(function() {
           formData.append("files_to_upload", files[x]);
       }
     }
-    var app_id = $('input[name="file_app_id"]').val();
-    var folder_id = $('input[name="master"]').val();
+    let app_id = $('input[name="file_app_id"]').val();
+    let folder_id = $('input[name="master"]').val();
     formData.append('master', folder_id);
     if(exceeded_limit===true && files.length===1){
                   alertWarning("Some files exceed the max size limit");
@@ -130,12 +130,12 @@ $(document).ready(function() {
         },
             xhr: function(){
                 //upload Progress
-                var xhr = $.ajaxSettings.xhr();
+                let xhr = $.ajaxSettings.xhr();
                 if (xhr.upload) {
                     xhr.upload.addEventListener('progress', function(event) {
-                        var percent = 0;
-                        var position = event.loaded || event.position;
-                        var total = event.total;
+                        let percent = 0;
+                        let position = event.loaded || event.position;
+                        let total = event.total;
                         if (event.lengthComputable) {
                             percent = Math.ceil(position / total * 100);
                         }
@@ -156,10 +156,10 @@ $(document).ready(function() {
     $(document).on('click','.deleteButton', function(e) {
         e.preventDefault();
         $('#deleteModalCenter').modal('hide');
-        var folder_id = $('input[name="folder_id"]').val();
-        var current_folder = $('input[name="master"]').val();
-        var file_id = $('input[name="file_id"]').val();
-        var app_id = $('input[name="file_app_id"]').val();
+        let folder_id = $('input[name="folder_id"]').val();
+        let current_folder = $('input[name="master"]').val();
+        let file_id = $('input[name="file_id"]').val();
+        let app_id = $('input[name="file_app_id"]').val();
         const csrftoken = getCookie('csrftoken');
 
         req = $.ajax({
@@ -234,3 +234,53 @@ $(document).ready(function () {
             $.ajax({data: {display_terminated_apps: this.checked}});
     });
 })
+
+$(document).ready(function() {
+
+    $(document).on('click','.renameFolderButton', function(e) {
+        e.preventDefault();
+        let folder_name = $('input[name="rename_folder"]').val();
+        let folder_id = $('#renameFolderId').val();
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {folder: folder_name, folder_id: folder_id},
+            success:function (data)
+            {
+              $('#refreshSection').html(data);
+              $('#renameFolderModal').modal('hide');
+              alertSuccess(`Folder renamed to ${folder_name}`);
+            },
+            error:function () {
+                alertDanger('Something went wrong')
+            },
+        });
+    });
+});
+
+$(document).ready(function() {
+
+    $(document).on('click','.renameFileButton', function(e) {
+        e.preventDefault();
+        let file_name = $('input[name="rename_file"]').val();
+        let file_id = $('#renameFileId').val();
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {file_name: file_name, file_id: file_id},
+            success:function (data)
+            {
+              $('#refreshSection').html(data);
+              $('#renameFileModal').modal('hide');
+              alertSuccess(`File renamed to ${file_name}`);
+            },
+            error:function () {
+                alertDanger('Something went wrong')
+            },
+        });
+    });
+});
