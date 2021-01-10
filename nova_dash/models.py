@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from utils.misc import PythonAppConfig
 
 
 class Customer(models.Model):
@@ -56,6 +57,33 @@ class App(models.Model):
     disk = models.IntegerField(default=0)
     network = models.IntegerField(default=0)
     glacier = models.IntegerField(default=0)
+    config = models.JSONField(default=dict)
+
+    @property
+    def config_options(self):
+        if self.get_stack_display() == "Python":
+            return PythonAppConfig
+
+    @property
+    def python(self):
+        if self.get_stack_display() == "Python":
+            return True
+        return False
+
+    @property
+    def node(self):
+        if self.get_stack_display() == "Node.js":
+            return True
+        return False
+
+    @property
+    def ruby(self):
+        if self.get_stack_display() == "Ruby":
+            return True
+        return False
+
+    def primary_files(self):
+        return [file for file in self.folder.file_set.all() if file.name.split(".")[1] == "py"]
 
     @staticmethod
     def get_status_color(value):
