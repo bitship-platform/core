@@ -158,37 +158,86 @@
         </div>
         <!--File rename model end-->
 
-        <!--Folder rename model -->
-        <div class="modal fade" id="renameFolderModal" tabindex="-1" role="dialog" aria-labelledby="renameFolderModal" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="renameFolderModalTitle">Rename folder</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form id="folder-rename">
-                    {% csrf_token %}
-                  <div class="form-row">
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" name="rename_folder" placeholder="Enter new name" aria-label="Name of your folder" id="renameFolderName" aria-describedby="basic-addon2">
-                      <input type="hidden" id="renameFolderId">
-                      <div class="input-group-append">
-                        <button class="btn btn-primary renameFolderButton">Rename</button>
-                      </div>
+{#        <!--Folder rename model -->#}
+{#        <div class="modal fade" id="renameFolderModal" tabindex="-1" role="dialog" aria-labelledby="renameFolderModal" aria-hidden="true">#}
+{#          <div class="modal-dialog modal-dialog-centered" role="document">#}
+{#            <div class="modal-content">#}
+{#              <div class="modal-header">#}
+{#                <h5 class="modal-title" id="renameFolderModalTitle">Rename folder</h5>#}
+{#                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                  <span aria-hidden="true">&times;</span>#}
+{#                </button>#}
+{#              </div>#}
+{#              <div class="modal-body">#}
+{#                <form id="folder-rename">#}
+{#                    {% csrf_token %}#}
+{#                  <div class="form-row">#}
+{#                    <div class="input-group mb-3">#}
+{#                      <input type="text" class="form-control" name="rename_folder" placeholder="Enter new name" aria-label="Name of your folder" id="renameFolderName" aria-describedby="basic-addon2">#}
+{#                      <input type="hidden" id="renameFolderId">#}
+{#                      <div class="input-group-append">#}
+{#                        <button class="btn btn-primary renameFolderButton">Rename</button>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                </form>#}
+{#              </div>#}
+{#              <div class="modal-footer">#}
+{#                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>#}
+{#              </div>#}
+{#            </div>#}
+{#          </div>#}
+{#        </div>#}
+{#        <!--Folder rename model end-->#}
+
+    <!-- App configuration modal -->
+      <div class="modal fade" id="appConfigurationModal" tabindex="-1" role="dialog" aria-labelledby="appConfigurationModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="appConfigurationModalTitle">Configure your app</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="file-rename">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label class="my-1 mr-2" for="pythonVersionSelectPref">Python version</label><br>
+                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6" id="pythonVersionSelectPref">
+                        <option selected>Choose...</option>
+                        <option value="3.1">Python 3.1</option>
+                        <option value="3.2">Python 3.2</option>
+                        <option value="3.3">Python 3.3</option>
+                        <option value="3.4">Python 3.4</option>
+                        <option value="3.5">Python 3.5</option>
+                        <option value="3.6">Python 3.6</option>
+                        <option value="3.7">Python 3.7</option>
+                        <option value="3.8">Python 3.8</option>
+                        <option value="3.9">Python 3.9</option>
+                      </select>
                     </div>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
-              </div>
+                    <div class="form-group col-md-3">
+                      <label class="my-1 mr-2" for="pythonVersionSelectPref">Select main file</label>
+                      <select class="custom-select custom-select-sm my-1 mr-sm-2" id="pythonVersionSelectPref">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                    </div>
+
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
             </div>
           </div>
         </div>
-        <!--Folder rename model end-->
+      </div>
+    <!--App configuration model end-->
         <script>
             function setFileName(x,y) {
                     document.getElementById("itemName").textContent = x;
