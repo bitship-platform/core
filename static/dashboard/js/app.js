@@ -49,8 +49,8 @@ $(document).ready(function() {
         let app_id = $('input[name="app_id"]').val();
         let folder_name = $('input[name="folder"]').val();
         const csrftoken = getCookie('csrftoken');
-
-        req = $.ajax({
+        if(folder_name !== ""){
+        $.ajax({
             url : `/manage/${app_id}/${folder_id}`,
             headers: {'X-CSRFToken': csrftoken},
             type : 'POST',
@@ -75,7 +75,8 @@ $(document).ready(function() {
                         alertDanger("Something went wrong.");
                 }
             },
-        });
+        });}
+        else {alertInfo("Folder name cannot be empty");}
     });
 
 });
