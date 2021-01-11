@@ -97,10 +97,10 @@ WSGI_APPLICATION = 'Nova.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nova',
-        'USER': 'nova_user',
-        'PASSWORD': 'nova',
-        'HOST': 'localhost',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASS"),
+        'HOST': env("DB_HOST"),
         'PORT': '5432',
     }
 }

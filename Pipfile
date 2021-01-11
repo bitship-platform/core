@@ -15,6 +15,7 @@ djangorestframework = "*"
 celery = "*"
 redis = "*"
 django-celery-results = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
