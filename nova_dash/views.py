@@ -89,10 +89,14 @@ class DashView(LoginRequiredMixin, ListView, View):
     paginate_by = 5
     status_order = ["Not Started", "Running", "Paused", "Stopped", "Terminated"]
     order = {pos: status for status, pos in enumerate(status_order)}
+    order2 = {pos: status for status, pos in enumerate(status_order[:-1])}
     context = {}
 
     def get_queryset(self):
-        queryset = App.objects.filter(owner=self.request.user.customer)
+        if self.request.user.customer.terminated_apps:
+            queryset = App.objects.filter(owner=self.request.user.customer)
+        else:
+            queryset = App.objects.filter(owner=self.request.user.customer, status__in=list(status_cache.values())[:-1])
         ordered_queryset = sorted(queryset, key=lambda query: self.order.get(query.get_status_display(), 0))
         return ordered_queryset
 

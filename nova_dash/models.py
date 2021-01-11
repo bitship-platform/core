@@ -15,7 +15,6 @@ class Customer(models.Model):
     credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
 
-
     def get_avatar_url(self):
         if self.avatar is not None:
             return f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png"
@@ -24,6 +23,10 @@ class Customer(models.Model):
 
     def get_active_app_count(self):
         return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger", "bg-warning"]))
+
+    @property
+    def terminated_apps(self):
+        return self.settings.display_terminated_apps
 
 
 class App(models.Model):
@@ -79,6 +82,12 @@ class App(models.Model):
     @property
     def ruby(self):
         if self.get_stack_display() == "Ruby":
+            return True
+        return False
+
+    @property
+    def terminated(self):
+        if self.get_status_display() == "Terminated":
             return True
         return False
 
