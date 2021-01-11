@@ -1,27 +1,29 @@
 import os
 
-from django.shortcuts import render, redirect
 from django.views import View
-from utils.handlers import AlertHandler as alert
+from django.conf import settings
+from django.db import DatabaseError
+from django.forms import ValidationError
 from django.views.generic import ListView
-from .models import Address, App, Folder, File
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse, QueryDict, HttpResponseForbidden
+
+
+from utils.handlers import AlertHandler as alert
+from .models import Address, App, Folder, File
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import ValidationError
-from django.db import DatabaseError
-from django.conf import settings
 from utils.mixins import ResponseMixin
+
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
+
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
-from django.http import HttpResponse, JsonResponse
-from django.http import QueryDict
-from django.http import HttpResponseForbidden
 
 
 def media_access(request, path):
@@ -43,30 +45,6 @@ def media_access(request, path):
         return response
     else:
         return HttpResponseForbidden('Not authorized to access this media.')
-
-
-# def media_download(request):
-#     access_granted = False
-#     user = request.user
-#     file = None
-#     if user.is_authenticated:
-#         if user.is_superuser:
-#             # If admin, everything is granted
-#             access_granted = True
-#         else:
-#             file_id = request.GET.get("file_id")
-#             if file_id:
-#                 file = File.objects.get(pk=file_id)
-#                 if file.folder.owner == request.user.customer:
-#                     access_granted = True
-#     if access_granted:
-#         response = HttpResponse()
-#         # Content-type will be detected by nginx
-#         del response['Content-Type']
-#         response['X-Accel-Redirect'] = '/protected/media/' + file.item.path.split("media")[1][1:].replace("\\", "/")
-#         return response
-#     else:
-#         return HttpResponseForbidden('Not authorized to access this media.')
 
 
 class LogoutView(View):
