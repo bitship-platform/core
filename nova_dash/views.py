@@ -1,4 +1,5 @@
 import os
+import json
 
 from django.views import View
 from django.conf import settings
@@ -314,4 +315,6 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 
 def process_transaction(request):
     if request.method == "POST":
-        print("Request received")
+        data = json.loads(request.body)
+        print(data)
+    return HttpResponse("TEST")

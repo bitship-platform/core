@@ -86,14 +86,14 @@
                     }
 
                       function processTransaction(details) {
-                          var url = {% url 'billing_process' %};
+                          let url = '{% url 'billing_process' %}';
                           let csrftoken = getCookie('csrftoken');
-
                           fetch(url, {
                               method: 'POST',
                               headers: {'Content-Type': 'application/json',
                                         'X-CSRFToken':csrftoken
-                              }
+                              },
+                              body: JSON.stringify({"details":details})
                           })
 
                       }  
@@ -169,8 +169,8 @@
                           onApprove: function(data, actions) {
                             return actions.order.capture().then(function(details) {
                                 alert("Transaction is successfull. Your balance will be updated shortly");
-                                processTrasaction(details);
-                                location.reload();
+                                processTransaction(details);
+                                {#location.reload();#}
                             });
                           },
                           onError: function(err) {
