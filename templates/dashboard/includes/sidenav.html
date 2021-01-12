@@ -34,10 +34,6 @@
             <div class=" dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
             </div>
-            <a href="{% url 'profile' %}" class="dropdown-item">
-              <i class="ni ni-single-02"></i>
-              <span>My profile</span>
-            </a>
             <a href="{% url 'settings' %}" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
               <span>Settings</span>
@@ -89,13 +85,8 @@
           <a class=" nav-link" href="{% url 'panel' %}"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
             </a>
           </li>
-          <li class="nav-item {% if 'profile' in segment %} active {% endif %}">
-            <a class="nav-link " href="{% url 'profile' %}">
-              <i class="ni ni-single-02 text-purple"></i> My profile
-            </a>
-          </li>
-          <li class="nav-item {% if 'billing' in segment %} active {% endif %}" disabled data-toggle="tooltip" data-placement="bottom" title="Currently unavailable">
-            <a class="nav-link " href="#" disabled>
+          <li class="nav-item {% if 'billing' in segment %} active {% endif %}">
+            <a class="nav-link " href="{% url 'billing' %}">
               <i class="ni ni-credit-card text-yellow"></i> Billing
             </a>
           </li>
