@@ -1,11 +1,13 @@
 {% extends 'dashboard/layouts/base.html' %}
 
 {% block title %} Profile {% endblock title %}
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
 
 {% block content %}
     <!-- Header -->
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-         style="min-height: 600px; background-image: url(/static/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+         style="min-height: 600px; background-size: cover; background-position: center top;">
       <!-- Mask -->
       <span class="mask bg-gradient-default opacity-8"></span>
       <!-- Header container -->
@@ -56,98 +58,100 @@
                 <hr class="my-4" />
               </div>
               <div class="card-body">
-<div id="smart-button-container">
-      <div style="text-align: center;">
-        <div style="margin-bottom: 1.25rem;">
-          <p>Novanodes hosting</p>
-          <select id="item-options"><option value="Basic Plan" price="1.2">Basic Plan - 1.2 USD</option><option value="Standard Plan" price="2.4">Standard Plan - 2.4 USD</option><option value="Premium Plan" price="4.99">Premium Plan - 4.99 USD</option></select>
-          <select style="visibility: hidden" id="quantitySelect"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
-        </div>
-      <div id="paypal-button-container"></div>
-      </div>
-    </div>
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>
-    <script>
-      function initPayPalButton() {
-        var shipping = 0;
-        var itemOptions = document.querySelector("#smart-button-container #item-options");
-    var quantity = parseInt(12);
-    var quantitySelect = document.querySelector("#smart-button-container #quantitySelect");
-    if (!isNaN(quantity)) {
-      quantitySelect.style.visibility = "visible";
-    }
-    var orderDescription = 'Novanodes hosting';
-    if(orderDescription === '') {
-      orderDescription = 'Item';
-    }
-    paypal.Buttons({
-      style: {
-        shape: 'rect',
-        color: 'blue',
-        layout: 'vertical',
-        label: 'paypal',
+                <div id="smart-button-container">
+                      <div style="text-align: center;">
+                        <div style="margin-bottom: 1.25rem;">
+                          <p>Novanodes hosting</p>
+                          <select id="item-options"><option value="Basic Plan" price="1.2">Basic Plan - 1.2 USD</option><option value="Standard Plan" price="2.4">Standard Plan - 2.4 USD</option><option value="Premium Plan" price="4.99">Premium Plan - 4.99 USD</option></select>
+                          <select style="visibility: hidden" id="quantitySelect"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+                        </div>
+                      <div id="paypal-button-container"></div>
+                      </div>
+                    </div>
+                    <script src="https://www.paypal.com/sdk/js?client-id=ASPNtBT_opjbOhz-EawLko-pGBFWS0k2jOAErIeS5s2f7WXPJoF-1A0VQF9AERMSgD-jWCrEFLHxMkox&currency=USD" data-sdk-integration-source="button-factory"></script>
+                    <script>
+                      function initPayPalButton() {
+                        var shipping = 0;
+                        var itemOptions = document.querySelector("#smart-button-container #item-options");
+                        var quantity = parseInt(12);
+                        var quantitySelect = document.querySelector("#smart-button-container #quantitySelect");
+                        if (!isNaN(quantity)) {
+                        quantitySelect.style.visibility = "visible";
+                        }
+                        var orderDescription = 'Novanodes hosting';
+                        if(orderDescription === '') {
+                        orderDescription = 'Item';
+                        }
+                        paypal.Buttons({
+                          style: {
+                            shape: 'rect',
+                            color: 'blue',
+                            layout: 'vertical',
+                            label: 'paypal',
 
-      },
-      createOrder: function(data, actions) {
-        var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
-        var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
-        var tax = (0 === 0) ? 0 : (selectedItemPrice * (parseFloat(0)/100));
-        if(quantitySelect.options.length > 0) {
-          quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
-        } else {
-          quantity = 1;
-        }
+                          },
+                          createOrder: function(data, actions) {
+                            var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
+                            var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
+                            var tax = (0 === 0) ? 0 : (selectedItemPrice * (parseFloat(0)/100));
+                            if(quantitySelect.options.length > 0) {
+                              quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
+                            } else {
+                              quantity = 1;
+                            }
 
-        tax *= quantity;
-        tax = Math.round(tax * 100) / 100;
-        var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
-        priceTotal = Math.round(priceTotal * 100) / 100;
-        var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
+                            tax *= quantity;
+                            tax = Math.round(tax * 100) / 100;
+                            var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
+                            priceTotal = Math.round(priceTotal * 100) / 100;
+                            var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
 
-        return actions.order.create({
-          purchase_units: [{
-            description: orderDescription,
-            amount: {
-              currency_code: 'USD',
-              value: priceTotal,
-              breakdown: {
-                item_total: {
-                  currency_code: 'USD',
-                  value: itemTotalValue,
-                },
-                shipping: {
-                  currency_code: 'USD',
-                  value: shipping,
-                },
-                tax_total: {
-                  currency_code: 'USD',
-                  value: tax,
-                }
-              }
-            },
-            items: [{
-              name: selectedItemDescription,
-              unit_amount: {
-                currency_code: 'USD',
-                value: selectedItemPrice,
-              },
-              quantity: quantity
-            }]
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert('Transaction completed by ' + details.payer.name.given_name + '!');
-        });
-      },
-      onError: function(err) {
-        console.log(err);
-      },
-    }).render('#paypal-button-container');
-  }
-  initPayPalButton();
-    </script>
+                            return actions.order.create({
+                              purchase_units: [{
+                                description: orderDescription,
+                                amount: {
+                                  currency_code: 'USD',
+                                  value: priceTotal,
+                                  breakdown: {
+                                    item_total: {
+                                      currency_code: 'USD',
+                                      value: itemTotalValue,
+                                    },
+                                    shipping: {
+                                      currency_code: 'USD',
+                                      value: shipping,
+                                    },
+                                    tax_total: {
+                                      currency_code: 'USD',
+                                      value: tax,
+                                    }
+                                  }
+                                },
+                                items: [{
+                                  name: selectedItemDescription,
+                                  unit_amount: {
+                                    currency_code: 'USD',
+                                    value: selectedItemPrice,
+                                  },
+                                  quantity: quantity
+                                }]
+                              }]
+                            });
+                          },
+                          onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(details) {
+                                alert("Transaction is successfull. Your balance will be updated shortly");
+                                console.log(details);
+                                location.reload();
+                            });
+                          },
+                          onError: function(err) {
+                            console.log(err);
+                          },
+                        }).render('#paypal-button-container');
+                      }
+                      initPayPalButton();
+                    </script>
 
               </div>
             </div>
