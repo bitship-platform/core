@@ -122,8 +122,8 @@ class DashView(LoginRequiredMixin, ListView, View):
             return render(request, self.template_name, self.context)
 
 
-class ProfileView(LoginRequiredMixin, View):
-    template_name = "dashboard/profile.html"
+class BillingView(LoginRequiredMixin, View):
+    template_name = "dashboard/billing.html"
     context = {}
 
     def get(self, request):
@@ -147,13 +147,6 @@ class ProfileView(LoginRequiredMixin, View):
             except ValidationError:
                 self.context["alert"] = alert("Error", "Failed to save data... Try again.")
         return render(request, self.template_name, self.context)
-
-
-class BillingView(LoginRequiredMixin, View):
-    template_name = "dashboard/billing.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
 
 
 class SettingView(LoginRequiredMixin, View, ResponseMixin):
