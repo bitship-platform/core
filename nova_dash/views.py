@@ -310,3 +310,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         else:
             self.context["folder"] = app.folder
         return render(request, 'dashboard/filesection.html', self.context)
+
+
+def process_transaction(request):
+    if request.method == "POST":
+        print("Request received")
