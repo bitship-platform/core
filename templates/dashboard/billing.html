@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-lg-7 col-md-10">
             <h1 class="display-2 text-white">Hello {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }}{% else %}{{ request.user.first_name }}{% endif %}</h1>
-            <p class="text-white mt-0 mb-5">This is your profile page. You can edit your billing address here.</p>
+            <p class="text-white mt-0 mb-5">This is your billing page. You can recharge credits and edit your billing address here.</p>
           </div>
         </div>
       </div>
@@ -166,7 +166,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form id="billing" method="POST" action="{% url 'profile' %}">
+              <form id="billing" method="POST" action="{% url 'billing' %}">
                   {% csrf_token %}
                 <h6 class="heading-small text-muted mb-4">Billing Address</h6>
                 <div class="pl-lg-4">
