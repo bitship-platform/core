@@ -184,14 +184,19 @@ $(document).ready(function() {
     $(document).on('click','.deleteAccountButton', function(e) {
         const csrftoken = getCookie('csrftoken');
         e.preventDefault();
+        let input_value = $('input[name="accountTerminationField"]').val();
+        if(input_value.toLowerCase() === "terminate account"){
         req = $.ajax({
             url : `/settings`,
             headers: {'X-CSRFToken': csrftoken},
             type : 'DELETE',
         });
         req.done(function (data) {
-            location.reload()
-        })
+            location.reload();
+        })}
+        else{
+            alertInfo("Incorrect input format! Please try again.");
+        }
     });
 });
 
