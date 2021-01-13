@@ -319,5 +319,7 @@ def process_transaction(request):
         data = json.loads(request.body)
         order_id = data['details']['id']
         details = paypal.get_order_details(order_id)
-        print(details)
+        order_id = details["id"]
+        payer_id = details["payer"]["payer_id"]
+        email = details["payer"]["email_address"]
     return HttpResponse("TEST")

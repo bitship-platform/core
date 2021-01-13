@@ -170,7 +170,6 @@
                             return actions.order.capture().then(function(details) {
                                 processTransaction(details);
                                 alert("Transaction is successfull. Your balance will be updated shortly");
-
                                 {#location.reload();#}
                             });
                           },
