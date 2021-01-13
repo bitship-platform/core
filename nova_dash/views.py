@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, QueryDict, HttpResponseForbidden
 
 
-from utils.handlers import AlertHandler as alert
+from utils.handlers import AlertHandler as alert, PaypalHandler
 from .models import Address, App, Folder, File
 from utils.hashing import Hasher
 from utils.oauth import Oauth
@@ -22,6 +22,7 @@ from utils.mixins import ResponseMixin
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
+paypal = PaypalHandler(settings.PAYPAL_ID, settings.PAYPAL_SECRET)
 
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
@@ -316,5 +317,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 def process_transaction(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        print(data)
+        order_id = data['details']['id']
+        details = paypal.get_order_details(order_id)
+        print(details)
     return HttpResponse("TEST")
