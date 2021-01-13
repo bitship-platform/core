@@ -204,3 +204,14 @@ class File(models.Model):
             return f"{self.size/1000}kb"
         else:
             return f"{mb_size}mb"
+
+
+class Orders(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    transaction_amount = models.FloatField(default=0)
+    payer_id = models.CharField(max_length=20)
+    payer_email = models.CharField(max_length=30)
+    create_time = models.DateTimeField(null=True)
+    update_time = models.DateTimeField(null=True)
+    status = models.CharField(max_length=15)
