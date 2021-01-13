@@ -48,3 +48,26 @@ class AlertHandler:
             self.bs_class = "alert-danger"
         elif value == "Success":
             self.bs_class = "alert-success"
+
+
+class PaypalHandler:
+    url = "https://api-m.sandbox.paypal.com/"
+    headers = {"Accept": "application/json"}
+
+    def __init__(self, client_id, client_secret):
+        self.client_id = client_id
+        self.client_secret = client_secret
+
+    def _get_access_token(self):
+        data = {"grant_type": "client_credentials"}
+        self.headers["Accept-Language"] = "en_US"
+        r = requests.post(self.url + 'v1/oauth2/token',
+                          auth=(self.client_id, self.client_secret),
+                          headers=self.headers, data=data).json()
+        access_token = r.get('access_token')
+        return access_token
+
+    def get_order_details(self, order_id):
+        self.headers["Authorization"] = f"Bearer {self._get_access_token()}"
+        resp = requests.get(self.url + f"v2/checkout/orders/{order_id}", headers=self.headers).json()
+        return resp
