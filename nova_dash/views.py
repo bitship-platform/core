@@ -327,6 +327,7 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
         order_id = details["id"]
         payer_id = details["payer"]["payer_id"]
         email = details["payer"]["email_address"]
+        customer = request.user.customer
         if not Order.objects.filter(id=order_id).exists():
             Order.objects.create(id=order_id,
                                  payer_email=email,
@@ -334,10 +335,10 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
                                  create_time=create_time,
                                  update_time=update_time,
                                  status=status,
-                                 customer=request.user.customer,
+                                 customer=customer,
                                  transaction_amount=amount)
-            request.user.customer.credits += float(amount)
-            request.user.customer.save()
+            customer.credits += float(amount)
+            customer.save()
         else:
             return self.json_response_401()
         return self.json_response_200()
