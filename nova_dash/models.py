@@ -206,8 +206,8 @@ class File(models.Model):
             return f"{mb_size}mb"
 
 
-class Orders(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+class Order(models.Model):
+    id = models.CharField(max_length=25, primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     transaction_amount = models.FloatField(default=0)
     payer_id = models.CharField(max_length=20)

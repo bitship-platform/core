@@ -14,7 +14,7 @@ from django.http import HttpResponse, QueryDict, HttpResponseForbidden
 
 
 from utils.handlers import AlertHandler as alert, PaypalHandler
-from .models import Address, App, Folder, File
+from .models import Address, App, Folder, File, Order
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
@@ -314,12 +314,30 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         return render(request, 'dashboard/filesection.html', self.context)
 
 
-def process_transaction(request):
-    if request.method == "POST":
+class Transaction(LoginRequiredMixin, View, ResponseMixin):
+
+    def post(self, request):
         data = json.loads(request.body)
         order_id = data['details']['id']
         details = paypal.get_order_details(order_id)
+        status = details["purchase_units"][0]["payments"]["captures"][0]["status"]
+        amount = details["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]
+        create_time = details["create_time"]
+        update_time = details["update_time"]
         order_id = details["id"]
         payer_id = details["payer"]["payer_id"]
         email = details["payer"]["email_address"]
-    return HttpResponse("TEST")
+        if not Order.objects.filter(id=order_id).exists():
+            Order.objects.create(id=order_id,
+                                 payer_email=email,
+                                 payer_id=payer_id,
+                                 create_time=create_time,
+                                 update_time=update_time,
+                                 status=status,
+                                 customer=request.user.customer,
+                                 transaction_amount=amount)
+            request.user.customer.credits += float(amount)
+            request.user.customer.save()
+        else:
+            return self.json_response_401()
+        return self.json_response_200()

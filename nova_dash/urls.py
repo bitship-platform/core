@@ -1,13 +1,13 @@
 from django.urls import path
 from .views import DashView, BillingView, LoginView, LogoutView, ManageView, SettingView, media_access,\
-    process_transaction
+    Transaction
 from django.conf.urls import url
 urlpatterns = [
 
     path('', LoginView.as_view(), name='home'),
     path('login/', LoginView.as_view()),
     url(r'^panel/', DashView.as_view(), name="panel"),
-    url(r'^billing/process/', process_transaction, name='billing_process'),
+    url(r'^billing/process/', Transaction.as_view(), name='billing_process'),
     url(r'^billing/', BillingView.as_view(), name='billing'),
     url(r'^manage/(?P<app_id>[0-9]+)/(?P<folder_id>.+)', ManageView.as_view(), name='browse'),
     url(r'^manage/(?P<app_id>[0-9]+)', ManageView.as_view(), name='manage'),
