@@ -168,13 +168,15 @@
                           },
                           onApprove: function(data, actions) {
                             return actions.order.capture().then(function(details) {
-                                alert("Transaction is successfull. Your balance will be updated shortly");
                                 processTransaction(details);
+                                alert("Transaction is successfull. Your balance will be updated shortly");
+
                                 {#location.reload();#}
                             });
                           },
                           onError: function(err) {
                             console.log(err);
+                            alert("Transaction is failed. Please try again...");
                           },
                         }).render('#paypal-button-container');
                       }
