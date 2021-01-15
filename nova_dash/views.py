@@ -1,5 +1,6 @@
 import os
 import json
+import tarfile
 
 from django.views import View
 from django.conf import settings
@@ -47,6 +48,26 @@ def media_access(request, path):
         return response
     else:
         return HttpResponseForbidden('Not authorized to access this media.')
+
+
+def make_tarfile(output_filename, source_dir):
+    with tarfile.open(f"media/{output_filename}", "w:gz") as tar:
+        tar.add(source_dir, arcname=os.path.basename(source_dir))
+
+
+class TarballDownload(View, ResponseMixin):
+    def get(self, request, uu_id):
+        try:
+            app = App.objects.get(unique_id=uu_id)
+        except App.DoesNotExist:
+            return self.json_response_404()
+        path = settings.MEDIA_ROOT + f'/{app.owner.id}/{app.name}'
+        response = HttpResponse()
+        make_tarfile(f"{app.unique_id}.tar.gz", path)
+        del response['Content-Type']
+        response['X-Accel-Redirect'] = "/protected/media/" + f"{app.unique_id}.tar.gz"
+        response['Content-Disposition'] = f"attachment; filename={app.unique_id}.tar.gz"
+        return response
 
 
 class LogoutView(View):

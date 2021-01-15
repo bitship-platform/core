@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import DashView, BillingView, LoginView, LogoutView, ManageView, SettingView, media_access,\
-    Transaction
+    Transaction, TarballDownload
 from django.conf.urls import url
 urlpatterns = [
 
@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),
     url(r'^media/(?P<path>.*)', media_access, name='media'),
+    url(r'^app/tarball/(?P<uu_id>.*)', TarballDownload.as_view(), name='app'),
 ]
 # urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
