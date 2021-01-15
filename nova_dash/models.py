@@ -51,7 +51,7 @@ class App(models.Model):
         (4.99, "Premium"),
     ]
     name = models.CharField(max_length=50, default="nova-app")
-    unique_id = models.UUIDField(default=uuid.uuid4, editable=False, null=True)
+    unique_id = models.UUIDField(default=uuid.uuid4, null=True)
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_CHOICES, default="STOPPED", max_length=20)
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
