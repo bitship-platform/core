@@ -4,3 +4,4 @@ log.txt
 __pycache__/
 media
 db.sqlite3
+*.tar.gz
