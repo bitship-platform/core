@@ -339,6 +339,8 @@ $(document).ready(function() {
             data: {app_id: "test"},
             success:function (data)
             {
+              $("#appStartButton").prop('disabled', true);
+              $("#appStopButton").prop('disabled', false);
               alertSuccess(`App started successfully...`);
             },
             error:function () {
@@ -357,23 +359,8 @@ $(document).ready(function() {
             data: {app_id: "test"},
             success:function (data)
             {
-              alertSuccess(`App started successfully...`);
-            },
-            error:function () {
-                alertDanger('Failed to start app... please try redeploying')
-            },
-        });
-    });
-
-    $(document).on('click','#appStopButton', function(e) {
-        const csrftoken = getCookie('csrftoken');
-
-        $.ajax({
-            url: `/app/manage/`,
-            headers: {'X-CSRFToken': csrftoken},
-            type: 'DELETE',
-            success:function (data)
-            {
+              $("#appStopButton").prop('disabled', true);
+              $("#appStartButton").prop('disabled', false);
               alertSuccess(`App stopped successfully...`);
             },
             error:function () {
@@ -382,5 +369,47 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click','#appRestartButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: `/app/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            success:function (data)
+            {
+              $("#appStopButton").prop('disabled', false);
+              $("#appStartButton").prop('disabled', false);
+              alertSuccess(`App restarted successfully...`);
+            },
+            error:function () {
+                alertDanger('Failed to restart app... please try redeploying')
+            },
+        });
+    });
+
+    $(document).on('click','.appTerminateButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+        let input_value = $('input[name="appTerminationField"]').val();
+        let app_id = $('input[name="app_id"]').val();
+        if(input_value.toLowerCase() === "terminate"){
+        $.ajax({
+            url: `/app/manage/` + '?' + $.param({"app_id": app_id,}) ,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'DELETE',
+            success:function (data)
+            {
+              $("#appStopButton").prop('disabled', false);
+              $("#appStartButton").prop('disabled', false);
+              window.location.replace("https://dashboard.novanodes.com/panel/");
+            },
+            error:function () {
+                alertDanger('Failed to terminate app... please contact administrator')
+            },
+        });}
+        else{
+            alertInfo('Incorrect input format! Please try again. ')
+        }
+    });
 
 });

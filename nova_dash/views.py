@@ -372,7 +372,15 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
     def put(self, request):
-        pass
+        return self.json_response_200()
 
     def delete(self, request):
-        pass
+        app_id = request.GET.get("app_id")
+        if not app_id:
+            return self.json_response_400()
+        try:
+            app = App.objects.get(id=int(app_id))
+            app.delete()
+        except App.DoesNotExist:
+            return self.json_response_500()
+        return self.json_response_200()

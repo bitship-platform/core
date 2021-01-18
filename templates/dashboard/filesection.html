@@ -33,10 +33,10 @@
                     </div>
                   </div>
                   <div class="col-lg-4">
-                        <button type="button" class="btn-sm btn-outline-primary" id="appDeployButton"><i class="ni ni-app"></i> Deploy</button>
-                                      <button type="button" class="btn-sm btn-outline-primary"><i class="fa fa-play"></i> Start</button>
-                                      <button type="button" class="btn-sm btn-outline-primary"><i class="fa fa-stop"></i> Stop</button>
-                                    <button type="button" class="btn-sm btn-outline-danger"><i class="fa fa-times-circle"></i> Terminate</button>
+                        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appDeployButton"><i class="ni ni-app"></i> Deploy</button>
+                        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStartButton"><i class="fa fa-play"></i> Start</button>
+                        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStopButton"><i class="fa fa-stop"></i> Stop</button>
+                        <button type="button" data-toggle="modal" data-target="#deleteAppModalCenter" class="btn-sm btn-outline-danger mr-2"><i class="fa fa-times-circle"></i> Terminate</button>
                   </div>
                 </div>
                 </div>
@@ -140,7 +140,7 @@
               <h4 class="mb-0 text-uppercase">performance</h4>
             </div>
             <div class="col text-right">
-              <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-redo"></i> restart</a>
+              <a href="#" class="btn btn-sm btn-outline-primary" id="appRestartButton"><i class="fa fa-redo"></i> restart</a>
             </div>
           </div>
         </div>
