@@ -310,4 +310,77 @@ $(document).ready(function() {
             },
         });
     });
+
+    $(document).on('click','#appDeployButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: `/app/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'POST',
+            data: {app_id: "test"},
+            success:function (data)
+            {
+              alertSuccess(`Deployment in progress...`);
+            },
+            error:function () {
+                alertDanger('Failed to deploy app... please contact administrator')
+            },
+        });
+    });
+
+    $(document).on('click','#appStartButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: `/app/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {app_id: "test"},
+            success:function (data)
+            {
+              alertSuccess(`App started successfully...`);
+            },
+            error:function () {
+                alertDanger('Failed to start app... please try redeploying')
+            },
+        });
+    });
+
+    $(document).on('click','#appStopButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: `/app/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {app_id: "test"},
+            success:function (data)
+            {
+              alertSuccess(`App started successfully...`);
+            },
+            error:function () {
+                alertDanger('Failed to start app... please try redeploying')
+            },
+        });
+    });
+
+    $(document).on('click','#appStopButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: `/app/manage/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'DELETE',
+            success:function (data)
+            {
+              alertSuccess(`App stopped successfully...`);
+            },
+            error:function () {
+                alertDanger('Failed to stop app... please try again')
+            },
+        });
+    });
+
+
 });

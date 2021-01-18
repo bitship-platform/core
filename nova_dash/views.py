@@ -368,7 +368,8 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
-        pass
+        print("post request")
+        return self.json_response_200()
 
     def put(self, request):
         pass
