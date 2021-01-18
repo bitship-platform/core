@@ -363,3 +363,15 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
         else:
             return self.json_response_401()
         return self.json_response_200()
+
+
+class AppManageView(LoginRequiredMixin, View, ResponseMixin):
+
+    def post(self, request):
+        pass
+
+    def put(self, request):
+        pass
+
+    def delete(self, request):
+        pass
