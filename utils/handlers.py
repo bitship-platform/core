@@ -4,6 +4,7 @@ import requests
 
 from django.conf import settings
 
+
 class WebhookHandler:
 
     headers = {'Content-Type': 'application/json'}

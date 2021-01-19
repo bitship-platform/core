@@ -313,18 +313,24 @@ $(document).ready(function() {
 
     $(document).on('click','#appDeployButton', function(e) {
         const csrftoken = getCookie('csrftoken');
+        let app_id = $('input[name="app_id"]').val();
 
         $.ajax({
             url: `/app/manage/`,
             headers: {'X-CSRFToken': csrftoken},
             type: 'POST',
-            data: {app_id: "test"},
+            data: {app_id: app_id},
             success:function (data)
             {
               alertSuccess(`Deployment in progress...`);
             },
-            error:function () {
-                alertDanger('Failed to deploy app... please contact administrator')
+            error:function (resp) {
+                let r = jQuery.parseJSON(resp.responseText);
+                if(resp.status === 503) {
+                    alertInfo(r["message"])
+                }else{
+                    alertDanger(r["message"])
+                }
             },
         });
     });

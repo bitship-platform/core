@@ -160,5 +160,5 @@ CELERY_RESULT_BACKEND = "django-db"
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 PAYPAL_SECRET = env("PAYPAL_SECRET")
 PAYPAL_ID = env("PAYPAL_ID")
-BPD_ENDPOINT = "http://127.0.0.1:7000"
+BPD_ENDPOINT = "https://deploy.novanodes.com"
 BPD_SECRET = "test"

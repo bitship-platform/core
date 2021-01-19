@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, QueryDict, HttpResponseForbidden
+from django.http import HttpResponse, QueryDict, HttpResponseForbidden, JsonResponse
 
 
 from utils.handlers import AlertHandler as alert, PaypalHandler
@@ -371,7 +371,14 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         app_id = request.POST.get("app_id")
         if not app_id:
             return self.json_response_400()
-        bpd_api.deploy(app_id)
+        try:
+            app = App.objects.get(id=app_id)
+        except App.DoesNotExist:
+            return self.json_response_404()
+        if app.get_status_display() == "Not Started":
+            if app.owner.credits < app.plan:
+                return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
+        bpd_api.deploy(str(app.unique_id))
         return self.json_response_200()
 
     def put(self, request):
