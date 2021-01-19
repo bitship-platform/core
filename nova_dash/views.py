@@ -388,8 +388,14 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def put(self, request):
         data = QueryDict(request.body)
-        print(data)
-        return self.json_response_200()
+        app_id = data.get("app_id")
+        action = data.get("action")
+        if app_id and action:
+            app = App.objects.get(id=app_id)
+            app_id = str(app.unique_id)
+            bpd_api.manage(app_id=app_id, action=action)
+            return self.json_response_200()
+        return self.json_response_500()
 
     def delete(self, request):
         app_id = request.GET.get("app_id")
