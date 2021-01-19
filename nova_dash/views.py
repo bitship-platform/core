@@ -18,7 +18,7 @@ from utils.handlers import AlertHandler as alert, PaypalHandler
 from .models import Address, App, Folder, File, Order
 from utils.hashing import Hasher
 from utils.oauth import Oauth
-from utils.operations import create_customer, update_customer
+from utils.operations import create_customer, update_customer, bpd_api
 from utils.mixins import ResponseMixin
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
@@ -368,7 +368,10 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
-        print("post request")
+        app_id = request.POST.get("app_id")
+        if not app_id:
+            return self.json_response_400()
+        bpd_api.deploy(app_id)
         return self.json_response_200()
 
     def put(self, request):

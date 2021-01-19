@@ -77,7 +77,7 @@ class PaypalHandler:
 class BPDAPIHandler:
     def __init__(self, token):
         self.headers = {"Authorization": "Token {}".format(token)}
-        self.url = settings.BPS_ENDPOINT
+        self.url = settings.BPD_ENDPOINT
         self.response = None
 
     @staticmethod

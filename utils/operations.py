@@ -3,6 +3,10 @@ from nova_dash.models import Customer, Address, Folder, App, File, Setting
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import os
+from .handlers import BPDAPIHandler
+from django.conf import settings
+
+bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
 
 
 def create_customer(user_json: dict, password: str):
