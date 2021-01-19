@@ -2,6 +2,7 @@ import json
 
 import requests
 
+from django.conf import settings
 
 class WebhookHandler:
 
@@ -71,3 +72,38 @@ class PaypalHandler:
         self.headers["Authorization"] = f"Bearer {self._get_access_token()}"
         resp = requests.get(self.url + f"v2/checkout/orders/{order_id}", headers=self.headers).json()
         return resp
+
+
+class BPDAPIHandler:
+    def __init__(self, token):
+        self.headers = {"Authorization": "Token {}".format(token)}
+        self.url = settings.BPS_ENDPOINT
+        self.response = None
+
+    @staticmethod
+    def _get_json_dumped_response(response):
+        return json.dumps(response.json(), sort_keys=True, indent=4)
+
+    def get(self, endpoint):
+        return requests.get(url=self.url + endpoint, headers=self.headers)
+
+    def post(self, endpoint, data):
+        return requests.get(url=self.url + endpoint, json=data)
+
+    def put(self, endpoint, data):
+        return requests.get(url=self.url + endpoint, json=data)
+
+    def delete(self, endpoint):
+        return requests.delete(url=self.url + endpoint)
+
+    def poll(self, app_id):
+        return self._get_json_dumped_response(self.get(f"/deploy/?app_id={app_id}"))
+
+    def deploy(self, app_id):
+        return self._get_json_dumped_response(self.post(f"/deploy/", data={"app_id": app_id}))
+
+    def manage(self, app_id, action):
+        return self._get_json_dumped_response(self.post(f"/deploy/", data={"app_id": app_id, "action": action}))
+
+    def terminate(self, app_id):
+        return self._get_json_dumped_response(self.delete(f"/deploy/?app_id={app_id}"))

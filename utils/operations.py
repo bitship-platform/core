@@ -4,6 +4,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import os
 
+
 def create_customer(user_json: dict, password: str):
     """
     creates new user if the user is not in the database.
@@ -68,3 +69,9 @@ def upldate_folder_size_on_delete(sender, instance, **kwargs):
     if instance.item:
         if os.path.isfile(instance.item.path):
             os.remove(instance.item.path)
+
+
+@receiver(post_delete, sender=App)
+def terminate_running_instance(sender, instance, **kwargs):
+    print(instance.unique_id)
+    # TODO: send this unique id to Build-Push-Deploy
