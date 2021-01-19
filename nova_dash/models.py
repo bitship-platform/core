@@ -14,6 +14,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
+    credits_spend = models.FloatField(default=0)
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -27,6 +28,10 @@ class Customer(models.Model):
     @property
     def terminated_apps(self):
         return self.settings.display_terminated_apps
+
+    @property
+    def rounded_credits(self):
+        return round(self.credits, 2)
 
 
 class App(models.Model):

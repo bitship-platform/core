@@ -378,7 +378,12 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         if app.get_status_display() == "Not Started":
             if app.owner.credits < app.plan:
                 return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
-        bpd_api.deploy(str(app.unique_id))
+            app.owner.credits -= app.plan
+            app.owner.credits_spend += app.plan
+            app.owner.save()
+        app.status = "bg-success"
+        app.save()
+        # bpd_api.deploy(str(app.unique_id))
         return self.json_response_200()
 
     def put(self, request):
