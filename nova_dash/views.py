@@ -387,6 +387,8 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
     def put(self, request):
+        data = QueryDict(request.body)
+        print(data)
         return self.json_response_200()
 
     def delete(self, request):

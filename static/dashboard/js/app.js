@@ -322,6 +322,8 @@ $(document).ready(function() {
             data: {app_id: app_id},
             success:function (data)
             {
+              $("#appStopButton").prop('disabled', false);
+              $("#appStartButton").prop('disabled', true);
               alertSuccess(`Deployment in progress...`);
             },
             error:function (resp) {
@@ -337,12 +339,13 @@ $(document).ready(function() {
 
     $(document).on('click','#appStartButton', function(e) {
         const csrftoken = getCookie('csrftoken');
+        let app_id = $('input[name="app_id"]').val();
 
         $.ajax({
             url: `/app/manage/`,
             headers: {'X-CSRFToken': csrftoken},
             type: 'PUT',
-            data: {app_id: "test"},
+            data: {app_id: app_id, action: "start"},
             success:function (data)
             {
               $("#appStartButton").prop('disabled', true);
@@ -357,12 +360,13 @@ $(document).ready(function() {
 
     $(document).on('click','#appStopButton', function(e) {
         const csrftoken = getCookie('csrftoken');
+        let app_id = $('input[name="app_id"]').val();
 
         $.ajax({
             url: `/app/manage/`,
             headers: {'X-CSRFToken': csrftoken},
             type: 'PUT',
-            data: {app_id: "test"},
+            data: {app_id: app_id, action: "stop"},
             success:function (data)
             {
               $("#appStopButton").prop('disabled', true);
@@ -375,13 +379,15 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('click','#appRestartButton', function(e) {
+    $(document).on('click','.appRestartButton', function(e) {
         const csrftoken = getCookie('csrftoken');
+        let app_id = $('input[name="app_id"]').val();
 
         $.ajax({
             url: `/app/manage/`,
             headers: {'X-CSRFToken': csrftoken},
             type: 'PUT',
+            data: {app_id: app_id, action: "restart"},
             success:function (data)
             {
               $("#appStopButton").prop('disabled', false);
