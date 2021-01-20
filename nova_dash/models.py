@@ -98,7 +98,14 @@ class App(models.Model):
         return False
 
     def primary_files(self):
-        return [file for file in self.folder.file_set.all() if file.name.split(".")[1] == "py"]
+        primary_file_list = []
+        for file in self.folder.file_set.all():
+            try:
+                if file.name.split(".")[1] == "py":
+                    primary_file_list.append(file)
+            except IndexError:
+                pass
+        return primary_file_list
 
     @staticmethod
     def get_status_color(value):

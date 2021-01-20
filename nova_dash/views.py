@@ -412,6 +412,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             return self.json_response_400()
         try:
             app = App.objects.get(id=int(app_id))
+            app.folder.delete()
             app.status = "bg-dark"
             app.cpu = 0
             app.save()
