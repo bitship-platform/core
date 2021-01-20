@@ -73,9 +73,3 @@ def upldate_folder_size_on_delete(sender, instance, **kwargs):
     if instance.item:
         if os.path.isfile(instance.item.path):
             os.remove(instance.item.path)
-
-
-@receiver(post_delete, sender=App)
-def terminate_running_instance(sender, instance, **kwargs):
-    print(instance.unique_id)
-    # TODO: send this unique id to Build-Push-Deploy
