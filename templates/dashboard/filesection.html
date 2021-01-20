@@ -32,11 +32,8 @@
                       <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ app.get_status_display }}</div>
                     </div>
                   </div>
-                  <div class="col-lg-4">
-                        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appDeployButton"><i class="ni ni-app"></i> Deploy</button>
-                        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStartButton"><i class="fa fa-play"></i> Start</button>
-                        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStopButton"><i class="fa fa-stop"></i> Stop</button>
-                        <button type="button" data-toggle="modal" data-target="#deleteAppModalCenter" class="btn-sm btn-outline-danger mr-2"><i class="fa fa-times-circle"></i> Terminate</button>
+                  <div class="col-lg-4 manageRefreshSection">
+                        {% include 'dashboard/appmanagement.html' %}
                   </div>
                 </div>
                 </div>
@@ -140,7 +137,9 @@
               <h4 class="mb-0 text-uppercase">performance</h4>
             </div>
             <div class="col text-right">
+              {% if app.get_status_display != "Not Started" %}
               <a href="#" class="btn btn-sm btn-outline-primary appRestartButton"><i class="fa fa-redo"></i> restart</a>
+              {% endif %}
             </div>
           </div>
         </div>

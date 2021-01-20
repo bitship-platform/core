@@ -322,6 +322,7 @@ $(document).ready(function() {
             data: {app_id: app_id},
             success:function (data)
             {
+              $(".manageRefreshSection").html(data);
               $("#appStopButton").prop('disabled', false);
               $("#appStartButton").prop('disabled', true);
               alertSuccess(`Deployment in progress...`);

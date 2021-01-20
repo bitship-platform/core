@@ -368,6 +368,7 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
+        context = {}
         app_id = request.POST.get("app_id")
         if not app_id:
             return self.json_response_400()
@@ -383,8 +384,10 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             app.owner.save()
         app.status = "bg-success"
         app.save()
+        context["app"] = app
         # bpd_api.deploy(str(app.unique_id))
-        return self.json_response_200()
+        return render(request, "dashboard/appmanagement.html", context)
+        # return self.json_response_200()
 
     def put(self, request):
         data = QueryDict(request.body)
@@ -393,7 +396,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         if app_id and action:
             app = App.objects.get(id=app_id)
             app_id = str(app.unique_id)
-            bpd_api.manage(app_id=app_id, action=action)
+            # bpd_api.manage(app_id=app_id, action=action)
             return self.json_response_200()
         return self.json_response_500()
 
