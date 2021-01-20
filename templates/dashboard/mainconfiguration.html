@@ -1,0 +1,12 @@
+<label class="my-1 mr-2" for="appMainSelect">Select main file</label>
+<div class="input-group input-group-sm mb-3">
+<select class="custom-select custom-select-sm my-1 mr-sm-2" id="appMainSelect">
+<option selected>Choose...</option>
+{% for file in app.primary_files %}
+    <option value="{{ file.pk }}">{{ file.name }}</option>
+{% endfor %}
+</select>
+<div class="input-group-append my-1 mr-sm-2">
+<button class="btn btn-primary refreshMainButton" type="button"><i class="fa fa-redo-alt"></i></button>
+</div>
+</div>

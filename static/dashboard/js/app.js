@@ -311,6 +311,29 @@ $(document).ready(function() {
         });
     });
 
+
+    $(document).on('click','.refreshMainButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+        let app_id = $('input[name="app_id"]').val();
+
+        $.ajax({
+            url: `/app/manage/` + '?' + $.param({"app_id": app_id,}),
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'GET',
+            success:function (data)
+            {
+                console.log(data);
+              $(".mainFileRefresh").html(data);
+              alertSuccess(`Refreshed main file list.`);
+            },
+            error:function (resp) {
+
+                alertDanger('Something went wrong... ');
+            },
+        });
+    });
+
+
     $(document).on('click','#appDeployButton', function(e) {
         const csrftoken = getCookie('csrftoken');
         let app_id = $('input[name="app_id"]').val();
