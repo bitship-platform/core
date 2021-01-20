@@ -415,7 +415,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             app.status = "bg-dark"
             app.cpu = 0
             app.save()
-            bpd_api.delete(str(app.unique_id))
+            bpd_api.terminate(str(app.unique_id))
         except App.DoesNotExist:
             return self.json_response_500()
         return self.json_response_200()
