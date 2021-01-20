@@ -210,6 +210,9 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request, app_id, folder_id=None):
         app = App.objects.get(pk=int(app_id))
+        if app:
+            if app.get_status_display() == "Terminated":
+                return self.http_responce_404(request)
         self.context["app"] = app
         if app.owner != request.user.customer:
             return self.http_responce_400(request)
