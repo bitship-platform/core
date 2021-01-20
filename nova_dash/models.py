@@ -197,6 +197,7 @@ class File(models.Model):
     size = models.FloatField(default=0)
     item = models.FileField(upload_to=upload_location)
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
+    system_file = models.BooleanField(default=False)
 
     def get_absolute_path(self):
         folder = self.folder

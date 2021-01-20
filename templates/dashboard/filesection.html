@@ -96,33 +96,35 @@
                       </tr>
                     {% endfor %}
                     {% for file in folder.file_set.all %}
-                      <tr>
-                        <th scope="row">
-                          <div class="media align-items-center">
-                            <div class="media-body">
-                                <a href="#"><span class="mb-0 text-sm"><i class="fa fa-file-code fa-lg"></i> {{ file.name }}</span></a>
-                            </div>
-                          </div>
-                        </th>
-                        <td>
-                          {{ file.creation_date }}
-                        </td>
-                        <td>
-                            <span class="badge badge-dot mr-4">{{ file.get_size }}</span>
-                        </td>
-                        <td class="text-right">
-                          <div class="dropdown">
-                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileId('{{ file.pk }}')" data-target="#renameFileModal">Rename</a>
-                              <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
-                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileName('{{ file.name }}','{{ file.pk }}')" data-target="#deleteModalCenter">Delete</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                        {% if not file.system_file %}
+                          <tr>
+                            <th scope="row">
+                              <div class="media align-items-center">
+                                <div class="media-body">
+                                    <a href="#"><span class="mb-0 text-sm"><i class="fa fa-file-code fa-lg"></i> {{ file.name }}</span></a>
+                                </div>
+                              </div>
+                            </th>
+                            <td>
+                              {{ file.creation_date }}
+                            </td>
+                            <td>
+                                <span class="badge badge-dot mr-4">{{ file.get_size }}</span>
+                            </td>
+                            <td class="text-right">
+                              <div class="dropdown">
+                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                   <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileId('{{ file.pk }}')" data-target="#renameFileModal">Rename</a>
+                                  <a class="dropdown-item" href="{{ file.item.url }}" download>Download</a>
+                                  <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFileName('{{ file.name }}','{{ file.pk }}')" data-target="#deleteModalCenter">Delete</a>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endif %}
                     {% endfor %}
                     </tbody>
                   </table>
