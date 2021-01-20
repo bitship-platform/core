@@ -392,7 +392,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         app.status = "bg-success"
         app.save()
         context["app"] = app
-        # bpd_api.deploy(str(app.unique_id))
+        bpd_api.deploy(str(app.unique_id))
         return render(request, "dashboard/appmanagement.html", context, status=200)
 
     def put(self, request):
@@ -402,7 +402,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         if app_id and action:
             app = App.objects.get(id=app_id)
             app_id = str(app.unique_id)
-            # bpd_api.manage(app_id=app_id, action=action)
+            bpd_api.manage(app_id=app_id, action=action)
             return self.json_response_200()
         return self.json_response_500()
 
@@ -415,7 +415,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             app.status = "bg-dark"
             app.cpu = 0
             app.save()
-            # bpd_api.delete(app.unique_id)
+            bpd_api.delete(app.unique_id)
         except App.DoesNotExist:
             return self.json_response_500()
         return self.json_response_200()
