@@ -89,13 +89,13 @@ class BPDAPIHandler:
         return requests.get(url=self.url + endpoint, headers=self.headers)
 
     def post(self, endpoint, data):
-        return requests.get(url=self.url + endpoint, json=data)
+        return requests.post(url=self.url + endpoint, json=data, headers=self.headers)
 
     def put(self, endpoint, data):
-        return requests.get(url=self.url + endpoint, json=data)
+        return requests.put(url=self.url + endpoint, json=data, headers=self.headers)
 
     def delete(self, endpoint):
-        return requests.delete(url=self.url + endpoint)
+        return requests.delete(url=self.url + endpoint, headers=self.headers)
 
     def poll(self, app_id):
         return self._get_json_dumped_response(self.get(f"/deploy/?app_id={app_id}"))
