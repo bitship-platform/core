@@ -368,6 +368,15 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
 
+def deployment_helper(app: App):
+
+    file_set = [file.name for file in app.folder.file_set.all()]
+    if "requirements.txt" not in file_set:
+        return JsonResponse({"message": "Missing requirements.txt in root"}, status=503)
+    if not app.config.get("main_executable") or app.config.get("python_version"):
+        return JsonResponse({"message": "App missing configuration."}, status=503)
+
+
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
@@ -379,11 +388,12 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
     def post(self, request):
         context = {}
         app_id = request.POST.get("app_id")
-        print(app_id)
         if not app_id:
             return self.json_response_400()
         try:
             app = App.objects.get(id=app_id)
+            if app.owner != request.user.customer:
+                return self.json_response_401()
         except App.DoesNotExist:
             return self.json_response_404()
         if app.get_status_display() == "Not Started":
@@ -404,6 +414,8 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         action = data.get("action")
         if app_id and action:
             app = App.objects.get(id=app_id)
+            if app.owner != request.user.customer:
+                return self.json_response_401()
             app_id = str(app.unique_id)
             bpd_api.manage(app_id=app_id, action=action)
             return self.json_response_200()
@@ -415,6 +427,8 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             return self.json_response_400()
         try:
             app = App.objects.get(id=int(app_id))
+            if app.owner != request.user.customer:
+                return self.json_response_401()
             app.folder.delete()
             app.status = "bg-dark"
             app.cpu = 0
