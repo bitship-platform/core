@@ -7,7 +7,7 @@ hook = WebhookHandler("782834321329356870", settings.WEBHOOK_SECRET)
 
 
 class DynamicView(View):
-    template_name = "index-2.html"
+    template_name = "index-3.html"
 
     def get(self, request):
         return render(request, self.template_name)

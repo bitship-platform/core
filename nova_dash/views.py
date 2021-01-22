@@ -368,13 +368,17 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
 
+def set_system_files(app: App):
+    path = os.path.join(settings.MEDIA_ROOT, f"{app.owner.id}/{app.name}")
+
+
 def deployment_helper(app: App):
 
     file_set = [file.name for file in app.folder.file_set.all()]
     if "requirements.txt" not in file_set:
-        return JsonResponse({"message": "Missing requirements.txt in root"}, status=503)
+        return JsonResponse({"message": "Missing requirements.txt in root."}, status=503)
     if not app.config.get("main_executable") or app.config.get("python_version"):
-        return JsonResponse({"message": "App missing configuration."}, status=503)
+        return JsonResponse({"message": "App missing configuration, set python version and main file."}, status=503)
 
 
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
