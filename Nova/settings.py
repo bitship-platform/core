@@ -102,7 +102,7 @@ DATABASES = {
         'PASSWORD': env("DB_PASS"),
         'HOST': env("DB_HOST"),
         'PORT': '5432',
-    }
+    },
 }
 
 
