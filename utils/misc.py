@@ -15,3 +15,30 @@ class PythonAppConfig:
     buildpacks = [
         "heroku/python",
     ]
+
+
+sample_app_json = {
+  "name": "",
+  "description": "",
+  "keywords": [
+  ],
+  "env": {
+
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "image": "heroku/python",
+  "addons": [
+
+  ],
+  "buildpacks": [
+
+  ],
+  "environments": {
+
+  }
+}

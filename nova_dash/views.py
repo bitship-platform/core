@@ -21,6 +21,7 @@ from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer, bpd_api
 from utils.mixins import ResponseMixin
+from utils.misc import sample_app_json
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
@@ -385,7 +386,10 @@ def set_app_config(request):
         python_version = app.config_options.python_versions.get(python_version)
         set_system_files(app, "runtime.txt", python_version)
         set_system_files(app, "Procfile", f"worker: {main_file.name}")
-        return JsonResponse({"test":"123"}, status=200)
+        sample_app_json["name"] = app.name
+        sample_json = sample_app_json
+        set_system_files(app, "app.json", json.dumps(sample_json))
+        return JsonResponse({"message": "Success"}, status=200)
 
 
 def deployment_helper(app: App):
