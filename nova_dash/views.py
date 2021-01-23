@@ -385,9 +385,9 @@ def set_app_config(request):
         app = main_file.folder.app
         python_version = app.config_options.python_versions.get(python_version)
         sample_app_json["name"] = app.name
+        set_system_files(app, "runtime.txt", python_version)
+        set_system_files(app, "Procfile", f"worker: python {main_file.name}")
         if sample_app_json != app.config:
-            set_system_files(app, "runtime.txt", python_version)
-            set_system_files(app, "Procfile", f"worker: python {main_file.name}")
             set_system_files(app, "app.json", json.dumps(sample_app_json))
             app.config = sample_app_json
             app.save()
