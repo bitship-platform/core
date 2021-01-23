@@ -195,7 +195,7 @@ class File(models.Model):
     folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
     name = models.CharField(max_length=25)
     size = models.FloatField(default=0)
-    item = models.FileField(upload_to=upload_location)
+    item = models.FileField(upload_to=upload_location, null=True)
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
     system_file = models.BooleanField(default=False)
 

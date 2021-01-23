@@ -448,4 +448,34 @@ $(document).ready(function() {
         }
     });
 
+
+    $(document).on('click','#savePythonConfigurationButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+        let main_executable = $("#appMainSelect").val()
+        let python_version = $("#pythonVersionSelectPref").val()
+        console.log(python_version, main_executable)
+        if((main_executable!==undefined)||(python_version!==undefined))
+        {
+            $.ajax({
+                url: `/app/config/`,
+                headers: {'X-CSRFToken': csrftoken},
+                type: 'PUT',
+                data: {main_executable: main_executable, python_version: python_version},
+                success: function (data) {
+                    $("#appStopButton").prop('disabled', false);
+                    $("#appStartButton").prop('disabled', false);
+                    $('#pythonAppConfigurationModal').modal('hide');
+                    alertSuccess(`App configuration set successfully...`);
+                },
+                error: function () {
+                    alertDanger('Failed to set configuration... contact admin')
+                },
+            });
+        }
+        else {
+            alertInfo("Some configration missing")
+        }
+    });
+
+
 });

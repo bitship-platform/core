@@ -205,8 +205,8 @@
                 <div class="form-row">
                     <div class="form-group col-md-5">
                       <label class="my-1 mr-2" for="pythonVersionSelectPref">Python version</label><br>
-                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6" id="pythonVersionSelectPref">
-                        <option selected>Choose...</option>
+                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6" id="pythonVersionSelectPref" name="python_version" required>
+                        <option selected disabled>Choose...</option>
                          {% for item in app.config_options.python_versions %}
                             <option value="{{ item }}">Python {{ item }}</option>
                          {% endfor %}

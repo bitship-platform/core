@@ -4,6 +4,7 @@ import tarfile
 
 from django.views import View
 from django.conf import settings
+from django.core.files import File
 from django.db import DatabaseError
 from django.forms import ValidationError
 from django.views.generic import ListView
@@ -368,8 +369,23 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
 
-def set_system_files(app: App):
-    path = os.path.join(settings.MEDIA_ROOT, f"{app.owner.id}/{app.name}")
+def set_system_files(app: App, file_name, content):
+    path = os.path.join(settings.MEDIA_ROOT, f"{app.owner.id}/{app.name}/")
+    with open(path+file_name, "w") as file:
+        file.write(content)
+
+
+def set_app_config(request):
+    if request.method == "PUT":
+        data = QueryDict(request.body)
+        main_file = int(data.get("main_executable"))
+        python_version = data.get("python_version")
+        main_file = File.objects.get(id=main_file)
+        app = main_file.folder.app
+        python_version = app.config_options.python_versions.get(python_version)
+        set_system_files(app, "runtime.txt", python_version)
+        set_system_files(app, "Procfile", f"worker: {main_file.name}")
+        return JsonResponse({"test":"123"}, status=200)
 
 
 def deployment_helper(app: App):
@@ -377,7 +393,7 @@ def deployment_helper(app: App):
     file_set = [file.name for file in app.folder.file_set.all()]
     if "requirements.txt" not in file_set:
         return JsonResponse({"message": "Missing requirements.txt in root."}, status=503)
-    if not app.config.get("main_executable") or app.config.get("python_version"):
+    if not app.config.get("main_executable") or app.config.get("main_executable"):
         return JsonResponse({"message": "App missing configuration, set python version and main file."}, status=503)
 
 
@@ -441,3 +457,4 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         except App.DoesNotExist:
             return self.json_response_500()
         return self.json_response_200()
+
