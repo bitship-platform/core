@@ -384,11 +384,13 @@ def set_app_config(request):
         main_file = File.objects.get(id=main_file)
         app = main_file.folder.app
         python_version = app.config_options.python_versions.get(python_version)
-        set_system_files(app, "runtime.txt", python_version)
-        set_system_files(app, "Procfile", f"worker: {main_file.name}")
         sample_app_json["name"] = app.name
-        sample_json = sample_app_json
-        set_system_files(app, "app.json", json.dumps(sample_json))
+        if sample_app_json != app.config:
+            set_system_files(app, "runtime.txt", python_version)
+            set_system_files(app, "Procfile", f"worker: {main_file.name}")
+            set_system_files(app, "app.json", json.dumps(sample_app_json))
+            app.config = sample_app_json
+            app.save()
         return JsonResponse({"message": "Success"}, status=200)
 
 
