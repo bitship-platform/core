@@ -379,28 +379,23 @@ def set_system_files(app: App, file_name, content):
 def set_app_config(request):
     if request.method == "PUT":
         data = QueryDict(request.body)
+        config = {}
         main_file = int(data.get("main_executable"))
         python_version = data.get("python_version")
         main_file = File.objects.get(id=main_file)
+        config["main_executable"] = main_file.name
+        config["python_version"] = python_version
         app = main_file.folder.app
         python_version = app.config_options.python_versions.get(python_version)
         sample_app_json["name"] = app.name
-        set_system_files(app, "runtime.txt", python_version)
-        set_system_files(app, "Procfile", f"worker: python {main_file.name}")
-        if sample_app_json != app.config:
+        config["app_json"] = sample_app_json
+        if config != app.config:
             set_system_files(app, "app.json", json.dumps(sample_app_json))
-            app.config = sample_app_json
+            set_system_files(app, "runtime.txt", python_version)
+            set_system_files(app, "Procfile", f"worker: python {main_file.name}")
+            app.config = config
             app.save()
         return JsonResponse({"message": "Success"}, status=200)
-
-
-def deployment_helper(app: App):
-
-    file_set = [file.name for file in app.folder.file_set.all()]
-    if "requirements.txt" not in file_set:
-        return JsonResponse({"message": "Missing requirements.txt in root."}, status=503)
-    if not app.config.get("main_executable") or app.config.get("main_executable"):
-        return JsonResponse({"message": "App missing configuration, set python version and main file."}, status=503)
 
 
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
@@ -422,6 +417,15 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 return self.json_response_401()
         except App.DoesNotExist:
             return self.json_response_404()
+        file_set = [file.name for file in app.folder.file_set.all()]
+        if "requirements.txt" not in file_set:
+            return JsonResponse({"message": "Missing requirements.txt in root."}, status=503)
+        if not app.config.get("main_executable"):
+            return JsonResponse({"message": "Missing main file configuration"}, status=503)
+        if not app.config.get("python_version"):
+            return JsonResponse({"message": "Missing python version configuration"}, status=503)
+        if not app.config.get("app_json"):
+            return JsonResponse({"message": "Something went wrong... please reconfigure you app and save."}, status=503)
         if app.get_status_display() == "Not Started":
             if app.owner.credits < app.plan:
                 return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
