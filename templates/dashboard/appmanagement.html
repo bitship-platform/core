@@ -4,3 +4,6 @@
 <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStopButton"><i class="fa fa-stop"></i> Stop</button>
 {% endif %}
 <button type="button" data-toggle="modal" data-target="#deleteAppModalCenter" class="btn-sm btn-outline-danger mr-2"><i class="fa fa-times-circle"></i> Terminate</button>
+{% if task_id %}
+<input type="hidden" id="progressBarUrl" value="{% url 'celery_progress:task_status' task_id %}">
+{% endif %}

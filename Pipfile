@@ -16,6 +16,7 @@ celery = "*"
 redis = "*"
 django-celery-results = "*"
 psycopg2-binary = "*"
+celery-progress = "*"
 
 [requires]
 python_version = "3.8"

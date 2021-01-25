@@ -344,6 +344,7 @@ $(document).ready(function() {
     $(document).on('click','#appDeployButton', function(e) {
         const csrftoken = getCookie('csrftoken');
         let app_id = $('input[name="app_id"]').val();
+        $("#appDeployButton").prop('disabled', true);
 
         $.ajax({
             url: `/app/manage/`,
@@ -353,11 +354,16 @@ $(document).ready(function() {
             success:function (data)
             {
               $(".manageRefreshSection").html(data);
+              $("#appDeployButton").prop('disabled', false);
               $("#appStopButton").prop('disabled', false);
               $("#appStartButton").prop('disabled', true);
+              let $response = $(data);
+              let progressUrl = $response.filter('#progressBarUrl').val();
+              CeleryProgressBar.initProgressBar(progressUrl)
               alertSuccess(`Deployment in progress...`);
             },
             error:function (resp) {
+                $("#appDeployButton").prop('disabled', false);
                 let r = jQuery.parseJSON(resp.responseText);
                 if(resp.status === 503) {
                     alertInfo(r["message"])

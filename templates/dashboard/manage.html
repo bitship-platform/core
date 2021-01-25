@@ -5,6 +5,7 @@
 {% block content %}
 
 {% load custom %}
+{% load static %}
 
     <!-- Header -->
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
@@ -26,8 +27,11 @@
           <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
               <div class="row align-items-center">
-                <div class="col-8">
+                <div class="col-11">
                   <h3 class="mb-0">App management console</h3>
+                </div>
+                <div class="col-1">
+                    <i class="fa fa-info-circle fa-lg" data-toggle="tooltip" data-placement="bottom" title="Tight pants next level keffiyeh you probably haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american apparel have a terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A really ironic artisan whatever keytar, scenester farm-to-table banksy Austin twitter handle freegan cred raw denim single-origin coffee viral. "></i>
                 </div>
               </div>
             </div>
@@ -276,6 +280,7 @@
                 document.getElementById("renameFileId").value=x;
             }
         </script>
+        <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
       {% include "dashboard/includes/footer.html" %}
 
     </div>

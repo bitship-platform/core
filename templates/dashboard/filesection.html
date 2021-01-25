@@ -29,8 +29,9 @@
                   <div class="col-lg-4">
 {#                                    <input class="form-control" type="text" value="{{ app.get_status_display }}" disabled>#}
                     <div class="progress" style="height: 30px;">
-                      <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ app.get_status_display }}</div>
+                      <div id='progress-bar' class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div id="progress-bar-message">Waiting for progress to start...</div></div>
                     </div>
+
                   </div>
                   <div class="col-lg-4 manageRefreshSection">
                         {% include 'dashboard/appmanagement.html' %}

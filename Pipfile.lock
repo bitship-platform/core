@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0786fb4a6fb66507b948aa0722e74fc71145bc875a11c9473f8d7d55d5428d67"
+            "sha256": "b910666326e5cc5d65edc6f4863aa4eca10dc76b8dbba7fdfb98f45999ad7a63"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,11 +18,11 @@
     "default": {
         "amqp": {
             "hashes": [
-                "sha256:5b9062d5c0812335c75434bf17ce33d7a20ecfedaa0733faec7379868eb4068a",
-                "sha256:fcd5b3baeeb7fc19b3486ff6d10543099d40ae1f5c9196eae695d1cde1b2f784"
+                "sha256:1733ebf713050504fd9d2ebc661f1fc95b3588f99ee87d2e39c84c27bfd815dc",
+                "sha256:2c58528a05dcbf2ae080f3141b6a5bf467949fad9234edd8b9085b8db2e325fe"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==5.0.2"
+            "version": "==5.0.3"
         },
         "asgiref": {
             "hashes": [
@@ -46,6 +46,14 @@
             ],
             "index": "pypi",
             "version": "==5.0.5"
+        },
+        "celery-progress": {
+            "hashes": [
+                "sha256:002ead0d3fa3602bd74cf328206b8e2352994ab599711dc20058a5cf2b4db2d1",
+                "sha256:6d95c01fe044dd5dbb1e2d507724f9ace70bde796bc6db51ba19c8a95e94da07"
+            ],
+            "index": "pypi",
+            "version": "==0.0.14"
         },
         "certifi": {
             "hashes": [
@@ -100,11 +108,11 @@
         },
         "django-celery-results": {
             "hashes": [
-                "sha256:754e01f22f70fddee5f2ca95c18f183fccee42ad98f9803577bffa717d45ac5d",
-                "sha256:f82280a9a25c44048b9e64ae4d47ade7d522c8221304b0e25388080021b95468"
+                "sha256:a2f7d172f7f57dd972538acc6e80a5bf50c673fb4d82fe027189c8659c60dfce",
+                "sha256:d625e324138e5b2ef46ffa9e89fa353c16d619420066ac8b240ef9247b293a84"
             ],
             "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==2.0.1"
         },
         "django-environ": {
             "hashes": [
@@ -156,11 +164,11 @@
         },
         "prompt-toolkit": {
             "hashes": [
-                "sha256:ac329c69bd8564cb491940511957312c7b8959bb5b3cf3582b406068a51d5bb7",
-                "sha256:b8b3d0bde65da350290c46a8f54f336b3cbf5464a4ac11239668d986852e79d5"
+                "sha256:7e966747c18ececaec785699626b771c1ba8344c8d31759a1915d6b12fad6525",
+                "sha256:c96b30925025a7635471dc083ffb6af0cc67482a00611bd81aeaeeeb7e5a5e12"
             ],
             "markers": "python_full_version >= '3.6.1'",
-            "version": "==3.0.10"
+            "version": "==3.0.14"
         },
         "psycopg2-binary": {
             "hashes": [

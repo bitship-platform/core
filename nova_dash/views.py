@@ -22,6 +22,7 @@ from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer, bpd_api
 from utils.mixins import ResponseMixin
 from utils.misc import sample_app_json
+from .tasks import my_task
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
@@ -453,8 +454,10 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         app.status = "bg-success"
         app.save()
         context["app"] = app
-        bpd_api.deploy(str(app.unique_id))
-        return render(request, "dashboard/appmanagement.html", context, status=200)
+        # bpd_api.deploy(str(app.unique_id))
+        result = my_task.delay(10)
+        context['task_id'] = result.task_id
+        return render(request, "dashboard/appmanagement.html", context=context, status=200)
 
     def put(self, request):
         data = QueryDict(request.body)
