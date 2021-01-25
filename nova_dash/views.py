@@ -454,7 +454,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         app.status = "bg-success"
         app.save()
         context["app"] = app
-        # bpd_api.deploy(str(app.unique_id))
+        bpd_api.deploy(str(app.unique_id))
         result = my_task.delay(10)
         context['task_id'] = result.task_id
         return render(request, "dashboard/appmanagement.html", context=context, status=200)
