@@ -134,6 +134,14 @@ class DashView(LoginRequiredMixin, ListView, View):
             if name:
                 if " " in name:
                     name = name.replace(" ", "-")
+                queryset = App.objects.filter(name=name, owner=request.user.customer)
+                if queryset.exists():
+                    for app in queryset:
+                        if app.status != "bg-dark":
+                            self.context["app"] = app
+                            self.context["folder"] = app.folder
+                            self.context["alert"] = alert("Error", "App by that name already exists.")
+                            return render(request, "dashboard/manage.html", self.context)
                 app = App.objects.create(name=name,
                                          owner=request.user.customer,
                                          stack=icon_cache.get(request.POST.get("stack")),
@@ -245,7 +253,10 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                         if file.name in ["app.json", "Procfile", "runtime.txt"]:
                             # ignoring system files
                             continue
-                        File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
+                        try:
+                            File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
+                        except Exception as e:
+                            pass
                     else:
                         file_size_exceeded = True
             app = App.objects.get(pk=int(app_id))

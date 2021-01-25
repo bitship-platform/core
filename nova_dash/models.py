@@ -199,6 +199,9 @@ class File(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
     system_file = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ['folder', 'name']
+
     def get_absolute_path(self):
         folder = self.folder
         path = ""
