@@ -242,6 +242,9 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             if files:
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
+                        if file.name in ["app.json", "Procfile", "runtime.txt"]:
+                            # ignoring system files
+                            continue
                         File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
                     else:
                         file_size_exceeded = True
@@ -425,7 +428,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         if not app.config.get("python_version"):
             return JsonResponse({"message": "Missing python version configuration"}, status=503)
         if not app.config.get("app_json"):
-            return JsonResponse({"message": "Something went wrong... please reconfigure you app and save."}, status=503)
+            return JsonResponse({"message": "Something went wrong! please reconfigure your app and save."}, status=503)
         if app.get_status_display() == "Not Started":
             if app.owner.credits < app.plan:
                 return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
@@ -460,10 +463,11 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             if app.owner != request.user.customer:
                 return self.json_response_401()
             app.folder.delete()
+            if app.get_status_display() != "Not Started":
+                bpd_api.terminate(str(app.unique_id))
             app.status = "bg-dark"
             app.cpu = 0
             app.save()
-            bpd_api.terminate(str(app.unique_id))
         except App.DoesNotExist:
             return self.json_response_500()
         return self.json_response_200()
