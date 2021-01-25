@@ -289,6 +289,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 return render(request, "dashboard/filesection.html", self.context, status=200)
             return self.json_response_401()
         if file_id and file_name:
+            if "." in file_name:
+                return JsonResponse({"message": "File name should not contain extenstion"}, status=403)
             file = File.objects.get(pk=file_id)
             if file.folder.owner == request.user.customer:
                 file_path = file.item.path
@@ -301,6 +303,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     new_name = f"/{file_name}.{file_extenstion}"
                 else:
                     new_name = f"/{file_name}"
+                if new_name in ["app.json", "Procfile", "runtime.txt"]:
+                    return self.json_response_500()
                 if os.name == "nt":
                     new_path = file_path.rsplit("\\", 1)[0] + new_name
                 else:

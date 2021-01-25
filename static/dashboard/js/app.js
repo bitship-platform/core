@@ -284,8 +284,15 @@ $(document).ready(function() {
               $('#renameFileModal').modal('hide');
               alertSuccess(`File renamed to ${file_name}`);
             },
-            error:function () {
-                alertDanger('Something went wrong')
+            error:function (resp) {
+                if(resp.status === 403)
+                {
+                    let r = jQuery.parseJSON(resp.responseText);
+                    alertWarning(r["message"])
+                }
+                else {
+                    alertDanger('Something went wrong')
+                }
             },
         });
     });
