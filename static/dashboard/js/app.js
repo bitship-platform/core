@@ -374,6 +374,7 @@ $(document).ready(function() {
     $(document).on('click','#appStartButton', function(e) {
         const csrftoken = getCookie('csrftoken');
         let app_id = $('input[name="app_id"]').val();
+        $("#appStartButton").prop('disabled', true);
 
         $.ajax({
             url: `/app/manage/`,
@@ -382,11 +383,11 @@ $(document).ready(function() {
             data: {app_id: app_id, action: "start"},
             success:function (data)
             {
-              $("#appStartButton").prop('disabled', true);
               $("#appStopButton").prop('disabled', false);
               alertSuccess(`App started successfully...`);
             },
             error:function () {
+                $("#appStartButton").prop('disabled', false);
                 alertDanger('Failed to start app... please try redeploying')
             },
         });
@@ -396,6 +397,8 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let app_id = $('input[name="app_id"]').val();
 
+        $("#appStopButton").prop('disabled', true);
+
         $.ajax({
             url: `/app/manage/`,
             headers: {'X-CSRFToken': csrftoken},
@@ -403,11 +406,11 @@ $(document).ready(function() {
             data: {app_id: app_id, action: "stop"},
             success:function (data)
             {
-              $("#appStopButton").prop('disabled', true);
               $("#appStartButton").prop('disabled', false);
               alertSuccess(`App stopped successfully...`);
             },
             error:function () {
+                $("#appStopButton").prop('disabled', true);
                 alertDanger('Failed to stop app... please try again')
             },
         });
@@ -416,6 +419,7 @@ $(document).ready(function() {
     $(document).on('click','.appRestartButton', function(e) {
         const csrftoken = getCookie('csrftoken');
         let app_id = $('input[name="app_id"]').val();
+        $(".appRestartButton").prop('disabled', true);
 
         $.ajax({
             url: `/app/manage/`,
@@ -425,10 +429,11 @@ $(document).ready(function() {
             success:function (data)
             {
               $("#appStopButton").prop('disabled', false);
-              $("#appStartButton").prop('disabled', false);
+              $("#appStartButton").prop('disabled', true);
               alertSuccess(`App restarted successfully...`);
             },
             error:function () {
+                $(".appRestartButton").prop('disabled', false);
                 alertDanger('Failed to restart app... please try redeploying')
             },
         });
@@ -439,17 +444,17 @@ $(document).ready(function() {
         let input_value = $('input[name="appTerminationField"]').val();
         let app_id = $('input[name="app_id"]').val();
         if(input_value.toLowerCase() === "terminate"){
+            $(".appTerminateButton").prop('disabled', true);
         $.ajax({
             url: `/app/manage/` + '?' + $.param({"app_id": app_id,}) ,
             headers: {'X-CSRFToken': csrftoken},
             type: 'DELETE',
             success:function (data)
             {
-              $("#appStopButton").prop('disabled', false);
-              $("#appStartButton").prop('disabled', false);
               window.location.replace("https://dashboard.novanodes.com/panel/");
             },
             error:function () {
+                $(".appTerminateButton").prop('disabled', false);
                 alertDanger('Failed to terminate app... please contact administrator')
             },
         });}
