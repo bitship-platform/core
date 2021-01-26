@@ -97,6 +97,22 @@ class App(models.Model):
             return True
         return False
 
+    @property
+    def primary_file_set(self):
+        return [file.name for file in self.folder.file_set.all()]
+
+    @property
+    def requirements(self):
+        if "requirements.txt" in self.primary_file_set:
+            return True
+        return False
+
+    @property
+    def configuration(self):
+        if "python_version" and "app_json" and "main_executable" in self.config:
+            return True
+        return False
+
     def primary_files(self):
         primary_file_list = []
         for file in self.folder.file_set.all():

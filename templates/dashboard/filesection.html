@@ -6,23 +6,28 @@
             <div class="card shadow">
                 <div class="card-header border-0">
                 <div class="row">
-                  <div class="col-lg-1">
+                  <div class="col-lg-2">
                       <div class="input-group">
                         {% if app.python %}
-                        <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="ni ni-settings"></i> Configure</button>
+                        <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="ni ni-settings"></i> Configure
+                            {% if not app.configuration %}
+                            <i style="color:darkred;" class="fa fa-info-circle fa-sm" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
+                             {% endif %}
+                        </button>
+
                         {% elif app.node %}
                         <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-box"></i> Configure</button>
                         {% endif %}
                       </div>
                   </div>
-                  <div class="col-lg-3">
+                  <div class="col-lg-2">
                     <div class="input-group input-group-sm">
                       <select class="custom-select custom-select-sm" id="inputGroupSelect04">
                         <option value="Base" {% if app.get_plan_display == "Base" %}selected{% endif %}>Base</option>
                         <option value="Standard" {% if app.get_plan_display == "Standard" %}selected{% endif %}>Standard</option>
                       </select>
                       <div class="input-group-append">
-                        <button class="btn btn-outline-primary" type="button">Scale</button>
+                        <button class="btn btn-outline-primary" data-placement="bottom" title="Currently unavailable" data-toggle="tooltip" type="button">Scale</button>
                       </div>
                     </div>
                   </div>
@@ -49,6 +54,11 @@
                       <a href="/manage/{{ app.id }}/{{ folder.folder.id }} "><button type="button" class="btn-sm btn-outline-primary btn"><i class="fa fa-arrow-circle-left"></i> Go back</button></a>
                       {% endif %}
                   </div>
+                  {% if not app.requirements %}
+                    <div class="col">
+                        <i style="color:darkred;" class="fa fa-info-circle fa-lg" data-toggle="tooltip" data-placement="bottom" title="All python apps expect a `requirements.txt` containing all the packages listed, in the project root. Don't forget to add that or your app may fail."></i>
+                    </div>
+                  {% endif %}
                     <div class="col text-right">
                         <button type="button" href="#" data-toggle="modal" data-target="#exampleModalCenter" class="btn-sm btn-outline-primary btn"><i class="fa fa-folder-plus"></i> New folder</button>
                         <button type="button" href="#" data-toggle="modal" data-target="#fileModalCenter" class="btn-sm btn-outline-primary btn"><i class="fa fa-file-import"></i> Upload files</button>

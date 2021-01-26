@@ -334,10 +334,13 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
     def delete(self, request, app_id=None, folder_id=None):
         folder = request.GET.get("folder_id", None)
         file = request.GET.get("file_id", None)
+        app = App.objects.get(pk=int(app_id))
         if file:
             file = File.objects.get(pk=file)
             if file.folder.owner == request.user.customer:
                 file.delete()
+                app.config = {}
+                app.save()
             else:
                 return self.json_response_401()
         if folder:
@@ -346,9 +349,6 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 folder.delete()
             else:
                 return self.json_response_401()
-        app = App.objects.get(pk=int(app_id))
-        app.config = {}
-        app.save()
         self.context["app"] = app
         if folder_id:
             try:
@@ -439,7 +439,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 return self.json_response_401()
         except App.DoesNotExist:
             return self.json_response_404()
-        file_set = [file.name for file in app.folder.file_set.all()]
+        file_set = app.primary_file_set
         if "requirements.txt" not in file_set:
             return JsonResponse({"message": "Missing requirements.txt in root."}, status=503)
         if not app.config.get("main_executable"):

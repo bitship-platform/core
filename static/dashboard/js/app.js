@@ -468,7 +468,6 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let main_executable = $("#appMainSelect").val()
         let python_version = $("#pythonVersionSelectPref").val()
-        console.log(python_version, main_executable)
         if((main_executable!==undefined)||(python_version!==undefined))
         {
             $.ajax({
@@ -480,6 +479,7 @@ $(document).ready(function() {
                     $("#appStopButton").prop('disabled', false);
                     $("#appStartButton").prop('disabled', false);
                     $('#pythonAppConfigurationModal').modal('hide');
+                    $("#unsetConfigNotifier").hide()
                     alertSuccess(`App configuration set successfully...`);
                 },
                 error: function () {
