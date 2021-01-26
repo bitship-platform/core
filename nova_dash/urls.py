@@ -19,7 +19,6 @@ urlpatterns = [
     url(r'^app/manage/', AppManageView.as_view(), name="app_manage"),
     url(r'^app/config/', set_app_config, name="app_config"),
     url(r'^app/tarball/(?P<uu_id>.*)', TarballDownload.as_view(), name='app'),
-    re_path(r'^celery-progress/', include('celery_progress.urls')),
 ]
 
 # urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
