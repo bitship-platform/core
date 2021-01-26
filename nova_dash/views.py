@@ -347,6 +347,8 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             else:
                 return self.json_response_401()
         app = App.objects.get(pk=int(app_id))
+        app.config = {}
+        app.save()
         self.context["app"] = app
         if folder_id:
             try:

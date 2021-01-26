@@ -357,9 +357,6 @@ $(document).ready(function() {
               $("#appDeployButton").prop('disabled', false);
               $("#appStopButton").prop('disabled', false);
               $("#appStartButton").prop('disabled', true);
-              let $response = $(data);
-              let progressUrl = $response.filter('#progressBarUrl').val();
-              CeleryProgressBar.initProgressBar(progressUrl)
               alertSuccess(`Deployment in progress...`);
             },
             error:function (resp) {
