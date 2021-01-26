@@ -406,6 +406,8 @@ def set_app_config(request):
         config["main_executable"] = main_file.name
         config["python_version"] = python_version
         app = main_file.folder.app
+        if app.plan == 2.4:
+            sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")
         python_version = app.config_options.python_versions.get(python_version)
         sample_app_json["name"] = app.name
         config["app_json"] = sample_app_json
@@ -462,11 +464,19 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         data = QueryDict(request.body)
         app_id = data.get("app_id")
         action = data.get("action")
+        if action not in ["start", "stop", "restart"]:
+            return self.json_response_400()
         if app_id and action:
             app = App.objects.get(id=app_id)
             if app.owner != request.user.customer:
                 return self.json_response_401()
             app_id = str(app.unique_id)
+            if action == "stop":
+                app.status = "bg-danger"
+                app.save()
+            elif action == "start":
+                app.status = "bg-success"
+                app.save()
             bpd_api.manage(app_id=app_id, action=action)
             return self.json_response_200()
         return self.json_response_500()

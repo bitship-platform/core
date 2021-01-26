@@ -104,7 +104,7 @@ class BPDAPIHandler:
         return self._get_json_dumped_response(self.post(f"/deploy/", data={"app_id": app_id}))
 
     def manage(self, app_id, action):
-        return self._get_json_dumped_response(self.post(f"/deploy/", data={"app_id": app_id, "action": action}))
+        return self._get_json_dumped_response(self.put(f"/deploy/", data={"app_id": app_id, "action": action}))
 
     def terminate(self, app_id):
         return self._get_json_dumped_response(self.delete(f"/deploy/?app_id={app_id}"))
