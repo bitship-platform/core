@@ -53,7 +53,7 @@ class AlertHandler:
 
 
 class PaypalHandler:
-    url = "https://api-m.paypal.com"
+    url = "https://api-m.paypal.com/"
     headers = {"Accept": "application/json"}
 
     def __init__(self, client_id, client_secret):
