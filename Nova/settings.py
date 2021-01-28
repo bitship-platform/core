@@ -176,3 +176,9 @@ PAYPAL_SECRET = env("PAYPAL_SECRET")
 PAYPAL_ID = env("PAYPAL_ID")
 BPD_ENDPOINT = "https://deploy.novanodes.com"
 BPD_SECRET = "test"
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'novanodeshost@gmail.com'
+EMAIL_HOST_PASSWORD = env('EMAIL_TOKEN')
+EMAIL_USE_TLS = True

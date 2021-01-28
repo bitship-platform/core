@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from django.http import JsonResponse
 from utils.mixins import ResponseMixin
 from nova_dash.models import App
+from utils.handlers import EmailHandler
 # Create your views here.
 
 
@@ -19,11 +19,15 @@ class RenewSubscription(APIView, ResponseMixin):
                     app.owner.save()
                     return self.json_response_200()
                 else:
-                    # TODO: Notify the user by email and discord
+                    msg = f"Hi {app.owner.user.first_name}\n\nYour app {app.name} has been shutdown since " \
+                          f"your account doesn't have enought credits to renew the app subscription.\n" \
+                          f"Please kindly recharge your account to continue using the services\n\n" \
+                          f"Thank you!\n~Novanodes"
+                    EmailHandler.send_email(app.owner.user.email,
+                                            "Failed to renew subscription",
+                                            msg=msg)
                     app.status = "bg-warning"
                     app.save()
                     return self.json_response_503()
             except App.DoesNotExist:
                 return self.json_response_404()
-
-
