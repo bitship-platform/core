@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from utils.mixins import ResponseMixin
 from nova_dash.models import App
