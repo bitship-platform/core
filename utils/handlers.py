@@ -3,6 +3,7 @@ import json
 import requests
 
 from django.conf import settings
+from django.core.mail import send_mail
 
 
 class WebhookHandler:
@@ -29,6 +30,9 @@ class WebhookHandler:
     def send_message(self, message: str):
         payload = {"content": message}
         self._send_to_webhook(payload)
+
+
+hook = WebhookHandler("782834321329356870", settings.WEBHOOK_SECRET)
 
 
 class AlertHandler:
@@ -108,3 +112,20 @@ class BPDAPIHandler:
 
     def terminate(self, app_id):
         return self._get_json_dumped_response(self.delete(f"/deploy/?app_id={app_id}"))
+
+
+class EmailHandler:
+
+    @staticmethod
+    def send_email(recipient: str, subject: str, msg: str):
+        try:
+            send_mail(subject, msg, 'Novanodes Hosting <alert@novanodes.com>',
+                      ['{}'.format(recipient)])
+        except Exception as exp:
+            embed = {"title": "Exception while sending email",
+                     "description": f"Exception: {exp}\n\n"
+                                    f"Recipient: {recipient}"
+                                    f"Subject: {subject}",
+                     "color": 0xff0000
+                     }
+            hook.send_embed(embed)

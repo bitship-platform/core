@@ -20,7 +20,10 @@ class RenewSubscription(APIView, ResponseMixin):
                     return self.json_response_200()
                 else:
                     # TODO: Notify the user by email and discord
-                    pass
+                    app.status = "bg-warning"
+                    app.save()
+                    return self.json_response_503()
             except App.DoesNotExist:
                 return self.json_response_404()
+
 

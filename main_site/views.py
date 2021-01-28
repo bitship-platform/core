@@ -1,9 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from utils.handlers import WebhookHandler
+from utils.handlers import hook
 from django.conf import settings
-
-hook = WebhookHandler("782834321329356870", settings.WEBHOOK_SECRET)
 
 
 class DynamicView(View):
