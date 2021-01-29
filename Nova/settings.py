@@ -175,7 +175,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 PAYPAL_SECRET = env("PAYPAL_SECRET")
 PAYPAL_ID = env("PAYPAL_ID")
 BPD_ENDPOINT = "https://deploy.novanodes.com"
-BPD_SECRET = "test"
+BPD_SECRET = env("BPD_SECRET")
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
