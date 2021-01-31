@@ -98,8 +98,14 @@ class App(models.Model):
         return False
 
     @property
+    def running(self):
+        if self.get_status_display() == "Running":
+            return True
+        return False
+
+    @property
     def idle(self):
-        if self.get_status_display() in ["Terminated", "Not Started", "Stopped"]:
+        if self.get_status_display() in ["Paused", "Not Started", "Stopped"]:
             return True
         return False
 

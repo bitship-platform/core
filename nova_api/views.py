@@ -36,13 +36,13 @@ class AppStatusUpdate(APIView, ResponseMixin):
 
     def post(self, request):
         app_id = request.data.get("app_id")
-        cpu = request.data.get("cpu")
-        memory = request.data.get("memory")
-        network = request.data.get("network")
         if app_id:
+            cpu = request.data.get("cpu")
+            memory = request.data.get("memory")
+            network = request.data.get("network")
             try:
                 app = App.objects.get(unique_id=app_id)
-                if not app.idle:
+                if app.running:
                     app.cpu = int(cpu)
                     app.ram = int(memory)
                     app.network = int(network)
@@ -50,3 +50,4 @@ class AppStatusUpdate(APIView, ResponseMixin):
                 return self.json_response_200()
             except App.DoesNotExist:
                 return self.json_response_404()
+        return self.json_response_400()
