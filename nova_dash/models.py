@@ -115,7 +115,9 @@ class App(models.Model):
 
     @property
     def requirements(self):
-        if "requirements.txt" or "Pipfile" in self.primary_file_set:
+        if "requirements.txt" in self.primary_file_set:
+            return True
+        elif "Pipfile" in self.primary_file_set:
             return True
         return False
 

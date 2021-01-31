@@ -444,8 +444,9 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         except App.DoesNotExist:
             return self.json_response_404()
         file_set = app.primary_file_set
-        if "requirements.txt" or "Pipfile" not in file_set:
-            return JsonResponse({"message": "Missing requirements.txt or Pipfile in root."}, status=503)
+        if "requirements.txt" not in file_set:
+            if "Pipfile" not in file_set:
+                return JsonResponse({"message": "Missing requirements.txt or Pipfile in root."}, status=503)
         if not app.config.get("main_executable"):
             return JsonResponse({"message": "Missing main file configuration"}, status=503)
         if not app.config.get("python_version"):
@@ -461,7 +462,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         app.status = "bg-success"
         app.save()
         context["app"] = app
-        bpd_api.deploy(str(app.unique_id))
+        # bpd_api.deploy(str(app.unique_id))
         return render(request, "dashboard/appmanagement.html", context=context, status=200)
 
     def put(self, request):
