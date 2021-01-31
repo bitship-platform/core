@@ -237,6 +237,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request, app_id, folder_id=None):
         file_size_exceeded = False
+        forbidden_file_type = False
         try:
             files = request.FILES.getlist('files_to_upload')
             folder_name = request.POST.get("folder")
@@ -250,8 +251,9 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             if files:
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
-                        if file.name in ["app.json", "Procfile", "runtime.txt"]:
+                        if file.name in ["app.json", "Procfile", "runtime.txt", ".env"]:
                             # ignoring system files
+                            forbidden_file_type = True
                             continue
                         try:
                             File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
@@ -268,8 +270,10 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     self.context["folder"] = app.folder
             else:
                 self.context["folder"] = app.folder
-            if file_size_exceeded:
+            if forbidden_file_type:
                 return render(request, 'dashboard/filesection.html', self.context, status=403)
+            if file_size_exceeded:
+                return render(request, 'dashboard/filesection.html', self.context, status=503)
             else:
                 return render(request, 'dashboard/filesection.html', self.context, status=200)
         except DatabaseError:

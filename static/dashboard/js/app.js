@@ -124,7 +124,8 @@ $(document).ready(function() {
         error: function (response) {
             switch (response.status) {
                 case 500: alertDanger("Internal server error"); break;
-                case 403: alertWarning("Some files exceed max upload limit."); break;
+                case 403: alertWarning("Forbidden file type uploaded"); break;
+                case 503: alertWarning("Some files exceed max upload limit."); break;
                 default: alertDanger("Something went wrong!");
             }
 
