@@ -444,8 +444,8 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         except App.DoesNotExist:
             return self.json_response_404()
         file_set = app.primary_file_set
-        if "requirements.txt" not in file_set:
-            return JsonResponse({"message": "Missing requirements.txt in root."}, status=503)
+        if "requirements.txt" or "Pipfile" not in file_set:
+            return JsonResponse({"message": "Missing requirements.txt or Pipfile in root."}, status=503)
         if not app.config.get("main_executable"):
             return JsonResponse({"message": "Missing main file configuration"}, status=503)
         if not app.config.get("python_version"):
