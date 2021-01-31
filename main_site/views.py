@@ -18,15 +18,14 @@ class ContactView(View):
         return render(request, self.template_name)
 
     def post(self, request):
-        if request.POST.get("accepttc"):
-            data = "".join(f"**{param}**: `{request.POST[param]}`\n"
-                           for param in request.POST if param != "csrfmiddlewaretoken")
-            embed = {"title": "Query submission",
-                     "description": data,
-                     "color": 0xFF7900,
-                     "footer": {
-                         "text": "powered by Novanodes"
-                     }
-                     }
-            hook.send_embed(embed)
+        data = "".join(f"**{param}**: `{request.POST[param]}`\n"
+                       for param in request.POST if param not in ["csrfmiddlewaretoken", "g-recaptcha-response"])
+        embed = {"title": "Query submission",
+                 "description": data,
+                 "color": 0xFF7900,
+                 "footer": {
+                     "text": "powered by Novanodes"
+                 }
+                 }
+        hook.send_embed(embed)
         return render(request, self.template_name)

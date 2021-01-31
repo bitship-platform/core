@@ -76,7 +76,7 @@
 
                                     <div class="col-lg-12 col-md-12">
                                         <div class="form-group checkbox-option">
-                                            <input type="checkbox" name="accepttc" id="chb2" required>
+                                            <input type="checkbox" id="chb2">
                                             <p>
                                                 Accept <a href="terms-condition.html">Terms & Conditions</a> And <a href="privacy-policy.html">Privacy Policy.</a>
                                             </p>
@@ -84,7 +84,7 @@
                                     </div>
 
                                     <div class="col-lg-12 col-md-12">
-                                        <button type="submit" class="default-btn btn-bg-one border-radius-50">
+                                        <button type="submit" class="default-btn btn-bg-one border-radius-50 g-recaptcha" data-sitekey="6LfmqEMaAAAAAAIFPaIpz0HKCGYLbcP2XamLF2t3" data-callback='onSubmit' data-action='submit'>
                                             Send Message
                                         </button>
                                         <div id="msgSubmit" class="h3 text-center hidden"></div>
@@ -95,6 +95,12 @@
                         </div>
                     </div>
                 </div>
+                 <script src="https://www.google.com/recaptcha/api.js"></script>
+                 <script>
+                   function onSubmit(token) {
+                     document.getElementById("contactForm").submit();
+                   }
+                 </script>
             </div>
         </div>
         <!-- Contact Area End -->
