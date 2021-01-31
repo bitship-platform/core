@@ -30,3 +30,23 @@ class RenewSubscription(APIView, ResponseMixin):
                     return self.json_response_503()
             except App.DoesNotExist:
                 return self.json_response_404()
+
+
+class AppStatusUpdate(APIView, ResponseMixin):
+
+    def post(self, request):
+        app_id = request.data.get("app_id")
+        cpu = request.data.get("cpu")
+        memory = request.data.get("memory")
+        network = request.data.get("network")
+        if app_id:
+            try:
+                app = App.objects.get(unique_id=app_id)
+                if not app.idle:
+                    app.cpu = int(cpu)
+                    app.ram = int(memory)
+                    app.network = int(network)
+                    app.save()
+                return self.json_response_200()
+            except App.DoesNotExist:
+                return self.json_response_404()

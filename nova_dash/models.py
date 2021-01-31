@@ -98,6 +98,12 @@ class App(models.Model):
         return False
 
     @property
+    def idle(self):
+        if self.get_status_display() in ["Terminated", "Not Started", "Stopped"]:
+            return True
+        return False
+
+    @property
     def primary_file_set(self):
         return [file.name for file in self.folder.file_set.all()]
 
