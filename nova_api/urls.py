@@ -7,5 +7,5 @@ from django.conf.urls.static import static
 urlpatterns = [
 
     path('subscription/renew/', RenewSubscription.as_view(), name='home'),
-    path('app/status/', AppStatusUpdate.as_view(), name='status'),
+    path('app/status/<str:app_id>/', AppStatusUpdate.as_view(), name='status'),
 ]
