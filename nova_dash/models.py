@@ -61,11 +61,11 @@ class App(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, default="STOPPED", max_length=20)
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
     plan = models.FloatField(choices=TYPE_CHOICES)
-    cpu = models.IntegerField(default=0)
-    ram = models.IntegerField(default=0)
-    disk = models.IntegerField(default=0)
-    network = models.IntegerField(default=0)
-    glacier = models.IntegerField(default=0)
+    cpu = models.IntegerField(default=0, null=True)
+    ram = models.IntegerField(default=0, null=True)
+    disk = models.IntegerField(default=0, null=True)
+    network = models.IntegerField(default=0, null=True)
+    glacier = models.IntegerField(default=0, null=True)
     config = models.JSONField(default=dict)
 
     @property
