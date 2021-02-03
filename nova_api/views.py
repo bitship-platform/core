@@ -46,3 +46,23 @@ class AppStatusUpdate(APIView, ResponseMixin):
             serializer.save()
             return Response(serializer.data, status=201)
         return self.json_response_400()
+
+
+class AppConfirmationView(APIView, ResponseMixin):
+    model = App
+
+    def post(self, request):
+        app_id = request.data.get("app_id")
+        if app_id:
+            try:
+                app = App.objects.get(unique_id=app_id)
+                if app.status == "bg-success":
+                    app.status = "bg-warning"
+                    app.owner.credits_spend -= app.plan
+                    app.owner.credits += app.plan
+                    app.owner.save()
+                    app.save()
+                return self.json_response_200()
+            except App.DoesNotExist:
+                return self.json_response_404()
+        return self.json_response_400()
