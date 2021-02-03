@@ -41,7 +41,7 @@ class App(models.Model):
     STATUS_CHOICES = [
         ("bg-warning", "Not Started"),
         ("bg-success", "Running"),
-        ("bg-info", "Paused"),
+        ("bg-info", "Awaiting Confirmation"),
         ("bg-danger", "Stopped"),
         ("bg-dark", "Terminated"),
     ]
@@ -105,7 +105,7 @@ class App(models.Model):
 
     @property
     def idle(self):
-        if self.get_status_display() in ["Paused", "Not Started", "Stopped"]:
+        if self.get_status_display() in ["Awaiting Confirmation", "Not Started", "Stopped"]:
             return True
         return False
 

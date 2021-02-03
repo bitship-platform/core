@@ -112,7 +112,7 @@ class LoginView(View):
 class DashView(LoginRequiredMixin, ListView, View):
     template_name = "dashboard/index.html"
     paginate_by = 5
-    status_order = ["Not Started", "Running", "Paused", "Stopped", "Terminated"]
+    status_order = ["Not Started", "Running", "Awaiting Confirmation", "Stopped", "Terminated"]
     order = {pos: status for status, pos in enumerate(status_order)}
     order2 = {pos: status for status, pos in enumerate(status_order[:-1])}
     context = {}
@@ -478,6 +478,9 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             app_id = str(app.unique_id)
             if action == "stop":
                 app.status = "bg-danger"
+                app.cpu = 0
+                app.ram = 0
+                app.network = 0
                 app.save()
             elif action == "start":
                 app.status = "bg-success"
