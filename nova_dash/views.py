@@ -73,10 +73,10 @@ class TarballDownload(View, ResponseMixin):
 
 
 class BackupDownload(View, ResponseMixin):
-    def get(self, request, uu_id):
+    def get(self, request, app_id):
         if request.user.is_authenticated:
             try:
-                app = App.objects.get(unique_id=uu_id)
+                app = App.objects.get(id=app_id)
                 if app.owner == request.user.customer:
                     response = HttpResponse()
                     del response['Content-Type']
