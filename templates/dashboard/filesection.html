@@ -38,8 +38,13 @@
                     </div>
 
                   </div>
-                  <div class="col-lg-4 manageRefreshSection">
+                  <div class="col-lg-3 manageRefreshSection">
                         {% include 'dashboard/appmanagement.html' %}
+                  </div>
+                  <div class="col-lg-1">
+                      {% if app.running.disabled %}
+                      <button type="button" class="btn-sm btn-outline-primary mr-2" id="downloadBackupButton"><i class="fa fa-download"></i> Backup</button>
+                      {% endif %}
                   </div>
                 </div>
                 </div>
