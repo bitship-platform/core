@@ -19,6 +19,14 @@ class RenewSubscription(APIView, ResponseMixin):
                     app.owner.credits -= app.plan
                     app.owner.credits_spend += app.plan
                     app.owner.save()
+                    if app.owner.settings.email_notification:
+                        msg = f"Hi {app.owner.user.first_name}\n\nYour app {app.name} subscription " \
+                              f"is renewed for this month. The plan amount has been debited from your account.\n" \
+                              f"Please login to check your updated balance.\n\n" \
+                              f"Thank you!\n~Novanodes"
+                        EmailHandler.send_email(app.owner.user.email,
+                                                "Renewed app subscription",
+                                                msg=msg)
                     return self.json_response_200()
                 else:
                     msg = f"Hi {app.owner.user.first_name}\n\nYour app {app.name} has been shutdown since " \
