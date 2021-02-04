@@ -1,6 +1,6 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, ManageView, SettingView, media_access,\
-    Transaction, TarballDownload, AppManageView, set_app_config
+    Transaction, TarballDownload, AppManageView, set_app_config, BackupDownload
 from django.conf.urls import url
 urlpatterns = [
 
@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^app/manage/', AppManageView.as_view(), name="app_manage"),
     url(r'^app/config/', set_app_config, name="app_config"),
     url(r'^app/tarball/(?P<uu_id>.*)', TarballDownload.as_view(), name='app'),
+    url(r'^app/backup/(?P<uu_id>.*)', BackupDownload.as_view(), name='backup'),
 ]
 
 # urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
