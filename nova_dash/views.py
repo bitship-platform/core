@@ -49,7 +49,7 @@ def media_access(request, path):
         response['X-Accel-Redirect'] = '/protected/media/' + path
         return response
     else:
-        return HttpResponseForbidden('Not authorized to access this media.')
+        return HttpResponseForbidden('Not authorized to access this file.')
 
 
 def make_tarfile(output_filename, source_dir):
@@ -70,6 +70,22 @@ class TarballDownload(View, ResponseMixin):
         response['X-Accel-Redirect'] = "/protected/media/" + f"{app.unique_id}.tar.gz"
         response['Content-Disposition'] = f"attachment; filename={app.unique_id}.tar.gz"
         return response
+
+
+class BackupDownload(View, ResponseMixin):
+    def get(self, request, uu_id):
+        if request.user.is_authenticated:
+            try:
+                app = App.objects.get(unique_id=uu_id)
+            except App.DoesNotExist:
+                return self.json_response_404()
+            if app.owner == request.user.customer:
+                response = HttpResponse()
+                del response['Content-Type']
+                response['X-Accel-Redirect'] = "/protected/media/" + f"{app.unique_id}.tar.gz"
+                response['Content-Disposition'] = f"attachment; filename={app.unique_id}.tar.gz"
+                return response
+        return HttpResponseForbidden('Not authorized to access this file.')
 
 
 class LogoutView(View):
