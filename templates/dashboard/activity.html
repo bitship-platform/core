@@ -41,7 +41,11 @@
                 {% for order in request.user.customer.get_orders %}
                   <tr>
                     <th scope="row">
+                      {% if order.credit %}
                       <i class="fas fa-plus-square text-green mr-3"></i> {{ order.transaction_amount }}
+                      {% else %}
+                     <i class="fas fa-minus-square text-red mr-3"></i> {{ order.transaction_amount }}
+                      {% endif %}
                     </th>
                     <td>
                       <b>[{{ order.service }}]</b> {{ order.description }}
@@ -50,7 +54,7 @@
                       {{ order.update_time }}
                     </td>
                     <td>
-                        <i class="fas fa-dot-circle {{ order.status }} mr-3"></i>{{ order.get_status_display }}
+                        <i class="fas {{ order.status }} mr-3"></i>{{ order.get_status_display }}
                     </td>
                   </tr>
                 {% endfor %}

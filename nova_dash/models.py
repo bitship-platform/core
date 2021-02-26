@@ -259,9 +259,9 @@ class File(models.Model):
 
 class Order(models.Model):
     ORDER_STATUS = (
-        ("text-danger", "Failed"),
-        ("text-warning", "Pending"),
-        ("text-success", "Success"),
+        ("fa-times-circle text-danger", "Failed"),
+        ("fa-clock text-warning", "Pending"),
+        ("fa-check-circle text-success", "Success"),
     )
     id = models.CharField(max_length=25, primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
@@ -270,7 +270,7 @@ class Order(models.Model):
     payer_email = models.CharField(max_length=30)
     create_time = models.DateTimeField(null=True)
     update_time = models.DateTimeField(null=True)
-    status = models.CharField(max_length=15, choices=ORDER_STATUS)
+    status = models.CharField(max_length=30, choices=ORDER_STATUS)
     service = models.CharField(max_length=30, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     credit = models.BooleanField(default=False)
