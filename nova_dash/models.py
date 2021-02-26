@@ -33,6 +33,10 @@ class Customer(models.Model):
     def rounded_credits(self):
         return round(self.credits, 2)
 
+    @property
+    def get_orders(self):
+        return self.order_set.all()
+
 
 class App(models.Model):
     """
@@ -260,7 +264,7 @@ class Order(models.Model):
         ("bg-success", "Success"),
     )
     id = models.CharField(max_length=25, primary_key=True)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="orders")
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
     transaction_amount = models.FloatField(default=0)
     payer_id = models.CharField(max_length=20)
     payer_email = models.CharField(max_length=30)
