@@ -35,7 +35,7 @@ class Customer(models.Model):
 
     @property
     def get_orders(self):
-        return self.order.all()
+        return self.order.all().order_by("-create_time")
 
 
 class App(models.Model):
@@ -271,6 +271,9 @@ class Order(models.Model):
     create_time = models.DateTimeField(null=True)
     update_time = models.DateTimeField(null=True)
     status = models.CharField(max_length=15, choices=ORDER_STATUS)
+    service = models.CharField(max_length=30, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    credit = models.BooleanField(default=False)
 
 
 class Transaction(models.Model):

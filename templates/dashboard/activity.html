@@ -41,13 +41,13 @@
                 {% for order in request.user.customer.get_orders %}
                   <tr>
                     <th scope="row">
-                      <i class="fas fa-plus-square text-success mr-3"></i> {{ order.transaction_amount }}
+                      <i class="fas fa-plus-square text-green mr-3"></i> {{ order.transaction_amount }}
                     </th>
                     <td>
-                      <b>[Subscription Renewal]</b> Nova app
+                      <b>[{{ order.service }}]</b> {{ order.description }}
                     </td>
                     <td>
-                      1.00 pm
+                      {{ order.update_time }}
                     </td>
                     <td>
                         <i class="fas fa-dot-circle {{ order.status }} mr-3"></i>{{ order.get_status_display }}
