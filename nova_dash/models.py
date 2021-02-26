@@ -275,8 +275,8 @@ class Transaction(models.Model):
         ("bg-warning", "Pending"),
         ("bg-success", "Success"),
     )
-    patron = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    recipient = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    patron = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="patron")
+    recipient = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="recipient")
     time = models.DateTimeField(auto_now_add=True)
     amount = models.FloatField(default=0)
     status = models.CharField(max_length=15, choices=TRANSACTION_STATUS)
