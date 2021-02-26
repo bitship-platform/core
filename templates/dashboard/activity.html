@@ -21,9 +21,9 @@
                 <div class="col">
                   <h3 class="mb-0">Billing log</h3>
                 </div>
-                <div class="col text-right">
-                  <a href="#!" class="btn btn-sm btn-primary">See all</a>
-                </div>
+{#                <div class="col text-right">#}
+{#                  <a href="#!" class="btn btn-sm btn-primary">See all</a>#}
+{#                </div>#}
               </div>
             </div>
             <div class="table-responsive">
@@ -50,7 +50,7 @@
                       1.00 pm
                     </td>
                     <td>
-                        <i class="fas fa-dot-circle text-success mr-3"></i>Success
+                        <i class="fas fa-dot-circle {{ order.status }} mr-3"></i>{{ order.get_status_display }}
                     </td>
                   </tr>
                 {% endfor %}

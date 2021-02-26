@@ -35,7 +35,7 @@ class Customer(models.Model):
 
     @property
     def get_orders(self):
-        return self.order_set.all()
+        return self.order.all()
 
 
 class App(models.Model):
@@ -259,9 +259,9 @@ class File(models.Model):
 
 class Order(models.Model):
     ORDER_STATUS = (
-        ("bg-danger", "Failed"),
-        ("bg-warning", "Pending"),
-        ("bg-success", "Success"),
+        ("text-danger", "Failed"),
+        ("text-warning", "Pending"),
+        ("text-success", "Success"),
     )
     id = models.CharField(max_length=25, primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
