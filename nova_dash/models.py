@@ -254,24 +254,25 @@ class File(models.Model):
 
 
 class Order(models.Model):
-    TRANSACTION_STATUS = (
+    ORDER_STATUS = (
         ("bg-danger", "Failed"),
         ("bg-warning", "Pending"),
         ("bg-success", "Success"),
     )
     id = models.CharField(max_length=25, primary_key=True)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="orders")
     transaction_amount = models.FloatField(default=0)
     payer_id = models.CharField(max_length=20)
     payer_email = models.CharField(max_length=30)
     create_time = models.DateTimeField(null=True)
     update_time = models.DateTimeField(null=True)
-    status = models.CharField(max_length=15, choices=TRANSACTION_STATUS)
+    status = models.CharField(max_length=15, choices=ORDER_STATUS)
 
 
 class Transaction(models.Model):
     TRANSACTION_STATUS = (
         ("bg-danger", "Failed"),
+        ("bg-dark", "Canceled"),
         ("bg-warning", "Pending"),
         ("bg-success", "Success"),
     )
