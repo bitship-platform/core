@@ -14,7 +14,7 @@
     <div class="container-fluid mt--7">
       <!-- Table -->
       <div class="row">
-                  <div class="col-xl-12 mb-5 mb-xl-0">
+        <div class="col-xl-12 mb-5 mb-xl-0">
           <div class="card shadow">
             <div class="card-header border-0">
               <div class="row align-items-center">
@@ -31,6 +31,7 @@
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
+                    <th scope="col">Order id</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Description</th>
                     <th scope="col">Time</th>
@@ -40,11 +41,14 @@
                 <tbody>
                 {% for order in request.user.customer.get_orders %}
                   <tr>
+                    <td>
+                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ order.id }}</b>
+                    </td>
                     <th scope="row">
                       {% if order.credit %}
-                      <i class="fas fa-plus-square text-green mr-3"></i> {{ order.transaction_amount }}
+                      <i class="fas fa-plus-square text-green mr-3"></i> ${{ order.transaction_amount }}
                       {% else %}
-                     <i class="fas fa-minus-square text-red mr-3"></i> {{ order.transaction_amount }}
+                     <i class="fas fa-minus-square text-red mr-3"></i> ${{ order.transaction_amount }}
                       {% endif %}
                     </th>
                     <td>
@@ -52,6 +56,68 @@
                     </td>
                     <td>
                       {{ order.update_time }}
+                    </td>
+                    <td>
+                        <i class="fas {{ order.status }} mr-3"></i>{{ order.get_status_display }}
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-12 mb-5 mb-xl-0 mt-5">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Your transactions</h3>
+                </div>
+{#                <div class="col text-right">#}
+{#                  <a href="#!" class="btn btn-sm btn-primary">See all</a>#}
+{#                </div>#}
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Transaction id</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Recipient</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for transaction in request.user.customer.get_transactions %}
+                  <tr>
+                    <td>
+                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ transaction.id }}</b>
+                    </td>
+                    <th scope="row">
+                      {% if order.credit %}
+                      <i class="fas fa-plus-square text-green mr-3"></i> ${{ transaction.amount }}
+                      {% else %}
+                     <i class="fas fa-minus-square text-red mr-3"></i> ${{ transaction.amount }}
+                      {% endif %}
+                    </th>
+                    <td>
+                      <div class="avatar-group">
+                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ request.user.customer.username }}">
+                          <img alt="{{ request.user.first_name }}" src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="avatar-group">
+                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ request.user.customer.username }}">
+                          <img alt="{{ request.user.first_name }}" src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
+                        </a>
+                      </div>
                     </td>
                     <td>
                         <i class="fas {{ order.status }} mr-3"></i>{{ order.get_status_display }}

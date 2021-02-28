@@ -1,3 +1,6 @@
+
+from itertools import chain
+
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
@@ -36,6 +39,11 @@ class Customer(models.Model):
     @property
     def get_orders(self):
         return self.order.all().order_by("-create_time")
+
+    @property
+    def get_transactions(self):
+        result_list = list(chain(self.recipient.all(), self.patron.all()))
+        return sorted(result_list, key=lambda instance: instance.time, reverse=True)
 
 
 class App(models.Model):
@@ -263,7 +271,7 @@ class Order(models.Model):
         ("fa-clock text-warning", "Pending"),
         ("fa-check-circle text-success", "Success"),
     )
-    id = models.CharField(max_length=25, primary_key=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
     transaction_amount = models.FloatField(default=0)
     payer_id = models.CharField(max_length=20)
