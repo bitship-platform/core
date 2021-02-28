@@ -411,6 +411,8 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
                                  status=status,
                                  customer=customer,
                                  transaction_amount=amount,
+                                 service="Credit Recharge",
+                                 description=f"Paypal: {payer_id}",
                                  credit=True)
         else:
             return self.json_response_401()
