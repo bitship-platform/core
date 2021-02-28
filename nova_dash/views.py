@@ -402,7 +402,8 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
                                  update_time=update_time,
                                  status=status,
                                  customer=customer,
-                                 transaction_amount=amount)
+                                 transaction_amount=amount,
+                                 credit=True)
             customer.credits += float(amount)
             customer.save()
         else:
