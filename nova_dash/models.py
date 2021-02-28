@@ -286,14 +286,14 @@ class Order(models.Model):
 
 class Transaction(models.Model):
     TRANSACTION_STATUS = (
-        ("bg-danger", "Failed"),
-        ("bg-dark", "Canceled"),
-        ("bg-warning", "Pending"),
-        ("bg-success", "Success"),
+        ("fa-ban text-danger", "Canceled"),
+        ("fa-times-circle text-danger", "Failed"),
+        ("fa-clock text-warning", "Pending"),
+        ("fa-check-circle text-success", "Success"),
     )
     patron = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="patron")
     recipient = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="recipient")
     time = models.DateTimeField(auto_now_add=True)
     amount = models.FloatField(default=0)
-    status = models.CharField(max_length=15, choices=TRANSACTION_STATUS)
+    status = models.CharField(max_length=30, choices=TRANSACTION_STATUS)
     failure_message = models.CharField(max_length=120, null=True, blank=True)
