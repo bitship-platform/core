@@ -271,7 +271,7 @@ class Order(models.Model):
         ("fa-clock text-warning", "Pending"),
         ("fa-check-circle text-success", "Success"),
     )
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    id = models.CharField(default=uuid.uuid4, max_length=50, primary_key=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
     transaction_amount = models.FloatField(default=0)
     payer_id = models.CharField(max_length=20)
