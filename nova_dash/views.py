@@ -394,6 +394,14 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
         payer_id = details["payer"]["payer_id"]
         email = details["payer"]["email_address"]
         customer = request.user.customer
+        if status == "COMPLETED":
+            status = "fa-check-circle text-success"
+            customer.credits += float(amount)
+            customer.save()
+        elif status == "PAYER_ACTION_REQUIRED":
+            status = "fa-clock text-warning"
+        else:
+            status = "fa-times-circle text-danger"
         if not Order.objects.filter(id=order_id).exists():
             Order.objects.create(id=order_id,
                                  payer_email=email,
@@ -404,8 +412,6 @@ class Transaction(LoginRequiredMixin, View, ResponseMixin):
                                  customer=customer,
                                  transaction_amount=amount,
                                  credit=True)
-            customer.credits += float(amount)
-            customer.save()
         else:
             return self.json_response_401()
         return self.json_response_200()
