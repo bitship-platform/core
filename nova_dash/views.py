@@ -1,6 +1,7 @@
 import os
 import json
 import tarfile
+from datetime import datetime, timezone
 
 from django.views import View
 from django.conf import settings
@@ -484,6 +485,15 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             app.owner.credits -= app.plan
             app.owner.credits_spend += app.plan
             app.owner.save()
+            Order.objects.create(
+                create_time=datetime.now(timezone.utc),
+                update_time=datetime.now(timezone.utc),
+                transaction_amount=app.plan,
+                status="fa-times-circle text-danger",
+                service="App Subscription Start",
+                description=f"{app.name} app",
+                customer=app.owner
+            )
         app.status = "bg-success"
         app.save()
         context["app"] = app

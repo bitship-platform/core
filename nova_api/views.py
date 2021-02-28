@@ -88,6 +88,16 @@ class AppConfirmationView(APIView, ResponseMixin):
                     app.owner.credits += app.plan
                     app.owner.save()
                     app.save()
+                Order.objects.create(
+                    create_time=datetime.now(timezone.utc),
+                    update_time=datetime.now(timezone.utc),
+                    transaction_amount=app.plan,
+                    status="fa-times-circle text-danger",
+                    service="Deploy Failure Reversal",
+                    description=f"{app.name} app | (deploy rejected)",
+                    customer=app.owner,
+                    credit=True
+                )
                 return self.json_response_200()
             except App.DoesNotExist:
                 return self.json_response_404()
