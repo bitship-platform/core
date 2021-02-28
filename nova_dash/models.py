@@ -286,11 +286,12 @@ class Order(models.Model):
 
 class Transaction(models.Model):
     TRANSACTION_STATUS = (
-        ("fa-ban text-danger", "Canceled"),
+        ("fa-ban text-dark", "Canceled"),
         ("fa-times-circle text-danger", "Failed"),
         ("fa-clock text-warning", "Pending"),
         ("fa-check-circle text-success", "Success"),
     )
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     patron = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="patron")
     recipient = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="recipient")
     time = models.DateTimeField(auto_now_add=True)

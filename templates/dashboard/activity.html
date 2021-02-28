@@ -112,21 +112,17 @@
                           <img alt="{{ transaction.patron.first_name }}" src="{{ transaction.patron.get_avatar_url }}" class="rounded-circle">
                         </a>{{ transaction.patron.user.first_name }} #{{ transaction.patron.tag }}
                        {% else %}
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ transaction.recipient.username }}">
+                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ transaction.recipient.user.username }}">
                           <img alt="{{ transaction.recipient.first_name }}" src="{{ transaction.recipient.get_avatar_url }}" class="rounded-circle">
                         </a>{{ transaction.recipient.user.first_name }} #{{ transaction.recipient.tag }}
                         {% endif %}
                       </div>
                     </td>
                     <td>
-                      <div class="avatar-group">
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ request.user.customer.username }}">
-                          <img alt="{{ request.user.first_name }}" src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
-                        </a>
-                      </div>
+                      {{ transaction.time }}
                     </td>
                     <td>
-                        <i class="fas fa-ban mr-3"></i>{{ transaction.get_status_display }}
+                        <i class="fas {{ transaction.status }} mr-3"></i>{{ transaction.get_status_display }}
                     </td>
                   </tr>
                 {% endfor %}
