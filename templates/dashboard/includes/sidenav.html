@@ -90,6 +90,11 @@
               <i class="ni ni-credit-card text-yellow"></i> Billing
             </a>
           </li>
+          <li class="nav-item {% if 'transactions' in segment %} active {% endif %}">
+            <a class="nav-link " href="{% url 'transactions' %}">
+              <i class="fa fa-exchange-alt text-dark"></i> Transactions
+            </a>
+          </li>
 
         </ul>
         <!-- Divider -->

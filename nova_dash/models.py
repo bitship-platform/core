@@ -18,6 +18,9 @@ class Customer(models.Model):
     credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
     credits_spend = models.FloatField(default=0)
+    coins = models.IntegerField(default=0)
+    coins_redeemed = models.IntegerField(default=0)
+    banned = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.avatar is not None:

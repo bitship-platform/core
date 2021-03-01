@@ -547,3 +547,9 @@ class ActivityView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
         return render(request, "dashboard/activity.html")
+
+
+class TransactionView(LoginRequiredMixin, View, ResponseMixin):
+
+    def get(self, request):
+        return render(request, "dashboard/transactions.html")
