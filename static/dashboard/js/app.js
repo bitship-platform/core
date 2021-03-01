@@ -496,8 +496,8 @@ $(document).ready(function() {
     $(document).on('keyup', "#coinInput", function (e){
         let coin_count = $("#coinInput").val()
         if (!isNaN(coin_count)) {
-            if (coin_count>10&&coin_count<1000){
-                let amount = 1.2 * coin_count;
+            if (coin_count>10&&coin_count<1001){
+                let amount = 0.12 * coin_count;
              $("#coinSpan").html(`${coin_count}c = $${amount.toFixed(2)}`);
             }
             else{

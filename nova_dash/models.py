@@ -48,6 +48,10 @@ class Customer(models.Model):
         result_list = list(chain(self.recipient.all(), self.patron.all()))
         return sorted(result_list, key=lambda instance: instance.time, reverse=True)
 
+    @property
+    def pending_transactions(self):
+        return self.patron.filter(status="fa-clock text-warning")
+
 
 class App(models.Model):
     """

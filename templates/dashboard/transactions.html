@@ -67,11 +67,49 @@
                 <h2>Credit transfer</h2>
             </div>
             <div class="card-body pt-0 pt-md-4">
-              <div class="text-center">
+             {% if request.user.customer.pending_transactions %}
+              <div class="card shadow">
+                <div class="card-header border-0">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <h4 class="mb-0">Pending Transactions</h4>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="card-body">
-
-              </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Transaction id</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Recipient</th>
+                    <th scope="col">Manage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for transaction in request.user.customer.pending_transactions %}
+                  <tr>
+                    <th scope="row">
+                        {{transaction.id}}
+                    </th>
+                    <td>
+                        {{ transaction.amount}}
+                    </td>
+                    <td>
+                      {{ transaction.recipient.user.first_name }} #{{ transaction.recipient.user.customer.tag }}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-success text-darker">Authorize</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger text-darker">Cancel</button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
             </div>
           </div>
         </div>
