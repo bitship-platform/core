@@ -511,3 +511,48 @@ $(document).ready(function() {
 
 
 });
+
+
+$(document).ready(function() {
+
+    $(document).on('click','#transactionButton', function(e) {
+        e.preventDefault();
+        let account_no = $('input[name="account_id"]').val();
+        let account_no_conf = $('input[name="account_id_conf"]').val();
+        let amount = $('input[name="transaction_amount"]').val();
+        let msg = $('input[name="transaction_msg"]').val();
+        const csrftoken = getCookie('csrftoken');
+
+        if (account_no===account_no_conf){
+            if (!isNaN(account_no)){
+            $.ajax({
+                url: `/transactions/`,
+                headers: {'X-CSRFToken': csrftoken},
+                type: 'POST',
+                data: {account_no: account_no, amount: amount, msg: msg},
+                success:function (data)
+                {
+                  $('#transactionModalCenter').modal('toggle');
+                  // $('#refreshSection').html(data);
+                },
+                error: function (response) {
+                    switch (response.status) {
+                        case 404:
+                            alertWarning("User not found");
+                            break;
+                        default:
+                            alertDanger("Something went wrong.");
+                    }
+                },
+            });
+            }
+            else{
+                alertWarning("Enter a valid account no")
+            }
+
+        }else{
+            alertWarning("Account id doesn't match");
+        }
+    });
+
+});

@@ -553,3 +553,10 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
         return render(request, "dashboard/transactions.html")
+
+    def post(self, request):
+        account_no = request.POST.get("account_no")
+        amount = request.POST.get("amount")
+        msg = request.POST.get("msg")
+        print(account_no, amount, msg)
+        return self.json_response_200

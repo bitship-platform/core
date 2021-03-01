@@ -59,106 +59,192 @@
     </div>
 
     <div class="container-fluid mt--7">
-
       <div class="row">
-        <div class="col-xl-6 order-xl-2 mb-5 mb-xl-0">
-          <div class="card card-profile shadow">
-            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <h2>Credit transfer</h2>
+        <div class="col-xl-6">
+          <div class="col-xl-12 order-xl-2 mb-5 mb-xl-0">
+            <div class="card card-profile shadow">
+                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                     <h2>Credits transfer</h2>
+                 </div>
+              <div class="card-body pt-0 pt-md-4">
+                <div class="card-body">
+                    <form>
+                     <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="formGroupExampleInput">Account no:</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Discord user_id" name="account_id">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="formGroupExampleInput2">Confirm Account no:</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Discord user_id" name="account_id_conf">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="formGroupExampleInput3">Amount (min: $1):</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput3" name="transaction_amount">
+                      </div>
+                      <div class="form-group col-md-12">
+                          <label for="formGroupExampleInput4">Message (optional):</label>
+                          <textarea class="form-control" id="formGroupExampleInput4" aria-label="With textarea" name="transaction_msg"></textarea>
+                      </div>
+                     </div>
+                     <button class="btn btn-outline-default" id="transactionButton">Transfer</button>
+                    </form>
+                </div>
+              </div>
             </div>
-            <div class="card-body pt-0 pt-md-4">
-             {% if request.user.customer.pending_transactions %}
-              <div class="card shadow">
-                <div class="card-header border-0">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <h4 class="mb-0">Pending Transactions</h4>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="row">
+            <div class="col-xl-6 order-xl-2 mb-5 mb-xl-0">
+              <div class="card card-profile shadow">
+                <div class="row justify-content-center">
+                  <div class="border-0 pt-8 pt-md-4 pb-0">
+                        <h2>Exchange novacoins</h2>
+                  </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0">
+                  <div class="d-flex justify-content-between">
+                      <h5 class="mr-4 ">Min qty: <span class="text-red">10c</span></h5>
+                      <h5 class="mr-4 float-right">Exchange: <span class="text-red" id="coinSpan">10c = $1.2</span></h5>
+                  </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                    <div class="input-group mb-3">
+                      <input type="text" id="coinInput" class="form-control" placeholder="Amount of coin" aria-label="Amount of coin" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-dark" type="button">Exchange</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 order-xl-2 mb-5 mb-xl-0">
+              <div class="card card-profile shadow">
+                <div class="row justify-content-center">
+                  <div class="border-0 pt-8 pt-md-4 pb-0">
+                        <h2>Promocode</h2>
+                  </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="mr-4 ">Got a coupon? Redeem now.</h5>
+                  </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="Promocode" aria-label="NOVACODE" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-dark" type="button">Redeem</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            {% if request.user.customer.pending_transactions %}
+            <div class="col-xl-12 order-xl-2 mb-5 mb-xl-0 mt-4">
+              <div class="card card-profile shadow">
+                <div class="card-body pt-0 pt-md-4">
+                  <div class="card shadow">
+                    <div class="card-header border-0">
+                      <div class="row align-items-center">
+                        <div class="col">
+                          <h4 class="mb-0">Pending Transactions</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="table-responsive">
+                  <!-- Projects table -->
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">Transaction id</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Recipient</th>
+                        <th scope="col">Manage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in request.user.customer.pending_transactions %}
+                      <tr>
+                        <th scope="row">
+                            {{transaction.id}}
+                        </th>
+                        <td>
+                            {{ transaction.amount}}
+                        </td>
+                        <td>
+                          {{ transaction.recipient.user.first_name }} #{{ transaction.recipient.user.customer.tag }}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-success text-darker" data-toggle="modal" data-target="#transactionModalCenter">Authorize</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger text-darker">Cancel</button>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+        <!-- Modal -->
+        <div class="modal fade" id="transactionModalCenter" tabindex="-1" role="dialog" aria-labelledby="transactionModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="transactionModalCenterTitle">Confirm OTP</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              <div class="card card-profile shadow mb-2">
+                <div class="row justify-content-center">
+                  <div class="col-lg-3 order-lg-2">
+                    <div class="card-profile-image">
+                      <a href="#">
+                        <img src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                  <div class="text-center">
+                    <h3>.</h3>
+                    <div class="h5 font-weight-300">
+                      .
+                    </div>
+                    <div class="h5 mt-4">
+                      <i class="ni business_briefcase-24 mr-2"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
                     </div>
                   </div>
                 </div>
               </div>
-            <div class="table-responsive">
-              <!-- Projects table -->
-              <table class="table align-items-center table-flush">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Transaction id</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Recipient</th>
-                    <th scope="col">Manage</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for transaction in request.user.customer.pending_transactions %}
-                  <tr>
-                    <th scope="row">
-                        {{transaction.id}}
-                    </th>
-                    <td>
-                        {{ transaction.amount}}
-                    </td>
-                    <td>
-                      {{ transaction.recipient.user.first_name }} #{{ transaction.recipient.user.customer.tag }}
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-outline-success text-darker">Authorize</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger text-darker">Cancel</button>
-                    </td>
-                  </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-            </div>
-            {% endif %}
+              <div class="form-group">
+                <style>
+                    .tooltip {
+                        z-index: 100000000;
+                    }
+                </style>
+                <label for="formGroupExampleInput">Enter the OTP</label> <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="A One Time Password (OTP) is sent to your email and your discord account (if you are a member of the support server)"></i>
+                <input type="text" class="form-control" id="formGroupExampleInput"  name="transaction_otp" placeholder="XXXXXX">
+                <input type="hidden" name="transaction_id">
+              </div>
+              <button class="btn btn-sm btn-outline-primary" id="resendOtpButton">Resend OTP</button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-default">Confirm</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-xl-3 order-xl-2 mb-5 mb-xl-0">
-          <div class="card card-profile shadow">
-            <div class="row justify-content-center">
-              <div class="border-0 pt-8 pt-md-4 pb-0">
-                    <h2>Exchange novacoins</h2>
-              </div>
-            </div>
-            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0">
-              <div class="d-flex justify-content-between">
-                  <h5 class="mr-4 ">Min qty: <span class="text-red">10c</span></h5>
-                  <h5 class="mr-4 float-right">Exchange: <span class="text-red" id="coinSpan">10c = $1.2</span></h5>
-              </div>
-            </div>
-            <div class="card-body pt-0 pt-md-4">
-                <div class="input-group mb-3">
-                  <input type="text" id="coinInput" class="form-control" placeholder="Amount of coin" aria-label="Amount of coin" aria-describedby="basic-addon2">
-                  <div class="input-group-append">
-                    <button class="btn btn-dark" type="button">Exchange</button>
-                  </div>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 order-xl-2 mb-5 mb-xl-0">
-          <div class="card card-profile shadow">
-            <div class="row justify-content-center">
-              <div class="border-0 pt-8 pt-md-4 pb-0">
-                    <h2>Promocode</h2>
-              </div>
-            </div>
-            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0">
-              <div class="d-flex justify-content-between">
-                <h5 class="mr-4 ">Got a coupon? Redeem now.</h5>
-              </div>
-            </div>
-            <div class="card-body pt-0 pt-md-4">
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Promocode" aria-label="NOVACODE" aria-describedby="basic-addon2">
-                  <div class="input-group-append">
-                    <button class="btn btn-dark" type="button">Redeem</button>
-                  </div>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
         <script>
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
