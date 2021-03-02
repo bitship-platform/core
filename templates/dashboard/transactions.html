@@ -190,7 +190,7 @@
                 <label for="formGroupExampleInput">Enter the OTP</label> <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="A One Time Password (OTP) is sent to your email and your discord account (if you are a member of the support server)"></i>
                 <input type="text" class="form-control" id="formGroupExampleInput"  name="transaction_otp" placeholder="XXXXXX">
               </div>
-              <button class="btn btn-sm btn-outline-primary" id="resendOtpButton">Resend OTP</button>
+              <button class="btn btn-sm btn-outline-primary" onclick="startCounter()" id="resendOtpButton">Resend OTP <span id="counter"></span></button>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
@@ -220,6 +220,30 @@
           </div>
         </div>
       {% include "dashboard/includes/footer.html" %}
+    <script>
+    function startCounter(){
+        let spn = document.getElementById("counter");
+        let btn = document.getElementById("resendOtpButton");
+
+        var count = 120;     // Set count
+        var timer = null;  // For referencing the timer
+
+        (function countDown(){
+          // Display counter and start counting down
+          spn.textContent = count;
+
+          // Run the function again every second if the count is not zero
+          if(count !== 0){
+            timer = setTimeout(countDown, 1000);
+            count--; // decrease the timer
+          } else {
+            // Enable the button
+            btn.removeAttribute("disabled");
+            spn.textContent = "";
+          }
+        }());
+    }
+    </script>
 
     </div>
 

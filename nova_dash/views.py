@@ -550,6 +550,32 @@ class ActivityView(LoginRequiredMixin, View, ResponseMixin):
         return render(request, "dashboard/activity.html")
 
 
+class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
+
+    def post(self, request):
+        transaction_id = request.POST.get("transaction_id")
+        try:
+            transaction = Transaction.objects.get(id=transaction_id)
+            if (datetime.now(timezone.utc) - transaction.last_otp_generation_time).total_seconds() > 120:
+                otp = uuid.uuid4().hex.upper()[0:6]
+                transaction.otp = otp
+                transaction.last_otp_generation_time = datetime.now(timezone.utc)
+                transaction.save()
+                msg = f"Hi {transaction.recipient.user.first_name},\nPlease copy paste the OTP below to authorize the transaction " \
+                      f"of ${transaction.amount} to {transaction.recipient.user.first_name} #{transaction.recipient.user.customer.tag}\n\n" \
+                      f"{otp}\n\n" \
+                      f"Please do not share this otp with anyone\n" \
+                      f"Thank you!\n~Novanodes"
+                EmailHandler.send_email(transaction.recipient.user.email,
+                                        "OTP for transaction",
+                                        msg=msg)
+                return self.json_response_200()
+            else:
+                return self.json_response_503()
+        except Transaction.DoesNotExist:
+            return self.json_response_500()
+
+
 class TransactionView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
@@ -572,7 +598,8 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
                 amount=amount,
                 status="fa-clock text-warning",
                 msg=msg,
-                otp=otp
+                otp=otp,
+                last_otp_generation_time=datetime.now(timezone.utc)
             )
             msg = f"Hi {request.user.first_name},\nPlease copy paste the OTP below to authorize the transaction " \
                   f"of ${amount} to {recipient.user.first_name} #{recipient.user.customer.tag}\n\n" \

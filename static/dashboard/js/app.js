@@ -565,7 +565,6 @@ $(document).ready(function() {
     });
 
     $(document).on('click','#transactionAuthorizationButton', function(e) {
-        console.log("clicked");
         let transaction_id = $('input[name="transaction_id"]').val();
         let otp = $('input[name="transaction_otp"]').val();
         $("#transactionAuthorizationButton").prop('disabled', true);
@@ -611,6 +610,31 @@ $(document).ready(function() {
             },
             error: function (response) {
                 switch (response.status) {
+                    default:
+                        alertDanger("Something went wrong.");
+                }
+            },
+        });
+    });
+
+    $(document).on('click','#resendOtpButton', function(e) {
+        let transaction_id = $('input[name="transaction_id"]').val();
+        $("#resendOtpButton").prop('disabled', true);
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/transactions/utility/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'POST',
+            data: {transaction_id: transaction_id},
+            success:function (data)
+            {
+              alertSuccess("New OTP has been sent!")
+            },
+            error: function (response) {
+                switch (response.status) {
+                    case 503:
+                        alertWarning("Please wait at least 2 minutes before requesting another OTP");
+                        break;
                     default:
                         alertDanger("Something went wrong.");
                 }

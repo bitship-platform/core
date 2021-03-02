@@ -307,3 +307,4 @@ class Transaction(models.Model):
     failure_message = models.CharField(max_length=120, null=True, blank=True)
     msg = models.TextField(null=True, blank=True)
     otp = models.CharField(max_length=6, null=True, blank=True)
+    last_otp_generation_time = models.DateTimeField(null=True, blank=True)

@@ -1,6 +1,7 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, ManageView, SettingView, media_access,\
-    PaypalTransaction, TarballDownload, AppManageView, set_app_config, BackupDownload, ActivityView, TransactionView
+    PaypalTransaction, TarballDownload, AppManageView, set_app_config, BackupDownload, ActivityView, TransactionView, \
+    TransactionUtility
 from django.conf.urls import url
 urlpatterns = [
 
@@ -14,6 +15,7 @@ urlpatterns = [
     url(r'^manage/', ManageView.as_view(), name='rename'),
     url(r'^settings/', SettingView.as_view(), name='settings'),
     url(r'^activity/', ActivityView.as_view(), name='activity'),
+    url(r'^transactions/utility/', TransactionUtility.as_view(), name='transaction_utility'),
     url(r'^transactions/', TransactionView.as_view(), name='transactions'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),
