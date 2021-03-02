@@ -595,7 +595,11 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
         return render(request, "dashboard/transactions.html")
 
     def post(self, request):
+        if not request.user.customer.verified:
+            return self.json_response_501()
         account_no = request.POST.get("account_no")
+        if int(account_no) == request.user.customer.id:
+            return self.json_response_405()
         amount = float(request.POST.get("amount"))
         msg = request.POST.get("msg")
         if amount < 1:

@@ -547,6 +547,13 @@ $(document).ready(function() {
                             case 403:
                                 alertWarning("Please enter an amount greater than or equal to $1");
                                 break;
+                            case 405:
+                                alertWarning("Method not allowed");
+                                break;
+                            case 501:
+                                alertWarning("You need to recharge your account at least once before" +
+                                    " transferring credits");
+                                break;
                             case 503:
                                 alertWarning("You don't have enough credits to process this transaction");
                                 break;
