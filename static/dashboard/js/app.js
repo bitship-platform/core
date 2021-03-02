@@ -524,43 +524,45 @@ $(document).ready(function() {
         let msg = document.getElementById("formGroupExampleInput4").value;
         const csrftoken = getCookie('csrftoken');
 
-        if (account_no===account_no_conf){
-            if (!isNaN(account_no)){
-            $.ajax({
-                url: `/transactions/`,
-                headers: {'X-CSRFToken': csrftoken},
-                type: 'POST',
-                data: {account_no: account_no, amount: amount, msg: msg},
-                success:function (data)
-                {
-                  $('#transactionModalCenter').modal('toggle');
-                  $('#transactionRefreshSection').html(data);
-                  $("#transactionButton").prop('disabled', false);
-                },
-                error: function (response) {
-                    $("#transactionButton").prop('disabled', false);
-                    switch (response.status) {
-                        case 404:
-                            alertInfo("User not found");
-                            break;
-                        case 403:
-                            alertWarning("Please enter an amount greater than or equal to $1");
-                            break;
-                        case 503:
-                            alertWarning("You don't have enough credits to process this transaction");
-                            break;
-                        default:
-                            alertDanger("Something went wrong.");
-                    }
-                },
-            });
-            }
-            else{
-                alertWarning("Enter a valid account no")
-            }
+        if (account_no!==""){
+            if (account_no===account_no_conf){
+                if (!isNaN(account_no)){
+                $.ajax({
+                    url: `/transactions/`,
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'POST',
+                    data: {account_no: account_no, amount: amount, msg: msg},
+                    success:function (data)
+                    {
+                      $('#transactionModalCenter').modal('toggle');
+                      $('#transactionRefreshSection').html(data);
+                      $("#transactionButton").prop('disabled', false);
+                    },
+                    error: function (response) {
+                        $("#transactionButton").prop('disabled', false);
+                        switch (response.status) {
+                            case 404:
+                                alertInfo("User not found");
+                                break;
+                            case 403:
+                                alertWarning("Please enter an amount greater than or equal to $1");
+                                break;
+                            case 503:
+                                alertWarning("You don't have enough credits to process this transaction");
+                                break;
+                            default:
+                                alertDanger("Something went wrong.");
+                        }
+                    },
+                });
+                }
+                else{
+                    alertWarning("Enter a valid account no")
+                }
 
-        }else{
-            alertWarning("Account id doesn't match");
+            }else{
+                alertWarning("Account id doesn't match");
+            }
         }
     });
 
@@ -586,6 +588,10 @@ $(document).ready(function() {
                 switch (response.status) {
                     case 400:
                         alertWarning("OTP does not match, Transaction failed.");
+                        $('#transactionModalCenter').modal('toggle');
+                        break;
+                    case 503:
+                        alertWarning("You don't have enough credits to process this transaction");
                         $('#transactionModalCenter').modal('toggle');
                         break;
                     default:
@@ -641,6 +647,29 @@ $(document).ready(function() {
             },
         });
 
+    });
+
+    $(document).on('click','#transactionTriggerButton', function(e) {
+
+        let transaction_id = $('input[name="transaction_id"]').val();
+        $("#resendOtpButton").prop('disabled', true);
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/transactions/utility/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {transaction_id: transaction_id},
+            success:function (data)
+            {
+              $("#transactionRefreshSection").html(data);
+            },
+            error: function (response) {
+                switch (response.status) {
+                    default:
+                        alertDanger("Something went wrong.");
+                }
+            },
+        });
     });
 
 });

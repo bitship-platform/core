@@ -561,12 +561,14 @@ class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
                 transaction.otp = otp
                 transaction.last_otp_generation_time = datetime.now(timezone.utc)
                 transaction.save()
-                msg = f"Hi {transaction.recipient.user.first_name},\nPlease copy paste the OTP below to authorize the transaction " \
-                      f"of ${transaction.amount} to {transaction.recipient.user.first_name} #{transaction.recipient.user.customer.tag}\n\n" \
+                msg = f"Hi {transaction.patron.user.first_name}," \
+                      f"\nPlease copy paste the OTP below to authorize the transaction " \
+                      f"of ${transaction.amount} to {transaction.recipient.user.first_name} " \
+                      f"#{transaction.recipient.tag}\n\n" \
                       f"{otp}\n\n" \
                       f"Please do not share this otp with anyone\n" \
                       f"Thank you!\n~Novanodes"
-                EmailHandler.send_email(transaction.recipient.user.email,
+                EmailHandler.send_email(transaction.patron.user.email,
                                         "OTP for transaction",
                                         msg=msg)
                 return self.json_response_200()
@@ -574,6 +576,17 @@ class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
                 return self.json_response_503()
         except Transaction.DoesNotExist:
             return self.json_response_500()
+
+    def put(self, request):
+        data = QueryDict(request.body)
+        transaction_id = data.get("transaction_id")
+        try:
+            transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
+            return render(request, "dashboard/transaction_refresh.html", {"recipient": transaction.recipient,
+                                                                          "transaction_id": transaction.id},
+                          status=200)
+        except Transaction.DoesNotExist:
+            return self.json_response_500
 
 
 class TransactionView(LoginRequiredMixin, View, ResponseMixin):
@@ -622,13 +635,18 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
         try:
             transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
             if otp == transaction.otp:
-                request.user.customer.credits -= transaction.amount
-                transaction.recipient.credits += transaction.amount
-                transaction.status = "fa-check-circle text-success"
-                transaction.save()
-                request.user.customer.save()
-                transaction.recipient.save()
-                return render(request, "dashboard/pending_transactions.html", status=200)
+                if transaction.amount > request.user.customer.credits:
+                    transaction.status = "fa-times-circle text-danger"
+                    transaction.save()
+                    return self.json_response_503()
+                else:
+                    request.user.customer.credits -= transaction.amount
+                    transaction.recipient.credits += transaction.amount
+                    transaction.status = "fa-check-circle text-success"
+                    transaction.save()
+                    request.user.customer.save()
+                    transaction.recipient.save()
+                    return render(request, "dashboard/pending_transactions.html", status=200)
             else:
                 transaction.status = "fa-times-circle text-danger"
                 transaction.failure_message = "OTP mismatch"

@@ -15,7 +15,7 @@
       <table class="table align-items-center table-flush">
         <thead class="thead-light">
           <tr>
-            <th scope="col">Transaction id</th>
+            <th scope="col">Creation time</th>
             <th scope="col">Amount</th>
             <th scope="col">Recipient</th>
             <th scope="col">Manage</th>
@@ -25,7 +25,7 @@
         {% for transaction in request.user.customer.pending_transactions %}
           <tr>
             <th scope="row">
-                {{transaction.id}}
+                {{transaction.time}}
             </th>
             <td>
                 {{ transaction.amount}}
@@ -34,7 +34,7 @@
               {{ transaction.recipient.user.first_name }} #{{ transaction.recipient.user.customer.tag }}
             </td>
             <td>
-                <button type="button" onclick="setTransactionID('{{ transaction.id }}')" class="btn btn-sm btn-outline-success text-darker" data-toggle="modal" data-target="#transactionModalCenter">Authorize</button>
+                <button type="button" onclick="setTransactionID('{{ transaction.id }}')" class="btn btn-sm btn-outline-success text-darker" id="transactionTriggerButton" data-toggle="modal" data-target="#transactionModalCenter">Authorize</button>
                 <button type="button" onclick="cancelTransaction('{{ transaction.id }}')" class="btn btn-sm btn-outline-danger text-darker" data-toggle="modal" data-target="#cancelTransactionModalCenter">Cancel</button>
             </td>
           </tr>
