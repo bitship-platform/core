@@ -305,3 +305,5 @@ class Transaction(models.Model):
     amount = models.FloatField(default=0)
     status = models.CharField(max_length=30, choices=TRANSACTION_STATUS)
     failure_message = models.CharField(max_length=120, null=True, blank=True)
+    msg = models.TextField(null=True, blank=True)
+    otp = models.CharField(max_length=6, null=True, blank=True)
