@@ -204,12 +204,13 @@
                 </button>
               </div>
               <div class="modal-body">
-              <div class="card card-profile shadow mb-2">
+              <div class="card card-profile shadow mb-2" id="transactionRefreshSection">
                 <div class="row justify-content-center">
                   <div class="col-lg-3 order-lg-2">
                     <div class="card-profile-image">
                       <a href="#">
                         <img src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
+                        <input type="hidden" name="transaction_id">
                       </a>
                     </div>
                   </div>
@@ -234,24 +235,16 @@
                 </style>
                 <label for="formGroupExampleInput">Enter the OTP</label> <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="A One Time Password (OTP) is sent to your email and your discord account (if you are a member of the support server)"></i>
                 <input type="text" class="form-control" id="formGroupExampleInput"  name="transaction_otp" placeholder="XXXXXX">
-                <input type="hidden" name="transaction_id">
               </div>
               <button class="btn btn-sm btn-outline-primary" id="resendOtpButton">Resend OTP</button>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-default">Confirm</button>
+                <button type="button" class="btn btn-outline-default" id="transactionAuthorizationButton">Confirm</button>
               </div>
             </div>
           </div>
         </div>
-        <script>
-            window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove();
-                });
-            }, 2000);
-        </script>
       {% include "dashboard/includes/footer.html" %}
 
     </div>

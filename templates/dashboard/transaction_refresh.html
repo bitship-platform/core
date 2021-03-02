@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="row justify-content-center">
+  <div class="col-lg-3 order-lg-2">
+    <div class="card-profile-image">
+      <a href="#">
+        <img src="{{ recipient.get_avatar_url }}" class="rounded-circle">
+        <input type="hidden" name="transaction_id" value="{{ transaction_id }}">
+      </a>
+    </div>
+  </div>
+</div>
+<div class="card-body pt-0 pt-md-4">
+  <div class="text-center">
+    <h3>.</h3>
+    <div class="h5 font-weight-300">
+      .
+    </div>
+    <div class="h5 mt-4">
+      <i class="ni business_briefcase-24 mr-2"></i>Discord: {{ recipient.user.first_name }} #{{ recipient.tag }}
+    </div>
+  </div>
+</div>
