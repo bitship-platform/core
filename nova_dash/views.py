@@ -574,7 +574,7 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
                 msg=msg,
                 otp=otp
             )
-            msg = f"Hi {request.user.first_name},\nPlease copy paste the OTP below to authorize the transaction" \
+            msg = f"Hi {request.user.first_name},\nPlease copy paste the OTP below to authorize the transaction " \
                   f"of ${amount} to {recipient.user.first_name} #{recipient.user.customer.tag}\n\n" \
                   f"{otp}\n\n" \
                   f"Please do not share this otp with anyone\n" \
@@ -601,11 +601,21 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
                 transaction.save()
                 request.user.customer.save()
                 transaction.recipient.save()
-                return self.json_response_200()
+                return render(request, "dashboard/pending_transactions.html", status=200)
             else:
                 transaction.status = "fa-times-circle text-danger"
                 transaction.failure_message = "OTP mismatch"
                 transaction.save()
                 return self.json_response_400()
+        except Transaction.DoesNotExist:
+            return self.json_response_500()
+
+    def delete(self, request):
+        transaction_id = request.GET.get("transaction_id")
+        try:
+            transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
+            transaction.status = "fa-ban text-danger"
+            transaction.save()
+            return render(request, "dashboard/pending_transactions.html", status=200)
         except Transaction.DoesNotExist:
             return self.json_response_500()

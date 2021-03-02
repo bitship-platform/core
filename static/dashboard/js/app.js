@@ -579,6 +579,7 @@ $(document).ready(function() {
             {
               $("#transactionAuthorizationButton").prop('disabled', false);
               $('#transactionModalCenter').modal('toggle');
+              $('#pendingTransactionRefresh').html(data)
                 alertSuccess("Transaction is successful!")
             },
             error: function (response) {
@@ -593,6 +594,29 @@ $(document).ready(function() {
                 }
             },
         });
+    });
+
+    $(document).on('click','#cancelTransactionButton', function(e) {
+        let transaction_id =  $('input[name="cancel_transaction"]').val();
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/transactions/`+ '?' + $.param({"transaction_id": transaction_id}),
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'DELETE',
+            success:function (data)
+            {
+              $('#cancelTransactionModalCenter').modal('toggle');
+              $('#pendingTransactionRefresh').html(data)
+                alertSuccess("Transaction canceled successfully!")
+            },
+            error: function (response) {
+                switch (response.status) {
+                    default:
+                        alertDanger("Something went wrong.");
+                }
+            },
+        });
+
     });
 
 });
