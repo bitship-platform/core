@@ -1,5 +1,6 @@
 import os
 import json
+import uuid
 import tarfile
 from datetime import datetime, timezone
 
@@ -16,8 +17,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, QueryDict, HttpResponseForbidden, JsonResponse
 
 
-from utils.handlers import AlertHandler as alert, PaypalHandler
-from .models import Address, App, Folder, File, Order
+from utils.handlers import AlertHandler as alert, PaypalHandler, EmailHandler
+from .models import Address, App, Folder, File, Order, Customer, Transaction
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer, bpd_api
@@ -381,7 +382,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         return render(request, 'dashboard/filesection.html', self.context)
 
 
-class Transaction(LoginRequiredMixin, View, ResponseMixin):
+class PaypalTransaction(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
         data = json.loads(request.body)
@@ -556,7 +557,55 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
         account_no = request.POST.get("account_no")
-        amount = request.POST.get("amount")
+        amount = float(request.POST.get("amount"))
         msg = request.POST.get("msg")
-        print(account_no, amount, msg)
-        return self.json_response_200
+        if amount < 1:
+            return self.json_response_403()
+        if amount > request.user.customer.credits:
+            return self.json_response_503()
+        try:
+            recipient = Customer.objects.get(id=account_no)
+            otp = uuid.uuid4().hex.upper()[0:6]
+            transaction = Transaction.objects.create(
+                patron=request.user.customer,
+                recipient=recipient,
+                amount=amount,
+                status="fa-clock text-warning",
+                msg=msg,
+                otp=otp
+            )
+            msg = f"Hi {request.user.first_name},\nPlease copy paste the OTP below to authorize the transaction" \
+                  f"of ${amount} to {recipient.user.first_name} #{recipient.user.customer.tag}\n\n" \
+                  f"{otp}\n\n" \
+                  f"Please do not share this otp with anyone\n" \
+                  f"Thank you!\n~Novanodes"
+            EmailHandler.send_email(request.user.email,
+                                    "OTP for transaction",
+                                    msg=msg)
+            return render(request, "dashboard/transaction_refresh.html", {"recipient": recipient,
+                                                                          "transaction_id": transaction.id},
+                          status=200)
+        except Customer.DoesNotExist:
+            return self.json_response_404()
+
+    def put(self, request):
+        data = QueryDict(request.body)
+        transaction_id = data.get("transaction_id")
+        otp = data.get("otp")
+        try:
+            transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
+            if otp == transaction.otp:
+                request.user.customer.credits -= transaction.amount
+                transaction.recipient.credits += transaction.amount
+                transaction.status = "fa-check-circle text-success"
+                transaction.save()
+                request.user.customer.save()
+                transaction.recipient.save()
+                return self.json_response_200()
+            else:
+                transaction.status = "fa-times-circle text-danger"
+                transaction.failure_message = "OTP mismatch"
+                transaction.save()
+                return self.json_response_400()
+        except Transaction.DoesNotExist:
+            return self.json_response_500()
