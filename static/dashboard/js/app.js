@@ -517,10 +517,11 @@ $(document).ready(function() {
 
     $(document).on('click','#transactionButton', function(e) {
         e.preventDefault();
+        $("#transactionButton").prop('disabled', true);
         let account_no = $('input[name="account_id"]').val();
         let account_no_conf = $('input[name="account_id_conf"]').val();
         let amount = $('input[name="transaction_amount"]').val();
-        let msg = $('input[name="transaction_msg"]').val();
+        let msg = document.getElementById("formGroupExampleInput4").value;
         const csrftoken = getCookie('csrftoken');
 
         if (account_no===account_no_conf){
@@ -533,12 +534,20 @@ $(document).ready(function() {
                 success:function (data)
                 {
                   $('#transactionModalCenter').modal('toggle');
-                  // $('#refreshSection').html(data);
+                  $('#transactionRefreshSection').html(data);
+                  $("#transactionButton").prop('disabled', false);
                 },
                 error: function (response) {
+                    $("#transactionButton").prop('disabled', false);
                     switch (response.status) {
                         case 404:
-                            alertWarning("User not found");
+                            alertInfo("User not found");
+                            break;
+                        case 403:
+                            alertWarning("Please enter an amount greater than or equal to $1");
+                            break;
+                        case 503:
+                            alertWarning("You don't have enough credits to process this transaction");
                             break;
                         default:
                             alertDanger("Something went wrong.");
@@ -553,6 +562,37 @@ $(document).ready(function() {
         }else{
             alertWarning("Account id doesn't match");
         }
+    });
+
+    $(document).on('click','#transactionAuthorizationButton', function(e) {
+        console.log("clicked");
+        let transaction_id = $('input[name="transaction_id"]').val();
+        let otp = $('input[name="transaction_otp"]').val();
+        $("#transactionAuthorizationButton").prop('disabled', true);
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/transactions/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'PUT',
+            data: {transaction_id: transaction_id, otp: otp},
+            success:function (data)
+            {
+              $("#transactionAuthorizationButton").prop('disabled', false);
+              $('#transactionModalCenter').modal('toggle');
+                alertSuccess("Transaction is successful!")
+            },
+            error: function (response) {
+                $("#transactionAuthorizationButton").prop('disabled', false);
+                switch (response.status) {
+                    case 400:
+                        alertWarning("OTP does not match, Transaction failed.");
+                        $('#transactionModalCenter').modal('toggle');
+                        break;
+                    default:
+                        alertDanger("Something went wrong.");
+                }
+            },
+        });
     });
 
 });
