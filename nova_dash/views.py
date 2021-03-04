@@ -668,3 +668,9 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
             return render(request, "dashboard/pending_transactions.html", status=200)
         except Transaction.DoesNotExist:
             return self.json_response_500()
+
+
+class PromoCodeView(LoginRequiredMixin, View, ResponseMixin):
+
+    def post(self, request):
+        return render(request, "dashboard/stats_refresh.html", status=200)
