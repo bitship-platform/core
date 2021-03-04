@@ -679,4 +679,28 @@ $(document).ready(function() {
         });
     });
 
+
+    $(document).on('click','#promocodeButton', function(e) {
+
+        let promo_code = $('input[name="promo_code"]').val();
+        $("#promocodeButton").prop('disabled', true);
+        const csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: `/promocode/`,
+            headers: {'X-CSRFToken': csrftoken},
+            type: 'POST',
+            data: {promo_code: promo_code},
+            success:function (data)
+            {
+              $("#statsRefreshSection").html(data);
+            },
+            error:function (resp) {
+                let r = jQuery.parseJSON(resp.responseText);
+                alertInfo(r["message"])
+            },
+        });
+        $("#promocodeButton").prop('disabled', false);
+    });
+
+
 });
