@@ -308,3 +308,19 @@ class Transaction(models.Model):
     msg = models.TextField(null=True, blank=True)
     otp = models.CharField(max_length=6, null=True, blank=True)
     last_otp_generation_time = models.DateTimeField(null=True, blank=True)
+
+
+class Offer(models.Model):
+    id = models.UUIDField(default=uuid.uuid4(), primary_key=True)
+    name = models.CharField(max_length=30)
+    description = models.TextField(blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    expiry_date = models.DateTimeField()
+    coin_reward = models.IntegerField(default=0)
+    credit_reward = models.FloatField(default=0.0)
+
+
+class Promo(models.Model):
+    code = models.CharField(max_length=20, primary_key=True)
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
+    expiry_date = models.DateTimeField()
