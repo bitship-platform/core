@@ -693,10 +693,22 @@ $(document).ready(function() {
             success:function (data)
             {
               $("#statsRefreshSection").html(data);
+              alertSuccess("Promocode successfully applied!")
             },
             error:function (resp) {
-                let r = jQuery.parseJSON(resp.responseText);
-                alertInfo(r["message"])
+                switch (resp.status) {
+                    case 403:
+                        alertWarning("This promocode/offer has expired");
+                        break;
+                    case 404:
+                        alertWarning("Promocode not found");
+                        break;
+                    case 503:
+                        alertWarning("You have already claimed this offer");
+                        break;
+                    default:
+                        alertDanger("Something went wrong.");
+                }
             },
         });
         $("#promocodeButton").prop('disabled', false);

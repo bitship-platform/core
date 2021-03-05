@@ -18,7 +18,7 @@ from django.http import HttpResponse, QueryDict, HttpResponseForbidden, JsonResp
 
 
 from utils.handlers import AlertHandler as alert, PaypalHandler, EmailHandler
-from .models import Address, App, Folder, File, Order, Customer, Transaction
+from .models import Address, App, Folder, File, Order, Customer, Transaction, Offer, Promo
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer, bpd_api
@@ -673,4 +673,20 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
 class PromoCodeView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
-        return render(request, "dashboard/stats_refresh.html", status=200)
+        code = request.POST.get("promo_code")
+        print(code)
+        try:
+            promo_code = Promo.objects.get(code=code)
+            if promo_code.offer not in request.user.customer.applied_offers.all():
+                if not promo_code.expired:
+                    if not promo_code.offer.expired:
+                        request.user.customer.credits += promo_code.offer.credit_reward
+                        request.user.customer.coins += promo_code.offer.coin_reward
+                        request.user.customer.applied_offers.add(promo_code.offer)
+                        request.user.customer.save()
+                        return render(request, "dashboard/stats_refresh.html", status=200)
+                    return self.json_response_403()
+                return self.json_response_403()
+            return self.json_response_503()
+        except Promo.DoesNotExist:
+            return self.json_response_404()

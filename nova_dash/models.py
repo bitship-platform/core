@@ -1,9 +1,9 @@
-
+import uuid
+from datetime import datetime, timezone
 from itertools import chain
 
 from django.db import models
 from django.contrib.auth.models import User
-import uuid
 from utils.misc import PythonAppConfig
 
 
@@ -21,7 +21,7 @@ class Customer(models.Model):
     coins = models.IntegerField(default=0)
     coins_redeemed = models.IntegerField(default=0)
     banned = models.BooleanField(default=False)
-    applied_offers = models.ManyToManyField("Offer", null=True, blank=True)
+    applied_offers = models.ManyToManyField("Offer", blank=True)
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -320,8 +320,20 @@ class Offer(models.Model):
     coin_reward = models.IntegerField(default=0)
     credit_reward = models.FloatField(default=0.0)
 
+    @property
+    def expired(self):
+        if self.expiry_date > datetime.now(timezone.utc):
+            return True
+        return False
+
 
 class Promo(models.Model):
     code = models.CharField(max_length=20, primary_key=True)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
     expiry_date = models.DateTimeField()
+
+    @property
+    def expired(self):
+        if self.expiry_date > datetime.now(timezone.utc):
+            return True
+        return False
