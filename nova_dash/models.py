@@ -21,6 +21,7 @@ class Customer(models.Model):
     coins = models.IntegerField(default=0)
     coins_redeemed = models.IntegerField(default=0)
     banned = models.BooleanField(default=False)
+    applied_offers = models.ManyToManyField("Offer", null=True, blank=True)
 
     def get_avatar_url(self):
         if self.avatar is not None:
