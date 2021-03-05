@@ -674,7 +674,6 @@ class PromoCodeView(LoginRequiredMixin, View, ResponseMixin):
 
     def post(self, request):
         code = request.POST.get("promo_code")
-        print(code)
         try:
             promo_code = Promo.objects.get(code=code)
             if promo_code.offer not in request.user.customer.applied_offers.all():
