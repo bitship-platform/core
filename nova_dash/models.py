@@ -322,7 +322,7 @@ class Offer(models.Model):
 
     @property
     def expired(self):
-        if self.expiry_date > datetime.now(timezone.utc):
+        if datetime.now(timezone.utc) > self.expiry_date:
             return True
         return False
 
@@ -334,6 +334,6 @@ class Promo(models.Model):
 
     @property
     def expired(self):
-        if self.expiry_date > datetime.now(timezone.utc):
+        if datetime.now(timezone.utc) > self.expiry_date:
             return True
         return False
