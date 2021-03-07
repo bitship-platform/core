@@ -718,4 +718,39 @@ $(document).ready(function() {
     });
 
 
+    $(document).on('click','#exchangeCoinBtn', function(e) {
+
+        let coins = $('input[name="coinInput"]').val();
+        if(coins>=10){
+            $("#exchangeCoinBtn").prop('disabled', true);
+            const csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: `/exchange/`,
+                headers: {'X-CSRFToken': csrftoken},
+                type: 'POST',
+                data: {coins: coins},
+                success:function (data)
+                {
+                  $("#statsRefreshSection").html(data);
+                  alertSuccess("Coins successfully exchanged!")
+                },
+                error:function (resp) {
+                    switch (resp.status) {
+                        case 503:
+                            alertWarning("You don't have enough coins to exchange!!!");
+                            break;
+                        default:
+                            alertDanger("Something went wrong.");
+                    }
+                },
+            });
+            $("#exchangeCoinBtn").prop('disabled', false);
+        }
+        else {
+            alertWarning("The value should be 10 or higher");
+        }
+
+    });
+
+
 });

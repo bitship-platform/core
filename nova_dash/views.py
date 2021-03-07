@@ -676,16 +676,38 @@ class PromoCodeView(LoginRequiredMixin, View, ResponseMixin):
         code = request.POST.get("promo_code")
         try:
             promo_code = Promo.objects.get(code=code)
-            if promo_code.offer not in request.user.customer.applied_offers.all():
+            customer = request.user.customer
+            if promo_code.offer not in customer.applied_offers.all():
                 if not promo_code.expired:
                     if not promo_code.offer.expired:
-                        request.user.customer.credits += promo_code.offer.credit_reward
-                        request.user.customer.coins += promo_code.offer.coin_reward
-                        request.user.customer.applied_offers.add(promo_code.offer)
-                        request.user.customer.save()
+                        customer.credits += promo_code.offer.credit_reward
+                        customer.coins += promo_code.offer.coin_reward
+                        customer.applied_offers.add(promo_code.offer)
+                        customer.save()
                         return render(request, "dashboard/stats_refresh.html", status=200)
                     return self.json_response_403()
                 return self.json_response_403()
             return self.json_response_503()
         except Promo.DoesNotExist:
             return self.json_response_404()
+
+
+class ExchangeView(LoginRequiredMixin, View, ResponseMixin):
+
+    def post(self, request):
+        coins = int(request.POST.get("coins"))
+        if coins > request.user.customer.coins:
+            return self.json_response_503()
+        customer = request.user.customer
+        customer.coins -= coins
+        customer.credits += coins * 0.12
+        customer.coins_redeemed += coins
+        customer.save()
+        Order.objects.create(customer=customer,
+                             transaction_amount=coins * 0.12,
+                             credit=True,
+                             create_time=datetime.now(timezone.utc),
+                             update_time=datetime.now(timezone.utc),
+                             service="Coin Exchange",
+                             status="fa-check-circle text-success")
+        return render(request, "dashboard/stats_refresh.html", status=200)

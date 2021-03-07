@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, ManageView, SettingView, media_access,\
     PaypalTransaction, TarballDownload, AppManageView, set_app_config, BackupDownload, ActivityView, TransactionView, \
-    TransactionUtility, PromoCodeView
+    TransactionUtility, PromoCodeView, ExchangeView
 from django.conf.urls import url
 urlpatterns = [
 
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^transactions/utility/', TransactionUtility.as_view(), name='transaction_utility'),
     url(r'^transactions/', TransactionView.as_view(), name='transactions'),
     url(r'^promocode/', PromoCodeView.as_view(), name='promo_code'),
+    url(r'^exchange/', ExchangeView.as_view(), name='exchange'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),
     url(r'^media/(?P<path>.*)', media_access, name='media'),
