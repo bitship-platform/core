@@ -704,7 +704,7 @@ class ExchangeView(LoginRequiredMixin, View, ResponseMixin):
         customer.coins_redeemed += coins
         customer.save()
         Order.objects.create(customer=customer,
-                             transaction_amount=coins * 0.12,
+                             transaction_amount=format(coins * 0.12, '.2f'),
                              credit=True,
                              create_time=datetime.now(timezone.utc),
                              update_time=datetime.now(timezone.utc),

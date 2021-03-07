@@ -128,6 +128,14 @@
                               <dd class="col-sm-9">
                                 ${{ request.user.customer.credits_spend }}
                               </dd>
+                              <dt class="col-sm-3">Coins: </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.customer.coins }}c
+                              </dd>
+                              <dt class="col-sm-3">Coins redeemed: </dt>
+                              <dd class="col-sm-9">
+                                {{ request.user.customer.coins_redeemed }}c
+                              </dd>
                               <dt class="col-sm-3">Last login: </dt>
                               <dd class="col-sm-9">
                                 {{ request.user.last_login }}
