@@ -52,7 +52,7 @@
                       {% endif %}
                     </th>
                     <td>
-                      <b>[{{ order.service }}]</b> {{ order.description }}
+                      <b>[{{ order.service }}]</b> {% if order.description %}{{ order.description }} {% endif %}
                     </td>
                     <td>
                       {{ order.update_time }}
