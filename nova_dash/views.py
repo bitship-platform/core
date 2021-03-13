@@ -114,16 +114,21 @@ class LoginView(View):
             self.user_json = oauth.get_user_json(self.access_token)
             self.user_id = self.user_json.get('id')
             self.email = self.user_json.get('email')
-        if self.email is not None:
-            password = hashing.hashed_user_pass(self.user_id, self.email)
-            user = authenticate(username=self.user_id, password=password)
-            if user is None:
-                customer = create_customer(self.user_json, password)
-                login(request, customer.user)
+            if self.email is not None:
+                password = hashing.hashed_user_pass(self.user_id, self.email)
+                user = authenticate(username=self.user_id, password=password)
+                if user is None:
+                    customer = create_customer(self.user_json, password)
+                    login(request, customer.user)
+                elif user.customer.banned:
+                    msg = "Your account has been banned. Contact admin if this was a mistake."
+                    return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
+                else:
+                    login(request, user)
+                    update_customer(user_json=self.user_json)
+                return redirect("/panel")
             else:
-                login(request, user)
-                update_customer(user_json=self.user_json)
-            return redirect("/panel")
+                msg = "Please add an email to your discord account and try again."
         return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
 
 

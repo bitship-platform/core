@@ -21,15 +21,14 @@
               </div>
             </div>
             <div class="card-body px-lg-3 py-lg-3">
-              <div class="text-center text-muted mb-4">
-
-                {% if msg %}
-                  <p>{{ msg }}</p>
-                {% endif %}
-              </div>
                 <div class="text-center">
                     <a href="{{ Oauth.discord_login_url }}"><button type="submit" class="btn btn-outline-primary my-4"><i class="fab fa-discord"></i> Sign-in with discord</button></a>
                 </div>
+              <div class="text-center text-red mb-4">
+                {% if msg %}
+                  <p style="font-size: 14px;">{{ msg }}</p>
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="row mt-3">
