@@ -399,6 +399,8 @@ class PaypalTransaction(LoginRequiredMixin, View, ResponseMixin):
         if status == "COMPLETED":
             status = "fa-check-circle text-success"
             customer.credits += float(amount)
+            if not customer.verified:
+                customer.verified = True
             customer.save()
         elif status == "PAYER_ACTION_REQUIRED":
             status = "fa-clock text-warning"

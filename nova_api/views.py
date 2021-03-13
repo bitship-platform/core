@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from utils.mixins import ResponseMixin
-from nova_dash.models import App, Order
+from nova_dash.models import App, Order, Customer
 from utils.handlers import EmailHandler
-from .serializers import AppStatusSerializer
+from .serializers import AppStatusSerializer, CustomerDataSerializer, CustomerPutSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timezone
@@ -102,3 +102,26 @@ class AppConfirmationView(APIView, ResponseMixin):
             except App.DoesNotExist:
                 return self.json_response_404()
         return self.json_response_400()
+
+
+class CustomerDataView(APIView, ResponseMixin):
+    model = Customer
+    serializer = CustomerDataSerializer
+
+    def get(self, request, c_id=None):
+        if c_id:
+            customer = get_object_or_404(self.model, id=c_id)
+            serializer = self.serializer(customer)
+            return Response(serializer.data, status=200)
+        serializer = self.serializer(Customer.objects.all(), many=True)
+        return Response(serializer.data, status=200)
+
+    def put(self, request, c_id):
+        customer = get_object_or_404(self.model, id=c_id)
+        serializer = CustomerPutSerializer(customer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        return self.json_response_400()
+
+

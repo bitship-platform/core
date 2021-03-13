@@ -33,6 +33,10 @@ class Customer(models.Model):
         return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger", "bg-warning"]))
 
     @property
+    def running_apps(self):
+        return len(self.app_set.filter(status__in=["bg-success", "bg-danger"]))
+
+    @property
     def terminated_apps(self):
         return self.settings.display_terminated_apps
 
