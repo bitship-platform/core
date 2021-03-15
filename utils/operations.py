@@ -9,6 +9,13 @@ from django.conf import settings
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
 
 
+def remove_from_storage(path):
+    try:
+        os.remove(os.path.join(settings.MEDIA_ROOT, path))
+    except Exception as E:
+        pass
+
+
 def create_customer(user_json: dict, password: str):
     """
     creates new user if the user is not in the database.

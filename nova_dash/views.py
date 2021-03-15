@@ -21,7 +21,7 @@ from utils.handlers import AlertHandler as alert, PaypalHandler, EmailHandler
 from .models import Address, App, Folder, File, Order, Customer, Transaction, Offer, Promo
 from utils.hashing import Hasher
 from utils.oauth import Oauth
-from utils.operations import create_customer, update_customer, bpd_api
+from utils.operations import create_customer, update_customer, bpd_api, remove_from_storage
 from utils.mixins import ResponseMixin
 from utils.misc import sample_app_json
 
@@ -540,11 +540,17 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             app = App.objects.get(id=int(app_id))
             if app.owner != request.user.customer:
                 return self.json_response_401()
+            remove_from_storage(f"{request.user.username}/{app.folder.name}")
+            remove_from_storage(f"{request.user.username}/{app.unique_id}.tar.gz")
+            remove_from_storage(f"{request.user.username}/{app.unique_id}_backup.zip")
             app.folder.delete()
             if app.get_status_display() != "Not Started":
                 bpd_api.terminate(str(app.unique_id))
             app.status = "bg-dark"
             app.cpu = 0
+            app.ram = 0
+            app.glacier = 0
+            app.disk = 0
             app.save()
         except App.DoesNotExist:
             return self.json_response_500()
