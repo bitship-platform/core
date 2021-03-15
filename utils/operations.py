@@ -1,15 +1,24 @@
+import os
+import shutil
+
 from django.contrib.auth.models import User
 from nova_dash.models import Customer, Address, Folder, App, File, Setting
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-import os
 from utils.handlers import BPDAPIHandler
 from django.conf import settings
 
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
 
 
-def remove_from_storage(path):
+def remove_dir_from_storage(path):
+    try:
+        shutil.rmtree(os.path.join(settings.MEDIA_ROOT, path))
+    except Exception as E:
+        pass
+
+
+def remove_file_from_storage(path):
     try:
         os.remove(os.path.join(settings.MEDIA_ROOT, path))
     except Exception as E:
