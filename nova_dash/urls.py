@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^panel/', DashView.as_view(), name="panel"),
     url(r'^billing/process/', PaypalTransaction.as_view(), name='billing_process'),
     url(r'^billing/', BillingView.as_view(), name='billing'),
+    url(r'^manage/app/backup/(?P<app_id>.*)', BackupDownload.as_view(), name='backup'),
     url(r'^manage/(?P<app_id>[0-9]+)/(?P<folder_id>.+)', ManageView.as_view(), name='browse'),
     url(r'^manage/(?P<app_id>[0-9]+)', ManageView.as_view(), name='manage'),
     url(r'^manage/', ManageView.as_view(), name='rename'),
@@ -25,7 +26,6 @@ urlpatterns = [
     url(r'^app/manage/', AppManageView.as_view(), name="app_manage"),
     url(r'^app/config/', set_app_config, name="app_config"),
     url(r'^app/tarball/(?P<uu_id>.*)', TarballDownload.as_view(), name='app'),
-    url(r'^app/backup/(?P<app_id>.*)', BackupDownload.as_view(), name='backup'),
 ]
 
 # urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

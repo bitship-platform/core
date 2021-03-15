@@ -91,6 +91,7 @@ class App(models.Model):
     network = models.IntegerField(default=0, null=True)
     glacier = models.IntegerField(default=0, null=True)
     config = models.JSONField(default=dict)
+    last_deployment_timestamp = models.DateTimeField(null=True, blank=True)
 
     @property
     def config_options(self):
