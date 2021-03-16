@@ -614,7 +614,7 @@ class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
                                                                           "transaction_id": transaction.id},
                           status=200)
         except Transaction.DoesNotExist:
-            return self.json_response_500
+            return self.json_response_500()
 
 
 class TransactionView(LoginRequiredMixin, View, ResponseMixin):
