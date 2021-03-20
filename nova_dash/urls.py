@@ -1,7 +1,9 @@
 from django.urls import path, re_path, include
-from .views import DashView, BillingView, LoginView, LogoutView, ManageView, SettingView, media_access,\
-    PaypalTransaction, TarballDownload, AppManageView, set_app_config, BackupDownload, ActivityView, TransactionView, \
+from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
+    PaypalTransaction, AppManageView, set_app_config, ActivityView, TransactionView, \
     TransactionUtility, PromoCodeView, ExchangeView
+from .app_views import ManageView
+from .utility import media_access, TarballDownload, BackupDownload
 from django.conf.urls import url
 urlpatterns = [
 

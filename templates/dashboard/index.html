@@ -32,9 +32,9 @@
                       <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Launch</button>
                       <div class="dropdown-menu">
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Python')"><i class="fab fa-python"></i>Python</a>
-{#                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Node.js')"><i class="fab fa-node-js"></i>Node.js</a>#}
+                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Node.js')"><i class="fab fa-node-js"></i>Node.js</a>
 {#                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Ruby')"><i class="ni ni-diamond"></i>Ruby</a>#}
-                           <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="right" title="Currently Unavailable"><i class="fab fa-node-js"></i>Node.js</a>
+{#                           <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="right" title="Currently Unavailable"><i class="fab fa-node-js"></i>Node.js</a>#}
                            <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="right" title="Currently Unavailable"><i class="ni ni-diamond"></i>Ruby</a>
                       </div>
                   </div>
@@ -112,11 +112,13 @@
                   <tr>
                     <th scope="row">
                       <div class="media align-items-center">
-                        <a href="#" class="avatar rounded-circle mr-3 bg-dark">
+                        <a {% if not app.terminated %} href="/manage/{{ app.pk }}" {% endif %} class="avatar rounded-circle mr-3 bg-dark">
                           <img alt="Image placeholder" src="{{ app.stack }}">
                         </a>
                         <div class="media-body">
-                          <span class="mb-0 text-sm">{{ app.name }}</span>
+                          <a {% if not app.terminated %} href="/manage/{{ app.pk }}" {% endif %}>
+                              <span class="mb-0 text-sm">{{ app.name }}</span>
+                          </a>
                         </div>
                     </th>
                       <td>

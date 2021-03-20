@@ -1,8 +1,6 @@
 import os
 import json
 import uuid
-import tarfile
-from zipfile import ZipFile
 from datetime import datetime, timezone
 
 from django.views import View
@@ -15,7 +13,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, QueryDict, HttpResponseForbidden, JsonResponse
+from django.http import QueryDict, JsonResponse
 
 
 from utils.handlers import AlertHandler as alert, PaypalHandler, EmailHandler
@@ -33,75 +31,6 @@ paypal = PaypalHandler(settings.PAYPAL_ID, settings.PAYPAL_SECRET)
 
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
-
-
-def media_access(request, path):
-    access_granted = False
-    user = request.user
-    if user.is_authenticated:
-        if user.is_superuser:
-            # If admin, everything is granted
-            access_granted = True
-        else:
-            file = File.objects.filter(item__exact=path)[0]
-            if file.folder.owner == request.user.customer:
-                access_granted = True
-    if access_granted:
-        response = HttpResponse()
-        # Content-type will be detected by nginx
-        del response['Content-Type']
-        response['X-Accel-Redirect'] = '/protected/media/' + path
-        return response
-    else:
-        return HttpResponseForbidden('Not authorized to access this file.')
-
-
-def make_tarfile(output_filename, source_dir):
-    with tarfile.open(f"media/{output_filename}", "w:gz") as tar:
-        tar.add(source_dir, arcname=os.path.basename(source_dir))
-
-
-def create_backup(app, path):
-    system_files = ["Procfile", "app.json", "runtime.txt"]
-    with ZipFile(os.path.join(settings.MEDIA_ROOT, f"{app.unique_id}_backup.zip"), "w") as backup:
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                if file not in system_files:
-                    backup.write(os.path.join(root, file),
-                                 os.path.relpath(os.path.join(root, file),
-                                                 os.path.join(path, '..')))
-
-
-class TarballDownload(View, ResponseMixin):
-    def get(self, request, uu_id):
-        try:
-            app = App.objects.get(unique_id=uu_id)
-        except App.DoesNotExist:
-            return self.json_response_404()
-        path = settings.MEDIA_ROOT + f'/{app.owner.id}/{app.name}'
-        response = HttpResponse()
-        make_tarfile(f"{app.unique_id}.tar.gz", path)
-        create_backup(app, path)
-        del response['Content-Type']
-        response['X-Accel-Redirect'] = "/protected/media/" + f"{app.unique_id}.tar.gz"
-        response['Content-Disposition'] = f"attachment; filename={app.unique_id}.tar.gz"
-        return response
-
-
-class BackupDownload(View, ResponseMixin):
-    def get(self, request, app_id):
-        if request.user.is_authenticated:
-            try:
-                app = App.objects.get(unique_id=app_id)
-                if app.owner == request.user.customer:
-                    response = HttpResponse()
-                    del response['Content-Type']
-                    response['X-Accel-Redirect'] = "/protected/media/" + f"{app.unique_id}_backup.zip"
-                    response['Content-Disposition'] = f"attachment; filename={app.name}_backup.zip"
-                    return response
-            except App.DoesNotExist:
-                return self.json_response_404()
-        return HttpResponseForbidden('Not authorized to access this file.')
 
 
 class LogoutView(View):
@@ -249,156 +178,6 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
     def delete(self, request):
         User.objects.get(username=request.user.username).delete()
         return self.json_response_200()
-
-
-class ManageView(LoginRequiredMixin, View, ResponseMixin):
-    template_name = "dashboard/manage.html"
-    context = {}
-
-    def get(self, request, app_id, folder_id=None):
-        app = App.objects.get(pk=int(app_id))
-        if app:
-            if app.get_status_display() == "Terminated":
-                return self.http_responce_404(request)
-        self.context["app"] = app
-        if app.owner != request.user.customer:
-            return self.http_responce_400(request)
-        if folder_id:
-            try:
-                self.context["folder"] = Folder.objects.get(id=folder_id)
-            except:
-                self.context["folder"] = app.folder
-        else:
-            self.context["folder"] = app.folder
-        return render(request, self.template_name, self.context)
-
-    def post(self, request, app_id, folder_id=None):
-        file_size_exceeded = False
-        forbidden_file_type = False
-        try:
-            files = request.FILES.getlist('files_to_upload')
-            folder_name = request.POST.get("folder")
-            master = request.POST.get("master")
-            if folder_name:
-                if " " in folder_name:
-                    return self.json_response_403()
-                if Folder.objects.filter(name=folder_name, folder_id=master).exists():
-                    return self.json_response_405()
-                Folder.objects.create(name=folder_name, owner=request.user.customer, folder_id=master)
-            if files:
-                for file in files:
-                    if file.size < settings.MAX_FILE_SIZE:
-                        if file.name in ["app.json", "Procfile", "runtime.txt", ".env"]:
-                            # ignoring system files
-                            forbidden_file_type = True
-                            continue
-                        try:
-                            File.objects.create(folder_id=master, item=file, name=file.name, size=file.size)
-                        except Exception as e:
-                            pass
-                    else:
-                        file_size_exceeded = True
-            app = App.objects.get(pk=int(app_id))
-            self.context["app"] = app
-            if folder_id:
-                try:
-                    self.context["folder"] = Folder.objects.get(id=folder_id)
-                except:
-                    self.context["folder"] = app.folder
-            else:
-                self.context["folder"] = app.folder
-            if forbidden_file_type:
-                return render(request, 'dashboard/filesection.html', self.context, status=403)
-            if file_size_exceeded:
-                return render(request, 'dashboard/filesection.html', self.context, status=503)
-            else:
-                return render(request, 'dashboard/filesection.html', self.context, status=200)
-        except DatabaseError:
-            return render(request, "dashboard/index.html", self.context)
-
-    def put(self, request):
-        data = QueryDict(request.body)
-        folder_id = data.get("folder_id")
-        folder_name = data.get("folder")
-        file_id = data.get("file_id")
-        file_name = data.get("file_name")
-        if folder_id and folder_name:
-            folder = Folder.objects.get(id=folder_id)
-            if folder.owner == request.user.customer:
-                dir_path = folder.get_absolute_path()
-                new_path = dir_path.rsplit("/", 1)[0] + f"/{folder_name}"
-                absolute_path = os.path.join(settings.BASE_DIR, 'media', dir_path[1:])
-                new_path = os.path.join(settings.BASE_DIR, 'media', new_path[1:])
-                try:
-                    os.rename(absolute_path, new_path)
-                except PermissionError:
-                    return self.json_response_500()
-                except FileNotFoundError:
-                    pass
-                folder.name = folder_name
-                folder.save()
-                self.context["folder"] = folder.folder
-                return render(request, "dashboard/filesection.html", self.context, status=200)
-            return self.json_response_401()
-        if file_id and file_name:
-            if "." in file_name:
-                return JsonResponse({"message": "File name should not contain extenstion"}, status=403)
-            file = File.objects.get(pk=file_id)
-            if file.folder.owner == request.user.customer:
-                file_path = file.item.path
-                file_extenstion = None
-                try:
-                    file_extenstion = file_path.rsplit(".", 1)[1]
-                except IndexError:
-                    pass
-                if file_extenstion:
-                    new_name = f"/{file_name}.{file_extenstion}"
-                else:
-                    new_name = f"/{file_name}"
-                if new_name in ["app.json", "Procfile", "runtime.txt"]:
-                    return self.json_response_500()
-                if os.name == "nt":
-                    new_path = file_path.rsplit("\\", 1)[0] + new_name
-                else:
-                    new_path = file_path.rsplit("/", 1)[0] + new_name
-                try:
-                    os.rename(file_path, new_path)
-                    file.item.name = new_path.split("media")[1][1:].replace("\\", "/")
-                    file.name = new_name[1:]
-                    file.save()
-                except PermissionError:
-                    return self.json_response_500()
-                self.context["folder"] = file.folder
-                return render(request, "dashboard/filesection.html", self.context, status=200)
-        return self.json_response_400()
-
-    def delete(self, request, app_id=None, folder_id=None):
-        folder = request.GET.get("folder_id", None)
-        file = request.GET.get("file_id", None)
-        app = App.objects.get(pk=int(app_id))
-        if file:
-            file = File.objects.get(pk=file)
-            if file.folder.owner == request.user.customer:
-                file.delete()
-                app.config = {}
-                app.save()
-            else:
-                return self.json_response_401()
-        if folder:
-            folder = Folder.objects.get(id=folder)
-            if folder.owner == request.user.customer:
-                folder.delete()
-            else:
-                return self.json_response_401()
-        self.context["app"] = app
-        if folder_id:
-            try:
-                self.context["folder"] = Folder.objects.get(id=folder_id)
-            except Folder.DoesNotExist:
-                self.context["folder"] = app.folder
-        else:
-            self.context["folder"] = app.folder
-        return render(request, 'dashboard/filesection.html', self.context)
 
 
 class PaypalTransaction(LoginRequiredMixin, View, ResponseMixin):
