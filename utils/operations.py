@@ -1,14 +1,16 @@
 import os
+import json
 import shutil
 import tarfile
 from zipfile import ZipFile
 
-from django.contrib.auth.models import User
-from nova_dash.models import Customer, Address, Folder, App, File, Setting
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
-from utils.handlers import BPDAPIHandler
 from django.conf import settings
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save, post_delete
+
+from utils.handlers import BPDAPIHandler
+from nova_dash.models import Customer, Address, Folder, App, File, Setting
 
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
 
@@ -27,6 +29,12 @@ def create_backup(app, path):
                     backup.write(os.path.join(root, file),
                                  os.path.relpath(os.path.join(root, file),
                                                  os.path.join(path, '..')))
+
+
+def set_system_files(app: App, file_name, content):
+    path = os.path.join(settings.MEDIA_ROOT, f"{app.owner.id}/{app.name}/")
+    with open(path+file_name, "w") as file:
+        file.write(content)
 
 
 def remove_dir_from_storage(path):

@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
-from django.http import QueryDict, JsonResponse, HttpResponse, HttpResponseForbidden
+from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 
 
 from utils.handlers import AlertHandler as Alert, PaypalHandler
@@ -20,7 +20,6 @@ from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
 from utils.mixins import ResponseMixin
-from utils.misc import sample_app_json
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
@@ -49,6 +48,7 @@ def media_access(request, path):
         return response
     else:
         return HttpResponseForbidden('Not authorized to access this file.')
+
 
 class LogoutView(View):
 
@@ -236,36 +236,6 @@ class PaypalTransaction(LoginRequiredMixin, View, ResponseMixin):
         else:
             return self.json_response_401()
         return self.json_response_200()
-
-
-def set_system_files(app: App, file_name, content):
-    path = os.path.join(settings.MEDIA_ROOT, f"{app.owner.id}/{app.name}/")
-    with open(path+file_name, "w") as file:
-        file.write(content)
-
-
-def set_app_config(request):
-    if request.method == "PUT":
-        data = QueryDict(request.body)
-        config = {}
-        main_file = int(data.get("main_executable"))
-        python_version = data.get("python_version")
-        main_file = File.objects.get(id=main_file)
-        config["main_executable"] = main_file.name
-        config["python_version"] = python_version
-        app = main_file.folder.app
-        if app.plan == 2.4:
-            sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")
-        python_version = app.config_options.python_versions.get(python_version)
-        sample_app_json["name"] = app.name
-        config["app_json"] = sample_app_json
-        if config != app.config:
-            set_system_files(app, "app.json", json.dumps(sample_app_json))
-            set_system_files(app, "runtime.txt", python_version)
-            set_system_files(app, "Procfile", f"worker: python {main_file.name}")
-            app.config = config
-            app.save()
-        return JsonResponse({"message": "Success"}, status=200)
 
 
 class ActivityView(LoginRequiredMixin, View, ResponseMixin):

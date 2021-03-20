@@ -1,11 +1,37 @@
+import json
 
 from django.views import View
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, QueryDict, JsonResponse
 
-from .models import App
+from .models import App, File
 from utils.mixins import ResponseMixin
-from utils.operations import make_tarfile, create_backup
+from utils.misc import sample_app_json
+from utils.operations import make_tarfile, create_backup, set_system_files
+
+
+def set_app_config(request):
+    if request.method == "PUT":
+        data = QueryDict(request.body)
+        config = {}
+        main_file = int(data.get("main_executable"))
+        python_version = data.get("python_version")
+        main_file = File.objects.get(id=main_file)
+        config["main_executable"] = main_file.name
+        config["python_version"] = python_version
+        app = main_file.folder.app
+        if app.plan == 2.4:
+            sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")
+        python_version = app.config_options.python_versions.get(python_version)
+        sample_app_json["name"] = app.name
+        config["app_json"] = sample_app_json
+        if config != app.config:
+            set_system_files(app, "app.json", json.dumps(sample_app_json))
+            set_system_files(app, "runtime.txt", python_version)
+            set_system_files(app, "Procfile", f"worker: python {main_file.name}")
+            app.config = config
+            app.save()
+        return JsonResponse({"message": "Success"}, status=200)
 
 
 class TarballDownload(View, ResponseMixin):
