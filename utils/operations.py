@@ -1,5 +1,7 @@
 import os
 import shutil
+import tarfile
+from zipfile import ZipFile
 
 from django.contrib.auth.models import User
 from nova_dash.models import Customer, Address, Folder, App, File, Setting
@@ -9,6 +11,22 @@ from utils.handlers import BPDAPIHandler
 from django.conf import settings
 
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
+
+
+def make_tarfile(output_filename, source_dir):
+    with tarfile.open(f"media/{output_filename}", "w:gz") as tar:
+        tar.add(source_dir, arcname=os.path.basename(source_dir))
+
+
+def create_backup(app, path):
+    system_files = ["Procfile", "app.json", "runtime.txt"]
+    with ZipFile(os.path.join(settings.MEDIA_ROOT, f"{app.unique_id}_backup.zip"), "w") as backup:
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                if file not in system_files:
+                    backup.write(os.path.join(root, file),
+                                 os.path.relpath(os.path.join(root, file),
+                                                 os.path.join(path, '..')))
 
 
 def remove_dir_from_storage(path):

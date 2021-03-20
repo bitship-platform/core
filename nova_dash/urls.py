@@ -1,9 +1,9 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
-    PaypalTransaction, AppManageView, set_app_config, ActivityView, TransactionView, \
-    TransactionUtility, PromoCodeView, ExchangeView
-from .app_views import ManageView
-from .utility import media_access, TarballDownload, BackupDownload
+    PaypalTransaction, set_app_config, media_access, ActivityView
+from .app_views import ManageView, AppManageView
+from .utility_view import TarballDownload, BackupDownload
+from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView
 from django.conf.urls import url
 urlpatterns = [
 
@@ -29,5 +29,3 @@ urlpatterns = [
     url(r'^app/config/', set_app_config, name="app_config"),
     url(r'^app/tarball/(?P<uu_id>.*)', TarballDownload.as_view(), name='app'),
 ]
-
-# urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
