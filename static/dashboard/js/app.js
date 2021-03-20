@@ -496,19 +496,20 @@ $(document).ready(function() {
 
     $(document).on('click','#saveNodeConfigurationButton', function(e) {
         const csrftoken = getCookie('csrftoken');
-        let script = $("#appMainSelect").val()
-        let version = $("#pythonVersionSelectPref").val()
+        let script = $("#appStartSelect").val()
+        let version = $("#nodeVersionSelectPref").val()
+        console.log(script);
         if((script!==undefined)||(version!==undefined))
         {
             $.ajax({
                 url: `/app/config/`,
                 headers: {'X-CSRFToken': csrftoken},
                 type: 'PUT',
-                data: {script: script, python_version: version, stack: "node"},
+                data: {script: script, version: version, stack: "node"},
                 success: function (data) {
                     $("#appStopButton").prop('disabled', false);
                     $("#appStartButton").prop('disabled', false);
-                    $('#pythonAppConfigurationModal').modal('hide');
+                    $('#nodeAppConfigurationModal').modal('hide');
                     $("#unsetConfigNotifier").hide()
                     alertSuccess(`App configuration set successfully...`);
                 },

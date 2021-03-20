@@ -156,9 +156,12 @@ class App(models.Model):
 
     def primary_files(self):
         primary_file_list = []
+        file_extension = "py"
+        if self.node:
+            file_extension = "js"
         for file in self.folder.file_set.all():
             try:
-                if file.name.split(".")[1] == "py":
+                if file.name.split(".")[1] == file_extension:
                     primary_file_list.append(file)
             except IndexError:
                 pass

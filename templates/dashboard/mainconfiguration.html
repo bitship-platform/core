@@ -1,3 +1,5 @@
+{% if app.python %}
+
 <label class="my-1 mr-2" for="appMainSelect">Select main file</label>
 <div class="input-group input-group-sm mb-3">
 <select class="custom-select custom-select-sm my-1 mr-sm-2" id="appMainSelect" name="main_executable" required>
@@ -10,3 +12,20 @@
 <button class="btn btn-primary refreshMainButton" type="button"><i class="fa fa-redo-alt"></i></button>
 </div>
 </div>
+
+{% else %}
+
+<label class="my-1 mr-2" for="appStartSelect">Select start file</label>
+<div class="input-group input-group-sm mb-3">
+<select class="custom-select custom-select-sm my-1 mr-sm-2" id="appStartSelect" name="start_script" required>
+<option selected disabled>Choose...</option>
+{% for file in app.primary_files %}
+    <option value="{{ file.pk }}">{{ file.name }}</option>
+{% endfor %}
+</select>
+<div class="input-group-append my-1 mr-sm-2">
+<button class="btn btn-primary refreshMainButton" type="button"><i class="fa fa-redo-alt"></i></button>
+</div>
+</div>
+
+{% endif %}
