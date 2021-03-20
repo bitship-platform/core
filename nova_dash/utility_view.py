@@ -12,23 +12,37 @@ from utils.operations import make_tarfile, create_backup, set_system_files
 
 def set_app_config(request):
     if request.method == "PUT":
-        data = QueryDict(request.body)
         config = {}
-        main_file = int(data.get("main_executable"))
-        python_version = data.get("python_version")
-        main_file = File.objects.get(id=main_file)
-        config["main_executable"] = main_file.name
-        config["python_version"] = python_version
-        app = main_file.folder.app
+        python_version = ""
+        procfile_script = ""
+
+        data = QueryDict(request.body)
+        script = int(data.get("script"))
+        version = data.get("version")
+        file = File.objects.get(id=script)
+        app = file.folder.app
+
+        if app.python:
+            config["main_executable"] = file.name
+            python_version = app.config_options.versions.get(version)
+            config["python_version"] = python_version
+            procfile_script = f"worker: python {file.name}"
+        elif app.node:
+            config["start_script"] = file.name
+            node_version = app.config_options.versions.get(version)
+            config["node_version"] = node_version
+            procfile_script = f"worker: node {file.name}"
+
         if app.plan == 2.4:
             sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")
-        python_version = app.config_options.python_versions.get(python_version)
         sample_app_json["name"] = app.name
         config["app_json"] = sample_app_json
+
         if config != app.config:
             set_system_files(app, "app.json", json.dumps(sample_app_json))
-            set_system_files(app, "runtime.txt", python_version)
-            set_system_files(app, "Procfile", f"worker: python {main_file.name}")
+            if app.python:
+                set_system_files(app, "runtime.txt", python_version)
+            set_system_files(app, "Procfile", procfile_script)
             app.config = config
             app.save()
         return JsonResponse({"message": "Success"}, status=200)

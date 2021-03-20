@@ -1,6 +1,6 @@
 
 class PythonAppConfig:
-    python_versions = {
+    versions = {
         "3.6": "python-3.6.12",
         "3.7": "python-3.7.9",
         "3.8": "python-3.8.7",
@@ -8,6 +8,18 @@ class PythonAppConfig:
     }
     buildpacks = [
         "heroku/python",
+    ]
+
+
+class NodeAppConfig:
+    versions = {
+        "10": "10.x",
+        "12": "12.x",
+        "14": "14.x",
+        "15": "15.x",
+    }
+    buildpacks = [
+        "heroku/nodejs",
     ]
 
 

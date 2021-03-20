@@ -467,15 +467,15 @@ $(document).ready(function() {
 
     $(document).on('click','#savePythonConfigurationButton', function(e) {
         const csrftoken = getCookie('csrftoken');
-        let main_executable = $("#appMainSelect").val()
-        let python_version = $("#pythonVersionSelectPref").val()
-        if((main_executable!==undefined)||(python_version!==undefined))
+        let script = $("#appMainSelect").val()
+        let version = $("#pythonVersionSelectPref").val()
+        if((script!==undefined)||(version!==undefined))
         {
             $.ajax({
                 url: `/app/config/`,
                 headers: {'X-CSRFToken': csrftoken},
                 type: 'PUT',
-                data: {main_executable: main_executable, python_version: python_version},
+                data: {script: script, version: version, stack: "python"},
                 success: function (data) {
                     $("#appStopButton").prop('disabled', false);
                     $("#appStartButton").prop('disabled', false);
@@ -489,9 +489,39 @@ $(document).ready(function() {
             });
         }
         else {
-            alertInfo("Some configration missing")
+            alertInfo("Some configuration missing")
         }
     });
+
+
+    $(document).on('click','#saveNodeConfigurationButton', function(e) {
+        const csrftoken = getCookie('csrftoken');
+        let script = $("#appMainSelect").val()
+        let version = $("#pythonVersionSelectPref").val()
+        if((script!==undefined)||(version!==undefined))
+        {
+            $.ajax({
+                url: `/app/config/`,
+                headers: {'X-CSRFToken': csrftoken},
+                type: 'PUT',
+                data: {script: script, python_version: version, stack: "node"},
+                success: function (data) {
+                    $("#appStopButton").prop('disabled', false);
+                    $("#appStartButton").prop('disabled', false);
+                    $('#pythonAppConfigurationModal').modal('hide');
+                    $("#unsetConfigNotifier").hide()
+                    alertSuccess(`App configuration set successfully...`);
+                },
+                error: function () {
+                    alertDanger('Failed to set configuration... contact admin')
+                },
+            });
+        }
+        else {
+            alertInfo("Some configuration missing")
+        }
+    });
+
 
     $(document).on('keyup', "#coinInput", function (e){
         let coin_count = $("#coinInput").val()
@@ -751,6 +781,5 @@ $(document).ready(function() {
         }
 
     });
-
 
 });

@@ -4,7 +4,7 @@ from itertools import chain
 
 from django.db import models
 from django.contrib.auth.models import User
-from utils.misc import PythonAppConfig
+from utils.misc import PythonAppConfig, NodeAppConfig
 
 
 class Customer(models.Model):
@@ -97,6 +97,8 @@ class App(models.Model):
     def config_options(self):
         if self.get_stack_display() == "Python":
             return PythonAppConfig
+        if self.get_stack_display() == "Node.js":
+            return NodeAppConfig
 
     @property
     def python(self):

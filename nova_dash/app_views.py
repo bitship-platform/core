@@ -164,7 +164,6 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         return render(request, 'dashboard/filesection.html', self.context)
 
 
-
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
@@ -185,15 +184,27 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         except App.DoesNotExist:
             return self.json_response_404()
         file_set = app.primary_file_set
-        if "requirements.txt" not in file_set:
-            if "Pipfile" not in file_set:
-                return JsonResponse({"message": "Missing requirements.txt or Pipfile in root."}, status=503)
-        if not app.config.get("main_executable"):
-            return JsonResponse({"message": "Missing main file configuration"}, status=503)
-        if not app.config.get("python_version"):
-            return JsonResponse({"message": "Missing python version configuration"}, status=503)
-        if not app.config.get("app_json"):
-            return JsonResponse({"message": "Something went wrong! please reconfigure your app and save."}, status=503)
+        if app.python:
+            if "requirements.txt" not in file_set:
+                if "Pipfile" not in file_set:
+                    return JsonResponse({"message": "Missing requirements.txt or Pipfile in root."}, status=500)
+            if not app.config.get("main_executable"):
+                return JsonResponse({"message": "Missing main file configuration"}, status=500)
+            if not app.config.get("python_version"):
+                return JsonResponse({"message": "Missing python version configuration"}, status=500)
+            if not app.config.get("app_json"):
+                return JsonResponse({"message": "Something went wrong! please reconfigure your app and save."},
+                                    status=500)
+        elif app.node:
+            if "package.json" not in file_set:
+                return JsonResponse({"message": "Missing package.json in root."}, status=500)
+            if not app.config.get("start_script"):
+                return JsonResponse({"message": "Missing start script configuration"}, status=500)
+            if not app.config.get("app_json"):
+                return JsonResponse({"message": "Something went wrong! please reconfigure your app and save."},
+                                    status=500)
+
+        # Deploying the app and adding a billing plan if it doesn't have one
         if app.get_status_display() == "Not Started":
             if app.owner.credits < app.plan:
                 return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
