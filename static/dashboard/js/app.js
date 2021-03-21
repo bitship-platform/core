@@ -782,3 +782,13 @@ $(document).ready(function() {
     });
 
 });
+$(document).ready(function (){
+    $(document).on('click', '.copyTransactionID', function (){
+        let transaction_id = $(this).attr("transaction_id");
+         var $temp = $("<input>");
+         $("body").append($temp);
+         $temp.val(transaction_id).select();
+         document.execCommand("copy");
+         $temp.remove()
+    })
+})

@@ -42,7 +42,8 @@
                 {% for order in request.user.customer.get_orders %}
                   <tr>
                     <td>
-                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ order.id }}</b>
+{#                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ order.id }}</b>#}
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Copy order id" transaction_id="{{ order.id }}" class="copyTransactionID"><i class="far fa-clone fa-lg"></i></a>
                     </td>
                     <th scope="row">
                       {% if order.credit %}
@@ -96,7 +97,8 @@
                 {% for transaction in request.user.customer.get_transactions %}
                   <tr>
                     <td>
-                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ transaction.id }}</b>
+{#                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ transaction.id }}</b>#}
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Copy transaction id" transaction_id="{{ transaction.id }}" class="copyTransactionID"><i class="far fa-clone fa-lg"></i></a>
                     </td>
                     <th scope="row">
                       {% if transaction.recipient  == request.user.customer %}
