@@ -11,33 +11,25 @@
                         {% if app.python %}
                         <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="ni ni-settings"></i> Configure
                             {% if not app.configuration %}
-                            <i class="fa fa-info-circle fa-sm" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
+                            <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
                              {% endif %}
                         </button>
 
                         {% elif app.node %}
-                        <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-box"></i> Configure</button>
+                        <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-box"></i> Configure
+                            {% if not app.configuration %}
+                            <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
+                             {% endif %}
+                            </button>
                         {% endif %}
                       </div>
                   </div>
+
                   <div class="col-lg-2">
-{#                    <div class="input-group input-group-sm">#}
-{#                      <select class="custom-select custom-select-sm" id="inputGroupSelect04">#}
-{#                        <option value="Base" {% if app.get_plan_display == "Base" %}selected{% endif %}>Base</option>#}
-{#                        <option value="Standard" {% if app.get_plan_display == "Standard" %}selected{% endif %}>Standard</option>#}
-{#                      </select>#}
-{#                      <div class="input-group-append">#}
-{#                        <button class="btn btn-outline-primary" data-placement="bottom" title="Currently unavailable" data-toggle="tooltip" type="button">Scale</button>#}
-{#                      </div>#}
-{#                    </div>#}
                   </div>
                   <div class="col-lg-4">
-{#                                    <input class="form-control" type="text" value="{{ app.get_status_display }}" disabled>#}
-{#                    <div class="progress" style="height: 30px;">#}
-{#                      <div id='progress-bar' class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div id="progress-bar-message">Waiting for progress to start...</div></div>#}
-{#                    </div>#}
-
                   </div>
+
                   <div class="col-lg-3 manageRefreshSection">
                         {% include 'dashboard/refresh_pages/appmanagement.html' %}
                   </div>
@@ -61,7 +53,7 @@
                   </div>
                   {% if not app.requirements %}
                     <div class="col">
-                        <a href="#"><i class="fa fa-info-circle fa-lg text-warning" data-toggle="modal" data-target="#configModalCenter"></i></a>
+                        <a href="#"><i class="fa fa-info-circle fa-lg text-danger" data-toggle="modal" data-target="#configModalCenter"></i></a>
                     </div>
                   {% endif %}
                     <div class="col text-right">
@@ -78,7 +70,6 @@
                         <th scope="col">Creation date</th>
                         <th scope="col">Size</th>
                         <th scope="col">
-{#                                            <button type="button" class="btn btn-outline-primary btn-sm">new folder</button>#}
                         </th>
                       </tr>
                     </thead>
@@ -104,7 +95,6 @@
                               <i class="fas fa-ellipsis-v"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-{#                                              <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderId('{{ dir.id }}')" data-target="#renameFolderModal">Rename</a>#}
                               <a class="dropdown-item" href="#" data-toggle="modal" onclick="setFolderName('{{ dir.name }}','{{ dir.id }}')" data-target="#deleteModalCenter">Delete</a>
                             </div>
                           </div>

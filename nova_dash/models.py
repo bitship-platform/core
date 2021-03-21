@@ -142,16 +142,24 @@ class App(models.Model):
 
     @property
     def requirements(self):
-        if "requirements.txt" in self.primary_file_set:
-            return True
-        elif "Pipfile" in self.primary_file_set:
-            return True
+        if self.python:
+            if "requirements.txt" in self.primary_file_set:
+                return True
+            elif "Pipfile" in self.primary_file_set:
+                return True
+        elif self.node:
+            if "package.json" in self.primary_file_set:
+                return True
         return False
 
     @property
     def configuration(self):
-        if "python_version" and "app_json" and "main_executable" in self.config:
-            return True
+        if self.python:
+            if "python_version" and "app_json" and "main_executable" in self.config:
+                return True
+        elif self.node:
+            if "node_version" and "app_json" and "start_script" in self.config:
+                return True
         return False
 
     def primary_files(self):

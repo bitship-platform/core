@@ -298,6 +298,10 @@
                 <p style="color:black;">
                     <b>All python apps expect a <a href="#"><span>requirements.txt</span></a> or <a href="#"><span>Pipfile</span></a> containing all the packages listed, in the project root. Don't forget to add that or your app may fail.</b>
                 </p>
+                  {% elif app.node %}
+                <p style="color:black;">
+                   <b>All javascript apps expect a <a href="#"><span>package.json</span></a> containing all the packages listed, in the project root. Don't forget to add that or your app may fail.</b>
+                </p>
                   {% endif %}
               </div>
               <div class="modal-footer">
