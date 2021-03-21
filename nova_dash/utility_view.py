@@ -35,8 +35,8 @@ def set_app_config(request):
             procfile_script = f"worker: node {file.name}"
             sample_app_json["image"] = "heroku/nodejs"
 
-        if app.plan == 2.4:
-            sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")
+        # if app.plan == 2.4:
+        #     sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")
         sample_app_json["name"] = app.name
         config["app_json"] = sample_app_json
 
