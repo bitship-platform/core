@@ -95,7 +95,11 @@
               <i class="fa fa-exchange-alt text-dark"></i> Transactions
             </a>
           </li>
-
+          <li class="nav-item {% if 'help_deploy' in segment %} active {% endif %}">
+            <a class="nav-link " href="{% url 'help_deploy' %}" target="_blank">
+              <i class="fa fa-question-circle text-blue"></i> How to deploy
+            </a>
+          </li>
         </ul>
         <!-- Divider -->
         <hr class="my-3">

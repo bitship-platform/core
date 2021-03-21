@@ -4,9 +4,9 @@
 
 {% block content %}
     <!-- Header -->
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
       <!-- Mask -->
-      <span class="mask bg-gradient-gray opacity-8"></span>
+      <span class="mask bg-gradient-darker opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
       </div>
@@ -29,6 +29,12 @@
             <div class="row">
               <div class="col-4">
                 <div class="list-group" id="list-tab" role="tablist">
+                    <style>
+                        .active{
+                            background-color: #212329 !important;
+                            border-color: #212329 !important;
+                        }
+                    </style>
                   <a class="list-group-item list-group-item-action active" id="list-dashboard-list" data-toggle="list" href="#list-dashboard" role="tab" aria-controls="home">Dashboard</a>
                   <a class="list-group-item list-group-item-action" id="list-notification-list" data-toggle="list" href="#list-notification" role="tab" aria-controls="messages">Notification</a>
                   <a class="list-group-item list-group-item-action" id="list-account-list" data-toggle="list" href="#list-account" role="tab" aria-controls="settings">Account</a>

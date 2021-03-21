@@ -7,7 +7,7 @@
 {% block content %}
 
     <!-- Header -->
-    <div class="header bg-gradient-default pb-8 pt-5 pt-md-8">
+    <div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
       <div class="container-fluid">
         <div class="header-body">
           <!-- Card stats -->
@@ -19,7 +19,7 @@
             <div class="col-xl-3 col-lg-6">
             </div>
             <div class="col-xl-3 col-lg-6" id="statsRefreshSection">
-                {% include 'dashboard/stats_refresh.html' %}
+                {% include 'dashboard/refresh_pages/stats_refresh.html' %}
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@
               </div>
             </div>
                 <div class="col-xl-12 order-xl-2 mb-5 mb-xl-0 mt-4" id="pendingTransactionRefresh">
-                    {% include "dashboard/pending_transactions.html" %}
+                    {% include "dashboard/refresh_pages/pending_transactions.html" %}
                 </div>
           </div>
         </div>

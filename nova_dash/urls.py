@@ -1,6 +1,6 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
-    PaypalTransaction, media_access, ActivityView
+    PaypalTransaction, media_access, ActivityView, HelpView
 from .app_views import ManageView, AppManageView
 from .utility_view import TarballDownload, BackupDownload, set_app_config
 from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView
@@ -10,6 +10,7 @@ urlpatterns = [
     path('', LoginView.as_view(), name='home'),
     path('login/', LoginView.as_view()),
     url(r'^panel/', DashView.as_view(), name="panel"),
+    url(r'^how-to-deploy/', HelpView.as_view(), name="help_deploy"),
     url(r'^billing/process/', PaypalTransaction.as_view(), name='billing_process'),
     url(r'^billing/', BillingView.as_view(), name='billing'),
     url(r'^manage/app/backup/(?P<app_id>.*)', BackupDownload.as_view(), name='backup'),

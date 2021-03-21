@@ -43,7 +43,7 @@ class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
         transaction_id = data.get("transaction_id")
         try:
             transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
-            return render(request, "dashboard/transaction_refresh.html", {"recipient": transaction.recipient,
+            return render(request, "dashboard/refresh_pages/transaction_refresh.html", {"recipient": transaction.recipient,
                                                                           "transaction_id": transaction.id},
                           status=200)
         except Transaction.DoesNotExist:
@@ -87,7 +87,7 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
             EmailHandler.send_email(request.user.email,
                                     "OTP for transaction",
                                     msg=msg)
-            return render(request, "dashboard/transaction_refresh.html", {"recipient": recipient,
+            return render(request, "dashboard/refresh_pages/transaction_refresh.html", {"recipient": recipient,
                                                                           "transaction_id": transaction.id},
                           status=200)
         except Customer.DoesNotExist:
@@ -111,7 +111,7 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
                     transaction.save()
                     request.user.customer.save()
                     transaction.recipient.save()
-                    return render(request, "dashboard/pending_transactions.html", status=200)
+                    return render(request, "dashboard/refresh_pages/pending_transactions.html", status=200)
             else:
                 transaction.status = "fa-times-circle text-danger"
                 transaction.failure_message = "OTP mismatch"
@@ -126,7 +126,7 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
             transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
             transaction.status = "fa-ban text-danger"
             transaction.save()
-            return render(request, "dashboard/pending_transactions.html", status=200)
+            return render(request, "dashboard/refresh_pages/pending_transactions.html", status=200)
         except Transaction.DoesNotExist:
             return self.json_response_500()
 
@@ -145,7 +145,7 @@ class PromoCodeView(LoginRequiredMixin, View, ResponseMixin):
                         customer.coins += promo_code.offer.coin_reward
                         customer.applied_offers.add(promo_code.offer)
                         customer.save()
-                        return render(request, "dashboard/stats_refresh.html", status=200)
+                        return render(request, "dashboard/refresh_pages/stats_refresh.html", status=200)
                     return self.json_response_403()
                 return self.json_response_403()
             return self.json_response_503()
@@ -171,4 +171,4 @@ class ExchangeView(LoginRequiredMixin, View, ResponseMixin):
                              update_time=datetime.now(timezone.utc),
                              service="Coin Exchange",
                              status="fa-check-circle text-success")
-        return render(request, "dashboard/stats_refresh.html", status=200)
+        return render(request, "dashboard/refresh_pages/stats_refresh.html", status=200)

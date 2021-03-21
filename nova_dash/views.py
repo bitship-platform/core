@@ -57,6 +57,13 @@ class LogoutView(View):
         return LoginView.as_view()(self.request)
 
 
+class HelpView(View):
+    template = "dashboard/help.html"
+
+    def get(self, request):
+        return render(request, self.template)
+
+
 class LoginView(View):
     template_name = "dashboard/accounts/login.html"
     context = {}

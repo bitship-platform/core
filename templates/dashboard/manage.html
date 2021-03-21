@@ -10,7 +10,7 @@
     <!-- Header -->
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
       <!-- Mask -->
-      <span class="mask bg-gradient-success opacity-8"></span>
+      <span class="mask bg-gradient-darker opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid align-items-center">
         <div class="row">
@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="card-body" id="refreshSection">
-                {% include 'dashboard/filesection.html' %}
+                {% include 'dashboard/refresh_pages/filesection.html' %}
             </div>
           </div>
         </div>
@@ -214,7 +214,7 @@
                       </select>
                     </div>
                     <div class="form-group col-md-4 mainFileRefresh">
-                        {% include 'dashboard/mainconfiguration.html' %}
+                        {% include 'dashboard/refresh_pages/mainconfiguration.html' %}
                     </div>
                 </div>
               </form>
@@ -249,7 +249,7 @@
                       </select>
                     </div>
                     <div class="form-group col-md-4 mainFileRefresh">
-                        {% include 'dashboard/mainconfiguration.html' %}
+                        {% include 'dashboard/refresh_pages/mainconfiguration.html' %}
                     </div>
                 </div>
               </form>
@@ -283,6 +283,29 @@
           </div>
         </div>
     <!--App configuration model end-->
+        <!-- Modal -->
+        <div class="modal fade" id="configModalCenter" tabindex="-1" role="dialog" aria-labelledby="configModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="configModalLongTitle">Incomplete Configuration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  {% if app.python %}
+                <p style="color:black;">
+                    <b>All python apps expect a <a href="#"><span>requirements.txt</span></a> or <a href="#"><span>Pipfile</span></a> containing all the packages listed, in the project root. Don't forget to add that or your app may fail.</b>
+                </p>
+                  {% endif %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <script>
             function setFileName(x,y) {
                     document.getElementById("itemName").textContent = x;

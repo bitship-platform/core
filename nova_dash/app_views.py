@@ -70,11 +70,11 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             else:
                 self.context["folder"] = app.folder
             if forbidden_file_type:
-                return render(request, 'dashboard/filesection.html', self.context, status=403)
+                return render(request, 'dashboard/refresh_pages/filesection.html', self.context, status=403)
             if file_size_exceeded:
-                return render(request, 'dashboard/filesection.html', self.context, status=503)
+                return render(request, 'dashboard/refresh_pages/filesection.html', self.context, status=503)
             else:
-                return render(request, 'dashboard/filesection.html', self.context, status=200)
+                return render(request, 'dashboard/refresh_pages/filesection.html', self.context, status=200)
         except DatabaseError:
             return render(request, "dashboard/index.html", self.context)
 
@@ -100,7 +100,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 folder.name = folder_name
                 folder.save()
                 self.context["folder"] = folder.folder
-                return render(request, "dashboard/filesection.html", self.context, status=200)
+                return render(request, "dashboard/refresh_pages/filesection.html", self.context, status=200)
             return self.json_response_401()
         if file_id and file_name:
             if "." in file_name:
@@ -131,7 +131,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 except PermissionError:
                     return self.json_response_500()
                 self.context["folder"] = file.folder
-                return render(request, "dashboard/filesection.html", self.context, status=200)
+                return render(request, "dashboard/refresh_pages/filesection.html", self.context, status=200)
         return self.json_response_400()
 
     def delete(self, request, app_id=None, folder_id=None):
@@ -161,7 +161,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 self.context["folder"] = app.folder
         else:
             self.context["folder"] = app.folder
-        return render(request, 'dashboard/filesection.html', self.context)
+        return render(request, 'dashboard/refresh_pages/filesection.html', self.context)
 
 
 class AppManageView(LoginRequiredMixin, View, ResponseMixin):
@@ -170,7 +170,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         context = {}
         app_id = request.GET.get("app_id")
         context["app"] = App.objects.get(id=app_id)
-        return render(request, "dashboard/mainconfiguration.html", context, status=200)
+        return render(request, "dashboard/refresh_pages/mainconfiguration.html", context, status=200)
 
     def post(self, request):
         context = {}
@@ -225,7 +225,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         app.save()
         context["app"] = app
         bpd_api.deploy(str(app.unique_id))
-        return render(request, "dashboard/appmanagement.html", context=context, status=200)
+        return render(request, "dashboard/refresh_pages/appmanagement.html", context=context, status=200)
 
     def put(self, request):
         data = QueryDict(request.body)

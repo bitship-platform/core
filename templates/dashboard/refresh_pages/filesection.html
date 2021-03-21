@@ -11,7 +11,7 @@
                         {% if app.python %}
                         <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="ni ni-settings"></i> Configure
                             {% if not app.configuration %}
-                            <i style="color:darkred;" class="fa fa-info-circle fa-sm" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
+                            <i class="fa fa-info-circle fa-sm" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
                              {% endif %}
                         </button>
 
@@ -39,7 +39,7 @@
 
                   </div>
                   <div class="col-lg-3 manageRefreshSection">
-                        {% include 'dashboard/appmanagement.html' %}
+                        {% include 'dashboard/refresh_pages/appmanagement.html' %}
                   </div>
                   <div class="col-lg-1">
                       {% if app.last_deployment_timestamp %}
@@ -61,7 +61,7 @@
                   </div>
                   {% if not app.requirements %}
                     <div class="col">
-                        <i style="color:darkred;" class="fa fa-info-circle fa-lg" data-toggle="tooltip" data-placement="bottom" title="All python apps expect a `requirements.txt` or `Pipfile` containing all the packages listed, in the project root. Don't forget to add that or your app may fail."></i>
+                        <a href="#"><i class="fa fa-info-circle fa-lg text-warning" data-toggle="modal" data-target="#configModalCenter"></i></a>
                     </div>
                   {% endif %}
                     <div class="col text-right">
