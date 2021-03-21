@@ -27,11 +27,13 @@ def set_app_config(request):
             python_version = app.config_options.versions.get(version)
             config["python_version"] = python_version
             procfile_script = f"worker: python {file.name}"
+            sample_app_json["image"] = "heroku/python"
         elif app.node:
             config["start_script"] = file.name
             node_version = app.config_options.versions.get(version)
             config["node_version"] = node_version
             procfile_script = f"worker: node {file.name}"
+            sample_app_json["image"] = "heroku/nodejs"
 
         if app.plan == 2.4:
             sample_app_json["buildpacks"].append("https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git")

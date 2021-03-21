@@ -498,7 +498,6 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let script = $("#appStartSelect").val()
         let version = $("#nodeVersionSelectPref").val()
-        console.log(script);
         if((script!==undefined)||(version!==undefined))
         {
             $.ajax({

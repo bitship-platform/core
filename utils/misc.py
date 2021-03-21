@@ -37,7 +37,6 @@ sample_app_json = {
       "size": "free"
     }
   },
-  "image": "heroku/python",
   "addons": [
 
   ],
