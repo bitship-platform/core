@@ -71,7 +71,7 @@ class HelpView(View):
 
 
 class LoginView(View):
-    template_name = "dashboard/accounts/login.html"
+    template_name = "dashboard/accounts/new_login.html"
     context = {}
     user_json = None
     access_token = None
