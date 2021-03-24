@@ -313,3 +313,74 @@ body,
     transform: translateY(-4vh);
   }
 }
+
+ /* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .blob{
+    display: none;
+  }
+  .login-header{
+    padding-bottom: 50px;
+    padding-top: 50px;
+
+  }
+  .c-button--gooey{
+    font-size: 0.6em;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .blob{
+    display: none;
+  }
+    .login-header{
+    padding-bottom: 50px;
+    padding-top: 50px;
+  }
+  .c-button--gooey{
+    font-size: 1em;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .blob{
+    display: block;
+  }
+  .login-header{
+    padding-bottom: 50px;
+    padding-top: 50px;
+  }
+  .c-button--gooey{
+    font-size: 1.3em;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .blob{
+    display: block;
+  }
+  .login-header{
+    padding-bottom: 70px;
+    padding-top: 100px;
+  }
+  .c-button--gooey{
+    font-size: 1.3em;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+   .blob{
+    display: block;
+  }
+    .login-header{
+    padding-bottom: 100px;
+    padding-top: 150px;
+  }
+  .c-button--gooey{
+    font-size: 1.3em;
+  }
+}
