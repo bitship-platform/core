@@ -17,6 +17,10 @@
 <div id='stars'></div>
 <div id='stars2'></div>
 <div id='stars3'></div>
+
+<div class="login-page-header">
+    <img src="https://cdn.discordapp.com/attachments/821724303283322882/824322183622557776/nn_v2.png">
+</div>
 <div class="login-header">
     <h1>Novanodes Dashboard</h1>
     <p>You can manage your applications using our custom admin panel designed specifically for one touch docker deployment! </p>
@@ -27,7 +31,7 @@
     <h4><i class="ni ni-lock-circle-open"></i> discord Oauth2</h4>
    </div>
    <div class="login-box-body">
-            <a href="#!" class="c-button c-button--gooey">
+            <a href="{{ Oauth.discord_login_url }}" class="c-button c-button--gooey">
                 <login><i class="fab fa-discord"></i> Login with Discord</login>
                 <div class="c-button__blobs">
                     <div></div>
@@ -35,6 +39,9 @@
                     <div></div>
                 </div>
             </a>
+            {% if msg %}
+              <p style="font-size: 14px;">{{ msg }}</p>
+            {% endif %}
 </div>
 </div>
 

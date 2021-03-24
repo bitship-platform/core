@@ -87,7 +87,6 @@ html {
 .login-box{
   max-width: 500px;
   margin: 0 auto;
-  top: -50%;
   height: 300px;
   text-align: center;
   color: white;
@@ -95,6 +94,7 @@ html {
   backdrop-filter: blur(5px);
   border-radius: 25px;
   font-family: 'Lato', sans-serif;
+  display: block;
 }
 .login-header{
   text-align: center;
@@ -103,6 +103,9 @@ html {
   color: white;
   font-family: 'Lato', sans-serif;
   max-width: 800px;
+  display: block;
+  padding-top: 150px;
+  padding-bottom: 100px;
 }
 .login-header p{
   font-size: 20px;
@@ -118,8 +121,16 @@ html {
   padding: 50px 0;
 }
 
+.login-page-header{
+    margin: 0 auto;
+    max-width: 1200px;
+    display: block;
 
-
+}
+.login-page-header img {
+  float: left;
+  width: 200px;
+}
 /* animation */
 
 :root {
