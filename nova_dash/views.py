@@ -71,7 +71,7 @@ class HelpView(View):
 
 
 class LoginView(View):
-    template_name = "dashboard/accounts/new_login.html"
+    template_name = "dashboard/accounts/login.html"
     context = {}
     user_json = None
     access_token = None
@@ -90,6 +90,7 @@ class LoginView(View):
             if self.email is not None:
                 password = hashing.hashed_user_pass(self.user_id, self.email)
                 user = authenticate(username=self.user_id, password=password)
+                print(user.customer.banned)
                 if user is None:
                     customer = create_customer(self.user_json, password)
                     login(request, customer.user)
