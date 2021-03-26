@@ -33,6 +33,17 @@ class Customer(models.Model):
     def get_active_app_count(self):
         return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger", "bg-warning"]))
 
+    def reset(self):
+        self.coins = 0
+        self.coins_redeemed = 0
+        self.credits = 0
+        self.credits_spend = 0
+        self.app_set.all().delete()
+        self.order.all().delete()
+        self.verified = False
+        self.address.reset()
+        self.save()
+
     @property
     def running_apps(self):
         return len(self.app_set.filter(status__in=["bg-success", "bg-danger"]))
@@ -205,6 +216,15 @@ class Address(models.Model):
     city = models.CharField(max_length=100, null=True)
     country = models.CharField(max_length=100, null=True)
     pincode = models.IntegerField(null=True)
+
+    def reset(self):
+        self.firstname = None
+        self.lastname = None
+        self.location = None
+        self.city = None
+        self.country = None
+        self.pincode = None
+        self.save()
 
 
 class Setting(models.Model):
