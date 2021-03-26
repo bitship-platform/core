@@ -67,11 +67,12 @@ class AppStatusUpdate(APIView, ResponseMixin):
 
     def put(self, request, app_id):
         queryset = get_object_or_404(self.model, unique_id=app_id)
-        serializer = self.serializer(queryset, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return self.json_response_400()
+        if queryset.running:
+            serializer = self.serializer(queryset, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=201)
+        return self.json_response_200()
 
 
 class AppConfirmationView(APIView, ResponseMixin):
