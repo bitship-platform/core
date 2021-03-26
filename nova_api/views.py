@@ -6,6 +6,7 @@ from .serializers import AppStatusSerializer, CustomerDataSerializer, CustomerPu
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timezone
+from django.core.exceptions import ValidationError
 
 
 class RenewSubscription(APIView, ResponseMixin):
@@ -66,13 +67,16 @@ class AppStatusUpdate(APIView, ResponseMixin):
     model = App
 
     def put(self, request, app_id):
-        queryset = get_object_or_404(self.model, unique_id=app_id)
-        if queryset.running:
-            serializer = self.serializer(queryset, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=201)
-        return self.json_response_200()
+        try:
+            app = get_object_or_404(self.model, unique_id=app_id)
+            if app.running:
+                serializer = self.serializer(app, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=201)
+            return self.json_response_200()
+        except ValidationError:
+            return self.json_response_400()
 
 
 class AppConfirmationView(APIView, ResponseMixin):
