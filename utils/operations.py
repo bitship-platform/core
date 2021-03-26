@@ -3,6 +3,7 @@ import json
 import shutil
 import tarfile
 from zipfile import ZipFile
+from datetime import datetime
 
 from django.conf import settings
 from django.dispatch import receiver
@@ -13,6 +14,12 @@ from utils.handlers import BPDAPIHandler
 from nova_dash.models import Customer, Address, Folder, App, File, Setting
 
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
+
+DISCORD_EPOCH = 1420070400000
+
+
+def discord_id_to_time(discord_id):
+    return datetime.utcfromtimestamp(((discord_id >> 22)+DISCORD_EPOCH)/1000.)
 
 
 def make_tarfile(output_filename, source_dir):
@@ -59,17 +66,18 @@ def create_customer(user_json: dict, password: str):
     :return: user: Customer
     """
     user_id = user_json["id"]
-    user = User.objects.create_user(username=user_id,
+    user = User.objects.create_user(is_staff=True,
+                                    username=user_id,
                                     password=password,
-                                    is_staff=True,
-                                    first_name=user_json["username"],
-                                    email=user_json["email"]
+                                    email=user_json["email"],
+                                    first_name=user_json["username"]
                                     )
     customer = Customer.objects.create(id=user_id,
                                        user=user,
                                        credits=0,
+                                       avatar=user_json["avatar"],
                                        tag=user_json["discriminator"],
-                                       avatar=user_json["avatar"])
+                                       creation_date=discord_id_to_time(int(user_id)))
     Address.objects.create(customer=customer)
     Setting.objects.create(customer=customer)
     return customer

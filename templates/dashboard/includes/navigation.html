@@ -5,7 +5,7 @@
         <!-- Brand -->
         <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#">Dashboard</a>
         <!-- Form -->
-       {% if not request.user.customer.creation_date %}
+       {% if not request.user.customer.joined_server %}
         <div class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto mb-2">
           <div class="card bg-secondary shadow">
               <h5 class="card-title text-uppercase text-dark ml-1 mb-0"><i class="fa fa-lightbulb fa-sm"></i> Pro tip</h5>

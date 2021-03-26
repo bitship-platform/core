@@ -23,6 +23,7 @@ class Customer(models.Model):
     banned = models.BooleanField(default=False)
     applied_offers = models.ManyToManyField("Offer", blank=True)
     creation_date = models.DateTimeField(null=True, blank=True)
+    joined_server = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.avatar is not None:
