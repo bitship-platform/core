@@ -175,6 +175,18 @@ class App(models.Model):
                 return True
         return False
 
+    @property
+    def app_stack(self):
+        return self.get_stack_display()
+
+    @property
+    def app_status(self):
+        return self.get_status_display()
+
+    @property
+    def app_plan(self):
+        return self.get_plan_display()
+
     def primary_files(self):
         primary_file_list = []
         file_extension = "py"

@@ -2,11 +2,16 @@ from rest_framework.views import APIView
 from utils.mixins import ResponseMixin
 from nova_dash.models import App, Order, Customer
 from utils.handlers import EmailHandler
-from .serializers import AppStatusSerializer, CustomerDataSerializer, CustomerPutSerializer
+from .serializers import AppStatusSerializer, CustomerDataSerializer, CustomerPutSerializer, AppDataSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timezone
 from django.core.exceptions import ValidationError
+
+
+class PingView(APIView, ResponseMixin):
+    def get(self, request):
+        return self.json_response_200()
 
 
 class RenewSubscription(APIView, ResponseMixin):
@@ -130,3 +135,10 @@ class CustomerDataView(APIView, ResponseMixin):
         return self.json_response_400()
 
 
+class CustomerAppView(APIView, ResponseMixin):
+    model = App
+    serializer = AppDataSerializer
+
+    def get(self, request, c_id):
+        serializer = self.serializer(self.model.objects.filter(owner__id=c_id), many=True)
+        return Response(serializer.data, status=200)
