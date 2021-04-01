@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime, timezone
 
 from django.views import View
 from django.conf import settings
@@ -270,6 +271,16 @@ class PaypalTransaction(LoginRequiredMixin, View, ResponseMixin):
                                  service="Credit Recharge",
                                  description=f"Paypal: {payer_id}",
                                  credit=True)
+        if float(amount) >= 12:
+            Order.objects.create(create_time=datetime.now(timezone.utc),
+                                 update_time=datetime.now(timezone.utc),
+                                 status="fa-check-circle text-success",
+                                 customer=customer,
+                                 transaction_amount=2.4,
+                                 service="Annual Subscription Bonus",
+                                 credit=True)
+            customer.credits += 2.4
+            customer.save()
         else:
             return self.json_response_401()
         return self.json_response_200()
