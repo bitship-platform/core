@@ -53,7 +53,7 @@ def media_access(request, path):
 class TestView(View):
 
     def get(self, request):
-        return render(request, "dashboard/accounts/new_login.html")
+        return render(request, "dashboard/accounts/user_login.html")
 
 
 class LogoutView(View):
@@ -71,7 +71,7 @@ class HelpView(View):
 
 
 class LoginView(View):
-    template_name = "dashboard/accounts/new_login.html"
+    template_name = "dashboard/accounts/user_login.html"
     context = {}
     user_json = None
     access_token = None
@@ -103,6 +103,29 @@ class LoginView(View):
             else:
                 msg = "Please add an email to your discord account and try again."
         return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
+
+
+class AdminLoginView(View):
+    template_name = "dashboard/accounts/admin_login.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        print(username, password)
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.customer.banned:
+                msg = "This account has been banned."
+                return render(request, self.template_name, {"msg": msg})
+            else:
+                login(request, user)
+                return redirect("/panel")
+        else:
+            msg = "Account does not exist, please check the credentials"
+            return render(request, self.template_name, {"msg": msg})
 
 
 class DashView(LoginRequiredMixin, ListView, View):
