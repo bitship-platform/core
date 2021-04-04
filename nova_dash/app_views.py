@@ -274,3 +274,9 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         except App.DoesNotExist:
             return self.json_response_500()
         return self.json_response_200()
+
+
+class AppLogView(LoginRequiredMixin, View, ResponseMixin):
+
+    def get(self, request, app_id):
+        return render(request, "dashboard/logs.html")

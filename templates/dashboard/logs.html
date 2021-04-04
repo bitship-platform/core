@@ -1,0 +1,51 @@
+{% extends 'dashboard/layouts/base.html' %}
+
+{% block title %} Profile {% endblock title %}
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+
+{% block content %}
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+         style="min-height: 300px; background-size: cover; background-position: center top;">
+      <!-- Mask -->
+      <span class="mask bg-gradient-darker opacity-8"></span>
+      <!-- Header container -->
+    </div>
+
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <div class="col-xl-1"></div>
+        <div class="col-xl-10 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Deployment logs</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <textarea class="form-control" style="height: 35em" resize="none" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-1"></div>
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 2000);
+        </script>
+      {% include "dashboard/includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

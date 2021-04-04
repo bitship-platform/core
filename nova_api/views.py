@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timezone
 from django.core.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 
 class PingView(APIView, ResponseMixin):
@@ -59,7 +60,7 @@ class RenewSubscription(APIView, ResponseMixin):
                         transaction_amount=app.plan,
                         status="fa-times-circle text-danger",
                         service="Subscription Renewal",
-                        description=f"{app.name} app | (insufficient balance)",
+                        description=f"{app.name} app | (Insufficient balance)",
                         customer=app.owner
                     )
                     return self.json_response_503()
@@ -117,13 +118,17 @@ class AppConfirmationView(APIView, ResponseMixin):
 class CustomerDataView(APIView, ResponseMixin):
     model = Customer
     serializer = CustomerDataSerializer
+    permission_classes = [DjangoModelPermissions]
+
+    def get_queryset(self):
+        return self.model.objects.all()
 
     def get(self, request, c_id=None):
         if c_id:
             customer = get_object_or_404(self.model, id=c_id)
             serializer = self.serializer(customer)
             return Response(serializer.data, status=200)
-        serializer = self.serializer(Customer.objects.all(), many=True)
+        serializer = self.serializer(self.get_queryset(), many=True)
         return Response(serializer.data, status=200)
 
     def put(self, request, c_id):
@@ -138,6 +143,9 @@ class CustomerDataView(APIView, ResponseMixin):
 class CustomerAppView(APIView, ResponseMixin):
     model = App
     serializer = AppDataSerializer
+
+    def get_queryset(self):
+        return self.model.objects.all()
 
     def get(self, request, c_id):
         serializer = self.serializer(self.model.objects.filter(owner__id=c_id), many=True)

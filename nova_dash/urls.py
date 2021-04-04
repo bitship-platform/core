@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
     PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView
-from .app_views import ManageView, AppManageView
+from .app_views import ManageView, AppManageView, AppLogView
 from .utility_view import TarballDownload, BackupDownload, set_app_config
 from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView
 from django.conf.urls import url
@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^billing/process/', PaypalTransaction.as_view(), name='billing_process'),
     url(r'^billing/', BillingView.as_view(), name='billing'),
     url(r'^manage/app/backup/(?P<app_id>.*)', BackupDownload.as_view(), name='backup'),
+    url(r'^manage/(?P<app_id>[0-9]+)/log/', AppLogView.as_view(), name='app_log'),
     url(r'^manage/(?P<app_id>[0-9]+)/(?P<folder_id>.+)', ManageView.as_view(), name='browse'),
     url(r'^manage/(?P<app_id>[0-9]+)', ManageView.as_view(), name='manage'),
     url(r'^manage/', ManageView.as_view(), name='rename'),

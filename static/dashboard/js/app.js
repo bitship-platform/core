@@ -240,6 +240,10 @@ $(document).ready(function () {
     $('#terminated_apps').on('change',function() {
             $.ajax({data: {display_terminated_apps: this.checked}});
     });
+
+    $('#beta_features').on('change',function() {
+            $.ajax({data: {beta_tester: this.checked}});
+    });
 })
 
 // $(document).ready(function() {
