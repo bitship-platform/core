@@ -6,26 +6,26 @@
             <div class="card shadow">
                 <div class="card-header border-0">
                 <div class="row">
-                  <div class="col-lg-2">
+                  <div class="col-lg-4">
                       <div class="input-group">
                         {% if app.python %}
-                        <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="ni ni-settings"></i> Configure
+                        <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
                             {% if not app.configuration %}
                             <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
                              {% endif %}
                         </button>
 
                         {% elif app.node %}
-                        <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-box"></i> Configure
+                        <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
                             {% if not app.configuration %}
                             <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
                              {% endif %}
                             </button>
                         {% endif %}
+                        {% if request.user.customer.settings.beta_tester %}
+                          <a href="{{ app.id }}/logs/" target="_blank"><button class="btn-sm btn-outline-primary ml-2" type="button"><i class="fa fa-list-alt"></i> Console logs</button></a>
+                        {% endif %}
                       </div>
-                  </div>
-
-                  <div class="col-lg-2">
                   </div>
                   <div class="col-lg-4">
                   </div>
