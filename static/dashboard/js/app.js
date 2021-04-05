@@ -246,31 +246,6 @@ $(document).ready(function () {
     });
 })
 
-// $(document).ready(function() {
-//
-//     $(document).on('click','.renameFolderButton', function(e) {
-//         e.preventDefault();
-//         let folder_name = $('input[name="rename_folder"]').val();
-//         let folder_id = $('#renameFolderId').val();
-//         const csrftoken = getCookie('csrftoken');
-//         $.ajax({
-//             url: `/manage/`,
-//             headers: {'X-CSRFToken': csrftoken},
-//             type: 'PUT',
-//             data: {folder: folder_name, folder_id: folder_id},
-//             success:function (data)
-//             {
-//               $('#refreshSection').html(data);
-//               $('#renameFolderModal').modal('hide');
-//               alertSuccess(`Folder renamed to ${folder_name}`);
-//             },
-//             error:function () {
-//                 alertDanger('Something went wrong')
-//             },
-//         });
-//     });
-// });
-
 $(document).ready(function() {
 
     $(document).on('click','.renameFileButton', function(e) {
@@ -796,3 +771,24 @@ $(document).ready(function (){
          $temp.remove()
     })
 })
+
+// function autoRefreshLogs(app_id){
+//     setInterval(function () {
+//         const csrftoken = getCookie('csrftoken');
+//
+//         $.ajax({
+//             url: `http://127.0.0.1:7000/logs/${app_id}/`,
+//             headers: {'X-CSRFToken': csrftoken},
+//             type: 'GET',
+//             success: function (data) {
+//                 $('#consoleLogTextArea').html(data);
+//                 // let element = document.getElementById("chatScrollSection");
+//                 // element.scrollTop = element.scrollHeight - element.clientHeight;
+//             },
+//             error:function (){
+//                 console.log("Error")
+//             }
+//
+//         });
+//     }, 3000);
+// }

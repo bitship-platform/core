@@ -1,12 +1,13 @@
 import os
 from datetime import datetime, timezone
 
+import requests
 from django.views import View
 from django.conf import settings
 from django.db import DatabaseError
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import QueryDict, JsonResponse
+from django.http import QueryDict, JsonResponse, HttpResponse
 
 from utils.mixins import ResponseMixin
 from .models import App, Folder, File, Order
@@ -276,7 +277,26 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
 
+class AppConsoleView(LoginRequiredMixin, View, ResponseMixin):
+
+    def get(self, request, app_id):
+        app_id = App.objects.get(id=app_id).unique_id
+        return render(request, "dashboard/logs.html", {"app_id": app_id})
+
+
 class AppLogView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request, app_id):
-        return render(request, "dashboard/logs.html")
+        try:
+            resp = requests.get(f"http://127.0.0.1:7000/logs/{app_id}/")
+            if resp.status_code == 200:
+                print(resp)
+                return HttpResponse(resp, status=200)
+            if resp.status_code == 503:
+                return self.json_response_503()
+            if resp.status_code == 504:
+                return self.json_response_504()
+            return self.json_response_500()
+        except Exception:
+            print(Exception)
+            return self.json_response_500()

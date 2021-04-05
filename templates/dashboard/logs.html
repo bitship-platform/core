@@ -21,13 +21,13 @@
             <div class="card-header bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Deployment logs</h3>
+                  <h3 class="mb-0">Deployment logs  {% if request.user.customer.settings.beta_tester %}<span><button class="btn-sm btn-outline-danger" disabled>beta</button></span>{% endif %}</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
               <div class="form-group">
-                <textarea class="form-control" style="height: 35em" resize="none" id="exampleFormControlTextarea1" rows="3" disabled></textarea>
+                <textarea class="form-control" style="height: 35em" resize="none" id="consoleLogTextArea" rows="3" disabled></textarea>
               </div>
             </div>
           </div>
@@ -44,6 +44,29 @@
       {% include "dashboard/includes/footer.html" %}
 
     </div>
+    <script>
+    function autoRefreshLogs(app_id){
+        setInterval(function () {
+            const csrftoken = getCookie('csrftoken');
+
+            $.ajax({
+                url: `/app/logs/${app_id}`,
+                type: 'GET',
+                headers: {'X-CSRFToken': csrftoken},
+                success: function (data) {
+                    $('#consoleLogTextArea').html(data);
+                    // let element = document.getElementById("chatScrollSection");
+                    // element.scrollTop = element.scrollHeight - element.clientHeight;
+                },
+                error:function (){
+                    console.log("Error")
+                }
+
+            });
+        }, 3000);
+    }
+    </script>
+    <script>autoRefreshLogs("{{ app_id }}")</script>
 
 {% endblock content %}
 
