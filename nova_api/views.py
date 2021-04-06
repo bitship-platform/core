@@ -91,7 +91,7 @@ class AppConfirmationView(APIView, ResponseMixin):
 
     def post(self, request):
         app_id = request.data.get("app_id")
-        status = request.date.get("status")
+        status = request.data.get("status")
         if app_id:
             try:
                 app = App.objects.get(unique_id=app_id)

@@ -1,24 +1,80 @@
-{% if app.failed %}
-  <button class="btn-sm btn-outline-danger" disabled>failed</button> <b>---- 〤 ----</b>
-{% endif %}
-{% if app.success %}
-<button class="btn-sm btn-outline-success" disabled>success</button> <b>--▣--▣--▣--</b>
-{% endif %}
-{% if app.pending %}
-<button class="btn-sm btn-outline-warning" disabled>pending</button>
-    <b>---</b><span class="spinner-grow spinner-grow-sm"></span>
-    <span class="spinner-grow spinner-grow-sm"></span>
-    <span class="spinner-grow spinner-grow-sm"></span><b>---</b>
-{% endif %}
-{% if app.rejected %}
-<button class="btn-sm btn-outline-dark" disabled>rejected</button> <b>&nbsp&nbsp&nbsp&nbsp&nbsp☹-----</b>
-{% endif %}
-<button type="button" class="btn-sm btn-outline-primary mr-2" id="appDeployButton"><i class="fa fa-bolt"></i> Deploy</button>
-{% if app.get_status_display != "Not Started" %}
-<button type="button" class="btn-sm btn-outline-primary mr-2" id="appStartButton"><i class="fa fa-play"></i> Start</button>
-<button type="button" class="btn-sm btn-outline-primary mr-2" id="appStopButton"><i class="fa fa-stop"></i> Stop</button>
-{% endif %}
-<button type="button" data-toggle="modal" data-target="#deleteAppModalCenter" class="btn-sm btn-outline-danger mr-2"><i class="fa fa-times-circle"></i> Terminate</button>
-{% if task_id %}
-<input type="hidden" id="progressBarUrl" value="">
-{% endif %}
+<div class="col-lg-4">
+  <div class="input-group">
+    {% if app.python %}
+    <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
+        {% if not app.configuration %}
+        <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
+         {% endif %}
+    </button>
+
+    {% elif app.node %}
+    <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
+        {% if not app.configuration %}
+        <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
+         {% endif %}
+        </button>
+    {% endif %}
+    {% if request.user.customer.settings.beta_tester %}
+       {% if app.running %}
+            <a href="{{ app.id }}/logs/" target="_blank"><button class="btn-sm btn-outline-primary ml-2" type="button"><i class="fa fa-list-alt"></i> Console logs</button></a>
+       {% endif %}
+    {% endif %}
+  {% if app.last_deployment_timestamp %}
+      <a href="app/backup/{{ app.unique_id }}"><button type="button" class="btn-sm btn-outline-primary ml-2" id="downloadBackupButton"><i class="fa fa-download"></i> Backup</button></a>
+  {% endif %}
+  </div>
+</div>
+<div class="col-lg-3">
+</div>
+<div class="col-lg-5">
+      <style>
+        @keyframes spinner-grow {
+          0% {
+            transform: scale(0);
+          }
+          50% {
+            opacity: 1;
+            transform: none;
+          }
+        }
+
+        .spinner-grow {
+          display: inline-block;
+          width: 2rem;
+          height: 2rem;
+          vertical-align: text-bottom;
+          background-color:  currentColor;
+          border-radius: 50%;
+          opacity: 0;
+          animation: spinner-grow .75s linear infinite ;
+        }
+
+        .spinner-grow-sm {
+          width: 1em;
+          height: 1em;
+        }
+      </style>
+
+    {% if app.failed %}
+      <button class="btn-sm btn-outline-danger" disabled>failed</button> <b>---- 〤 ----</b>
+    {% endif %}
+    {% if app.success %}
+        <button class="btn-sm btn-outline-success" disabled>success</button> <b>--▣--▣--▣--</b>
+    {% endif %}
+    {% if app.pending %}
+        <button class="btn-sm btn-outline-warning" disabled>pending</button>
+        <b>---</b><span class="spinner-grow spinner-grow-sm"></span>
+        <span class="spinner-grow spinner-grow-sm"></span>
+        <span class="spinner-grow spinner-grow-sm"></span><b>---</b>
+    {% endif %}
+    <input type="hidden" value="{{ app.status }}" id="appStatusConsole">
+    {% if app.rejected %}
+        <button class="btn-sm btn-outline-dark" disabled>rejected</button> <b>&nbsp&nbsp&nbsp&nbsp&nbsp☹-----</b>
+    {% endif %}
+    <button type="button" class="btn-sm btn-outline-primary mr-2" id="appDeployButton"><i class="fa fa-bolt"></i> Deploy</button>
+    {% if app.get_status_display != "Not Started" %}
+        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStartButton"><i class="fa fa-play"></i> Start</button>
+        <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStopButton"><i class="fa fa-stop"></i> Stop</button>
+    {% endif %}
+    <button type="button" data-toggle="modal" data-target="#deleteAppModalCenter" class="btn-sm btn-outline-danger mr-2"><i class="fa fa-times-circle"></i> Terminate</button>
+</div>

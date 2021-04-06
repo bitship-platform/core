@@ -221,6 +221,8 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 description=f"{app.name} app",
                 customer=app.owner
             )
+        if app.status == "bg-danger":
+            bpd_api.manage(app_id=app_id, action="start")
         app.status = "bg-success"
         app.last_deployment_status = "bg-warning"
         app.last_deployment_timestamp = datetime.now(timezone.utc)
@@ -250,7 +252,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 app.status = "bg-success"
                 app.save()
             bpd_api.manage(app_id=app_id, action=action)
-            return self.json_response_200()
+            return render(request, "dashboard/refresh_pages/appmanagement.html", {"app": app}, status=200)
         return self.json_response_500()
 
     def delete(self, request):
@@ -281,8 +283,8 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
 class AppConsoleView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request, app_id):
-        app_id = App.objects.get(id=app_id).unique_id
-        return render(request, "dashboard/logs.html", {"app_id": app_id})
+        app = App.objects.get(id=app_id)
+        return render(request, "dashboard/logs.html", {"app": app})
 
 
 class AppLogView(LoginRequiredMixin, View, ResponseMixin):

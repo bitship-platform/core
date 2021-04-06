@@ -5,83 +5,8 @@
         <div class="col-lg-12 form-group">
             <div class="card shadow">
                 <div class="card-header border-0">
-                <div class="row">
-                  <div class="col-lg-4">
-                      <div class="input-group">
-                        {% if app.python %}
-                        <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
-                            {% if not app.configuration %}
-                            <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
-                             {% endif %}
-                        </button>
-
-                        {% elif app.node %}
-                        <button data-toggle="modal" data-target="#nodeAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
-                            {% if not app.configuration %}
-                            <i class="fa fa-info-circle fa-sm text-danger" id="unsetConfigNotifier" data-toggle="tooltip" data-placement="bottom" title="App configuration not set... please click here to set it."></i>
-                             {% endif %}
-                            </button>
-                        {% endif %}
-                        {% if request.user.customer.settings.beta_tester %}
-                          <a href="{{ app.id }}/logs/" target="_blank"><button class="btn-sm btn-outline-primary ml-2" type="button"><i class="fa fa-list-alt"></i> Console logs</button></a>
-                        {% endif %}
-                      {% if app.last_deployment_timestamp %}
-                          <a href="app/backup/{{ app.unique_id }}"><button type="button" class="btn-sm btn-outline-primary ml-2" id="downloadBackupButton"><i class="fa fa-download"></i> Backup</button></a>
-                      {% endif %}
-                      </div>
-                  </div>
-                  <div class="col-lg-3">
-                  </div>
-                  <div class="col-lg-5 manageRefreshSection">
-                      <style>
-                        @keyframes spinner-border {
-                          to { transform: rotate(360deg); }
-                        }
-                        .spinner-border{
-                            display: inline-block;
-                            width: 2rem;
-                            height: 2rem;
-                            vertical-align: text-bottom;
-                            border: .25em solid currentColor;
-                            border-right-color: transparent;
-                            border-radius: 50%;
-                            -webkit-animation: spinner-border .75s linear infinite;
-                            animation: spinner-border .75s linear infinite;
-                        }
-                        .spinner-border-sm{
-                            width: 1rem;
-                            height: .8rem;
-                            border-width: .2em;
-                        }
-
-                        @keyframes spinner-grow {
-                          0% {
-                            transform: scale(0);
-                          }
-                          50% {
-                            opacity: 1;
-                            transform: none;
-                          }
-                        }
-
-                        .spinner-grow {
-                          display: inline-block;
-                          width: 2rem;
-                          height: 2rem;
-                          vertical-align: text-bottom;
-                          background-color:  currentColor;
-                          border-radius: 50%;
-                          opacity: 0;
-                          animation: spinner-grow .75s linear infinite ;
-                        }
-
-                        .spinner-grow-sm {
-                          width: 1em;
-                          height: 1em;
-                        }
-                      </style>
-                        {% include 'dashboard/refresh_pages/appmanagement.html' %}
-                  </div>
+                <div class="row" id="manageRefreshSection">
+                    {% include 'dashboard/refresh_pages/appmanagement.html' %}
                 </div>
                 </div>
             </div>

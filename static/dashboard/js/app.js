@@ -333,7 +333,7 @@ $(document).ready(function() {
             data: {app_id: app_id},
             success:function (data)
             {
-              $(".manageRefreshSection").html(data);
+              $("#manageRefreshSection").html(data);
               $("#appDeployButton").prop('disabled', false);
               $("#appStopButton").prop('disabled', false);
               $("#appStartButton").prop('disabled', true);
@@ -363,6 +363,7 @@ $(document).ready(function() {
             data: {app_id: app_id, action: "start"},
             success:function (data)
             {
+              $("#manageRefreshSection").html(data);
               $("#appStopButton").prop('disabled', false);
               alertSuccess(`App started successfully...`);
             },
@@ -386,6 +387,7 @@ $(document).ready(function() {
             data: {app_id: app_id, action: "stop"},
             success:function (data)
             {
+              $("#manageRefreshSection").html(data);
               $("#appStartButton").prop('disabled', false);
               alertSuccess(`App stopped successfully...`);
             },
@@ -772,23 +774,3 @@ $(document).ready(function (){
     })
 })
 
-// function autoRefreshLogs(app_id){
-//     setInterval(function () {
-//         const csrftoken = getCookie('csrftoken');
-//
-//         $.ajax({
-//             url: `http://127.0.0.1:7000/logs/${app_id}/`,
-//             headers: {'X-CSRFToken': csrftoken},
-//             type: 'GET',
-//             success: function (data) {
-//                 $('#consoleLogTextArea').html(data);
-//                 // let element = document.getElementById("chatScrollSection");
-//                 // element.scrollTop = element.scrollHeight - element.clientHeight;
-//             },
-//             error:function (){
-//                 console.log("Error")
-//             }
-//
-//         });
-//     }, 3000);
-// }
