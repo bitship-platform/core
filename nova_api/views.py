@@ -53,6 +53,7 @@ class RenewSubscription(APIView, ResponseMixin):
                                             "Failed to renew subscription",
                                             msg=msg)
                     app.status = "bg-warning"
+                    app.last_deployment_status = "bg-secondary"
                     app.save()
                     Order.objects.create(
                         create_time=datetime.now(timezone.utc),
@@ -90,25 +91,34 @@ class AppConfirmationView(APIView, ResponseMixin):
 
     def post(self, request):
         app_id = request.data.get("app_id")
+        status = request.date.get("status")
         if app_id:
             try:
                 app = App.objects.get(unique_id=app_id)
-                if app.status == "bg-success":
+                if status == "rejected":
                     app.status = "bg-warning"
+                    app.last_deployment_status = "bg-dark"
                     app.owner.credits_spend -= app.plan
                     app.owner.credits += app.plan
                     app.owner.save()
                     app.save()
-                Order.objects.create(
-                    create_time=datetime.now(timezone.utc),
-                    update_time=datetime.now(timezone.utc),
-                    transaction_amount=app.plan,
-                    status="fa-check-circle text-success",
-                    service="Deploy Failure Reversal",
-                    description=f"{app.name} app | (deploy rejected)",
-                    customer=app.owner,
-                    credit=True
-                )
+                    Order.objects.create(
+                        create_time=datetime.now(timezone.utc),
+                        update_time=datetime.now(timezone.utc),
+                        transaction_amount=app.plan,
+                        status="fa-check-circle text-success",
+                        service="Deploy Failure Reversal",
+                        description=f"{app.name} app | (deploy rejected)",
+                        customer=app.owner,
+                        credit=True
+                    )
+                elif status == "success":
+                    app.status = "bg-success"
+                    app.last_deployment_status = "bg-success"
+                    app.save()
+                elif status == "failed":
+                    app.last_deployment_status = "bg-danger"
+                    app.save()
                 return self.json_response_200()
             except App.DoesNotExist:
                 return self.json_response_404()

@@ -222,6 +222,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 customer=app.owner
             )
         app.status = "bg-success"
+        app.last_deployment_status = "bg-warning"
         app.last_deployment_timestamp = datetime.now(timezone.utc)
         app.save()
         context["app"] = app
