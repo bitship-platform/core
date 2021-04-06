@@ -338,6 +338,38 @@ $(document).ready(function() {
               $("#appStopButton").prop('disabled', false);
               $("#appStartButton").prop('disabled', true);
               alertSuccess(`Deployment in progress...`);
+
+                let interval = setInterval(function (){
+                  $.ajax({
+                    url: `/app/panel/options/` + '?' + $.param({"app_id": app_id,}) ,
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'GET',
+                    success:function (data)
+                    {
+                      $("#manageRefreshSection").html(data);
+                      $("#appDeployButton").prop('disabled', false);
+                      $("#appStopButton").prop('disabled', false);
+                      $("#appStartButton").prop('disabled', true);
+                      alertSuccess(`Deployment successful!`);
+                      clearInterval(interval);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        if(jqXHR.status===503){
+                           $("#manageRefreshSection").html(jqXHR.responseText);
+                          $("#appDeployButton").prop('disabled', false);
+                          alertDanger(`Deployment Failed!`);
+                          clearInterval(interval);
+                        }
+                        else if(jqXHR.status===500){
+                           $("#manageRefreshSection").html(jqXHR.responseText);
+                          $("#appDeployButton").prop('disabled', false);
+                          alertDanger(`Build Rejected!`);
+                          clearInterval(interval);
+                        }
+                    }
+                    });
+                }, 5000)
+
             },
             error:function (resp) {
                 $("#appDeployButton").prop('disabled', false);

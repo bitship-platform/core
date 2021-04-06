@@ -299,3 +299,20 @@ class AppLogView(LoginRequiredMixin, View, ResponseMixin):
         except Exception as E:
             print(E)
             return self.json_response_500()
+
+
+class AppManagementView(LoginRequiredMixin, View, ResponseMixin):
+
+    def get(self, request):
+        app_id = request.GET.get("app_id")
+        try:
+            app = App.objects.get(id=app_id)
+            if app.success:
+                return render(request, "dashboard/refresh_pages/appmanagement.html", {"app": app}, status=200)
+            elif app.failed:
+                return render(request, "dashboard/refresh_pages/appmanagement.html", {"app": app}, status=503)
+            elif app.rejected:
+                return render(request, "dashboard/refresh_pages/appmanagement.html", {"app": app}, status=500)
+        except app.DoesNotExist:
+            return self.json_response_404()
+        return self.json_response_504()

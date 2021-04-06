@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
     PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView
-from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView
+from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, BackupDownload, set_app_config
 from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView
 from django.conf.urls import url
@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^app/config/', set_app_config, name="app_config"),
     url(r'^app/logs/(?P<app_id>.*)', AppLogView.as_view(), name="app_logs"),
     url(r'^app/tarball/(?P<uu_id>.*)', TarballDownload.as_view(), name='app'),
+    url(r'^app/panel/options/', AppManagementView.as_view(), name="app_management"),
 ]

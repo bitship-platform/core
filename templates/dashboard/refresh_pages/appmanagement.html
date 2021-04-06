@@ -1,4 +1,4 @@
-<div class="col-lg-4">
+<div class="col-lg-3">
   <div class="input-group">
     {% if app.python %}
     <button data-toggle="modal" data-target="#pythonAppConfigurationModal" class="btn-sm btn-outline-primary" type="button"><i class="fa fa-cogs"></i> Configure
@@ -19,9 +19,6 @@
             <a href="{{ app.id }}/logs/" target="_blank"><button class="btn-sm btn-outline-primary ml-2" type="button"><i class="fa fa-list-alt"></i> Console logs</button></a>
        {% endif %}
     {% endif %}
-  {% if app.last_deployment_timestamp %}
-      <a href="app/backup/{{ app.unique_id }}"><button type="button" class="btn-sm btn-outline-primary ml-2" id="downloadBackupButton"><i class="fa fa-download"></i> Backup</button></a>
-  {% endif %}
   </div>
 </div>
 <div class="col-lg-3">
@@ -77,4 +74,9 @@
         <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStopButton"><i class="fa fa-stop"></i> Stop</button>
     {% endif %}
     <button type="button" data-toggle="modal" data-target="#deleteAppModalCenter" class="btn-sm btn-outline-danger mr-2"><i class="fa fa-times-circle"></i> Terminate</button>
+</div>
+<div class="col-lg-1">
+  {% if app.last_deployment_timestamp %}
+      <a href="app/backup/{{ app.unique_id }}"><button type="button" class="btn-sm btn-outline-primary ml-2" id="downloadBackupButton"><i class="fa fa-download"></i> Backup</button></a>
+  {% endif %}
 </div>
