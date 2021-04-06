@@ -223,7 +223,10 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             )
         if app.status == "bg-danger":
             bpd_api.manage(app_id=app_id, action="start")
-        app.status = "bg-success"
+        if app.last_deployment_timestamp is None:
+            app.status = "bg-info"
+        else:
+            app.status = "bg-success"
         app.last_deployment_status = "bg-warning"
         app.last_deployment_timestamp = datetime.now(timezone.utc)
         app.save()
