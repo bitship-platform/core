@@ -173,7 +173,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 PAYPAL_SECRET = env("PAYPAL_SECRET")
 PAYPAL_ID = env("PAYPAL_ID")
-BPD_ENDPOINT = "https://deploy.novanodes.com"
+BPD_ENDPOINT = env("BPD_ENDPOINT")
 BPD_SECRET = env("BPD_SECRET")
 
 EMAIL_HOST = 'smtp.gmail.com'

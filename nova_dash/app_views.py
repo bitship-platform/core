@@ -288,7 +288,7 @@ class AppLogView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request, app_id):
         try:
-            resp = requests.get(f"http://127.0.0.1:7000/logs/{app_id}/")
+            resp = bpd_api.get(f"/logs/{app_id}")
             return HttpResponse(resp, status=resp.status_code)
         except Exception as E:
             print(E)
