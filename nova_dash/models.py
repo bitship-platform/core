@@ -78,9 +78,16 @@ class App(models.Model):
     STATUS_CHOICES = [
         ("bg-warning", "Not Started"),
         ("bg-success", "Running"),
-        ("bg-info", "Awaiting Confirmation"),
+        ("bg-info", "Pending"),
         ("bg-danger", "Stopped"),
         ("bg-dark", "Terminated"),
+    ]
+    DEPLOYMENT_STATUS_CHOICES = [
+        ("bg-success", "success"),
+        ("bg-danger", "failed"),
+        ("bg-warning", "pending"),
+        ("bg-dark", "rejected"),
+        ("bg-secondary", "Not deployed"),
     ]
     STACK_CHOICES = [
         ("https://cdn.discordapp.com/attachments/785734963458342973/786641902782251028/python.png", "Python"),
@@ -105,6 +112,7 @@ class App(models.Model):
     glacier = models.IntegerField(default=0, null=True)
     config = models.JSONField(default=dict)
     last_deployment_timestamp = models.DateTimeField(null=True, blank=True)
+    last_deployment_status = models.CharField(choices=DEPLOYMENT_STATUS_CHOICES, default="Not deployed", max_length=20)
 
     @property
     def config_options(self):
@@ -144,8 +152,24 @@ class App(models.Model):
         return False
 
     @property
+    def pending(self):
+        return self.last_deployment_status == "bg-warning"
+
+    @property
+    def failed(self):
+        return self.last_deployment_status == "bg-danger"
+
+    @property
+    def success(self):
+        return self.last_deployment_status == "bg-success"
+
+    @property
+    def rejected(self):
+        return self.last_deployment_status == "bg-dark"
+
+    @property
     def idle(self):
-        if self.get_status_display() in ["Awaiting Confirmation", "Not Started", "Stopped"]:
+        if self.get_status_display() in ["Pending", "Not Started", "Stopped"]:
             return True
         return False
 

@@ -1,7 +1,9 @@
 {
   "name": "NovaNodes",
   "version": "1.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "three-dots": "^0.2.0"
+  },
   "devDependencies": {
     "axios": "^0.21.1"
   }

@@ -1,3 +1,18 @@
+{% if app.failed %}
+  <button class="btn-sm btn-outline-danger" disabled>failed</button> <b>---- 〤 ----</b>
+{% endif %}
+{% if app.success %}
+<button class="btn-sm btn-outline-success" disabled>success</button> <b>--▣--▣--▣--</b>
+{% endif %}
+{% if app.pending %}
+<button class="btn-sm btn-outline-warning" disabled>pending</button>
+    <b>---</b><span class="spinner-grow spinner-grow-sm"></span>
+    <span class="spinner-grow spinner-grow-sm"></span>
+    <span class="spinner-grow spinner-grow-sm"></span><b>---</b>
+{% endif %}
+{% if app.rejected %}
+<button class="btn-sm btn-outline-dark" disabled>rejected</button> <b>&nbsp&nbsp&nbsp&nbsp&nbsp☹-----</b>
+{% endif %}
 <button type="button" class="btn-sm btn-outline-primary mr-2" id="appDeployButton"><i class="fa fa-bolt"></i> Deploy</button>
 {% if app.get_status_display != "Not Started" %}
 <button type="button" class="btn-sm btn-outline-primary mr-2" id="appStartButton"><i class="fa fa-play"></i> Start</button>
