@@ -27,7 +27,21 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <textarea class="form-control" style="height: 35em" resize="none" id="consoleLogTextArea" rows="3" disabled></textarea>
+                <textarea class="form-control" style="height: 35em; color: black;" resize="none" id="consoleLogTextArea" rows="3" disabled></textarea>
+              </div>
+              <div class="form-group">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" value="" id="logAutoUpdate" checked>
+                  <label class="form-check-label" for="logAutoUpdate">
+                     Auto Update Logs
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" value="" id="logAutoScroll">
+                  <label class="form-check-label" for="logAutoScroll">
+                     Auto Scroll
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -47,6 +61,9 @@
     <script>
     function autoRefreshLogs(app_id){
         setInterval(function () {
+
+            let checkbox = $("#logAutoUpdate");
+            if (checkbox.is(':checked')){
             const csrftoken = getCookie('csrftoken');
 
             $.ajax({
@@ -55,14 +72,21 @@
                 headers: {'X-CSRFToken': csrftoken},
                 success: function (data) {
                     $('#consoleLogTextArea').html(data);
-                    // let element = document.getElementById("chatScrollSection");
-                    // element.scrollTop = element.scrollHeight - element.clientHeight;
+                    let scroll_box = $("#logAutoScroll");
+                    if (scroll_box.is(':checked')) {
+                        let element = document.getElementById("consoleLogTextArea");
+                        element.scrollTop = element.scrollHeight - element.clientHeight;
+                    }
                 },
-                error:function (){
-                    console.log("Error")
+                error:function handleAjaxError(jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 504){
+                        if(document.getElementById("consoleLogTextArea").value === ""){
+                            $('#consoleLogTextArea').html(jqXHR.responseText);
+                        }
+                    }
                 }
-
             });
+            }
         }, 3000);
     }
     </script>

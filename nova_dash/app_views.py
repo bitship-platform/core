@@ -289,14 +289,7 @@ class AppLogView(LoginRequiredMixin, View, ResponseMixin):
     def get(self, request, app_id):
         try:
             resp = requests.get(f"http://127.0.0.1:7000/logs/{app_id}/")
-            if resp.status_code == 200:
-                print(resp)
-                return HttpResponse(resp, status=200)
-            if resp.status_code == 503:
-                return self.json_response_503()
-            if resp.status_code == 504:
-                return self.json_response_504()
-            return self.json_response_500()
-        except Exception:
-            print(Exception)
+            return HttpResponse(resp, status=resp.status_code)
+        except Exception as E:
+            print(E)
             return self.json_response_500()
