@@ -763,6 +763,7 @@ $(document).ready(function() {
     });
 
 });
+
 $(document).ready(function (){
     $(document).on('click', '.copyTransactionID', function (){
         let transaction_id = $(this).attr("transaction_id");
@@ -771,6 +772,10 @@ $(document).ready(function (){
          $temp.val(transaction_id).select();
          document.execCommand("copy");
          $temp.remove()
+    })
+    $(document).on('click', '#hiddenRefreshButton', function (){
+        $('#hiddenRefreshButton').fadeOut();
+        $('#logAutoUpdate').prop("checked", true);
     })
 })
 

@@ -32,7 +32,7 @@
               {% if app.running %}
               <div class="form-group">
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="" id="logAutoUpdate" checked>
+                  <input class="form-check-input" type="checkbox" value="" id="logAutoUpdate">
                   <label class="form-check-label" for="logAutoUpdate">
                      Auto Update Logs
                   </label>
@@ -48,6 +48,9 @@
                     <button class="btn-sm btn-outline-danger" disabled><b>ERROR: </b> Please deploy your app to see the logs</button>
                 </div>
               {% endif %}
+              <div id="hiddenRefreshButton">
+                  <button class="btn-sm btn-outline-primary">Click to display logs</button>
+              </div>
               </div>
             </div>
           </div>
@@ -66,11 +69,16 @@
     </div>
     <script>
     function autoRefreshLogs(app_id){
+        let refresh_quota = 0;
         setInterval(function () {
             let checkbox = $("#logAutoUpdate");
             if (checkbox.is(':checked')){
             const csrftoken = getCookie('csrftoken');
-
+            refresh_quota+=1;
+            if(refresh_quota%15===0) {
+                checkbox.prop("checked", false);
+                $('#hiddenRefreshButton').fadeIn();
+            }
             $.ajax({
                 url: `/app/logs/${app_id}`,
                 type: 'GET',
@@ -97,7 +105,7 @@
                 }
             });
             }
-        }, 3000);
+        }, 8000);
     }
     </script>
     {% if app.running %}
