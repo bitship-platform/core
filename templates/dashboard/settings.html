@@ -50,10 +50,10 @@
                               <dd class="col-sm-9">
                                 <input type="checkbox" id="terminated_apps" {% if request.user.customer.terminated_apps %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
-{#                              <dt class="col-sm-3">Beta features</dt>#}
-{#                              <dd class="col-sm-9">#}
-{#                                <input type="checkbox" id="beta_features" {% if request.user.customer.settings.beta_tester %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">#}
-{#                              </dd>#}
+                              <dt class="col-sm-3">Beta features</dt>
+                              <dd class="col-sm-9">
+                                <input type="checkbox" id="beta_features" {% if request.user.customer.settings.beta_tester %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
                             </dl>
                           </div>
                       </div>
