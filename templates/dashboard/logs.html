@@ -84,7 +84,6 @@
                 type: 'GET',
                 headers: {'X-CSRFToken': csrftoken},
                 success: function (data) {
-                    data.preventDefault();
                     $('#consoleLogTextArea').html(data);
                     let scroll_box = $("#logAutoScroll");
                     if (scroll_box.is(':checked')) {
