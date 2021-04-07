@@ -93,8 +93,7 @@
                     }
                 },
                 error:function handleAjaxError(jqXHR, textStatus, errorThrown) {
-                    jqXHR.preventDefault();
-                    if (jqXHR.status === 504){
+                    if (jqXHR.status === 503){
                         if(document.getElementById("consoleLogTextArea").value === ""){
                             $('#consoleLogTextArea').html(jqXHR.responseText);
                         }

@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime, timezone
 
 import requests
@@ -295,7 +296,8 @@ class AppLogView(LoginRequiredMixin, View, ResponseMixin):
     def get(self, request, app_id):
         try:
             resp = bpd_api.get(f"/logs/{app_id}/")
-            return HttpResponse(resp, status=resp.status_code)
+            serialized_resp = json.loads(resp.text).get("logs")
+            return HttpResponse(serialized_resp, status=resp.status_code)
         except Exception as E:
             print(E)
             return self.json_response_500()
