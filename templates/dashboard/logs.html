@@ -84,6 +84,7 @@
                 type: 'GET',
                 headers: {'X-CSRFToken': csrftoken},
                 success: function (data) {
+                    data.preventDefault();
                     $('#consoleLogTextArea').html(data);
                     let scroll_box = $("#logAutoScroll");
                     if (scroll_box.is(':checked')) {
@@ -92,16 +93,20 @@
                     }
                 },
                 error:function handleAjaxError(jqXHR, textStatus, errorThrown) {
+                    jqXHR.preventDefault();
                     if (jqXHR.status === 504){
                         if(document.getElementById("consoleLogTextArea").value === ""){
                             $('#consoleLogTextArea').html(jqXHR.responseText);
                         }
                     }
-                    if (jqXHR.status === 404){
+                    else if (jqXHR.status === 404){
                         if(document.getElementById("consoleLogTextArea").value === ""){
                           $('#consoleLogTextArea').html("Error: Please deploy your app and try again");
                         }
                     }
+                    else{
+                        alertInfo("Nothing to update!")
+                }
                 }
             });
             }
