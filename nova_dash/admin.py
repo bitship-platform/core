@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Customer, App, Address, File, Folder, Setting, Order, Transaction, Offer, Promo, Referral
-# Register your models here.
 
 admin.site.register(Customer)
 admin.site.register(App)

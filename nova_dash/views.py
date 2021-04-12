@@ -105,6 +105,15 @@ class LoginView(View):
                 user = authenticate(username=self.user_id, password=password)
                 if user is None:
                     customer = create_customer(self.user_json, password)
+                    client_ip, is_routable = get_client_ip(request)
+                    if is_routable:
+                        try:
+                            ref_obj = Referral.objects.get(ip=client_ip)
+                            customer.referrer = ref_obj.affiliate.user
+                            customer.save()
+                            ref_obj.delete()
+                        except Referral.DoesNotExist:
+                            pass
                     login(request, customer.user)
                 elif user.customer.banned:
                     msg = "Your account has been banned. Contact admin if this was a mistake."
