@@ -1,6 +1,7 @@
 import os
 import json
 from datetime import datetime, timezone
+from ipware import get_client_ip
 
 from django.views import View
 from django.conf import settings
@@ -16,7 +17,7 @@ from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 
 
 from utils.handlers import AlertHandler as Alert, PaypalHandler
-from .models import Address, App, File, Order
+from .models import Address, App, File, Order, Customer, Referral
 from utils.hashing import Hasher
 from utils.oauth import Oauth
 from utils.operations import create_customer, update_customer
@@ -81,6 +82,17 @@ class LoginView(View):
 
     def get(self, request):
         code = request.GET.get('code', None)
+        referrer_id = request.GET.get('refID', None)
+        if referrer_id:
+            client_ip, is_routable = get_client_ip(request)
+            if is_routable:
+                try:
+                    affiliate = Customer.objects.get(id=referrer_id)
+                    if not Referral.objects.filter(ip=client_ip).exists():
+                        Referral.objects.create(affiliate=affiliate,
+                                                ip=client_ip)
+                except Customer.DoesNotExist:
+                    pass
         self.email = None
         msg = None
         if code is not None:

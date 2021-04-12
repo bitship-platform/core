@@ -13,6 +13,7 @@ gunicorn = "*"
 django-hosts = "*"
 djangorestframework = "*"
 psycopg2-binary = "*"
+django-ipware = "*"
 
 [requires]
 

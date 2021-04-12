@@ -8,6 +8,7 @@ from datetime import datetime
 from django.conf import settings
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.utils.timezone import make_aware
 from django.db.models.signals import post_save, post_delete
 
 from utils.handlers import BPDAPIHandler
@@ -77,7 +78,7 @@ def create_customer(user_json: dict, password: str):
                                        credits=0,
                                        avatar=user_json["avatar"],
                                        tag=user_json["discriminator"],
-                                       creation_date=discord_id_to_time(int(user_id)))
+                                       creation_date=make_aware(discord_id_to_time(int(user_id))))
     Address.objects.create(customer=customer)
     Setting.objects.create(customer=customer)
     return customer

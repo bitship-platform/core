@@ -14,7 +14,7 @@ class Customer(models.Model):
     id = models.BigIntegerField(primary_key=True)
     tag = models.CharField(max_length=5, default="0000")
     avatar = models.CharField(max_length=50, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
     credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
     credits_spend = models.FloatField(default=0)
@@ -24,6 +24,7 @@ class Customer(models.Model):
     applied_offers = models.ManyToManyField("Offer", blank=True)
     creation_date = models.DateTimeField(null=True, blank=True)
     joined_server = models.BooleanField(default=False)
+    referrer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="affiliate")
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -273,6 +274,7 @@ class Setting(models.Model):
     new_offers_alert = models.BooleanField(default=False)
     display_terminated_apps = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=False)
+    affiliate = models.BooleanField(default=False)
 
 
 def upload_location(instance, filename):
@@ -283,6 +285,12 @@ def upload_location(instance, filename):
             path = f"/{folder.name}" + path
         folder = folder.folder
     return f"{instance.folder.owner.id}" + path + f"/{filename}"
+
+
+class Referral(models.Model):
+    affiliate = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    ip = models.CharField(max_length=50)
+    creation_time = models.DateTimeField(auto_now_add=True)
 
 
 class Folder(models.Model):
