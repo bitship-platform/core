@@ -95,6 +95,13 @@
               <i class="fa fa-exchange-alt text-dark"></i> Transactions
             </a>
           </li>
+        {% if request.user.customer.settings.affiliate %}
+          <li class="nav-item {% if 'affiliates' in segment %} active {% endif %}">
+            <a class="nav-link " href="{% url 'affiliates' %}">
+              <i class="fa fa-user-plus text-gray-dark"></i> Affiliate Panel
+            </a>
+          </li>
+        {% endif %}
           <li class="nav-item {% if 'help_deploy' in segment %} active {% endif %}">
             <a class="nav-link " href="{% url 'help_deploy' %}" target="_blank">
               <i class="fa fa-question-circle text-blue"></i> How to deploy

@@ -1,0 +1,118 @@
+{% extends 'dashboard/layouts/base.html' %}
+
+{% block title %} {{ request.user.first_name }} {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-darker pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Affiliate Commission</h5>
+                      <span class="h2 font-weight-bold mb-0">${{ request.user.customer.affiliate_commission }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-teal text-white rounded-circle shadow">
+                        <i class="fas fa-user-plus"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                      <a href="#"><button class="btn btn-lg btn-outline-dark">Withdraw</button></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+            </div>
+            <div class="col-xl-3 col-lg-6">
+            </div>
+            <div class="col-xl-3 col-lg-6">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0 mt-5">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Your Referrals</h3>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Join Date</th>
+                    <th scope="col">Account Status</th>
+                    <th scope="col">Earnings</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for affiliate in request.user.affiliate.all %}
+                  <tr>
+                    <td>
+{#                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ transaction.id }}</b>#}
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Copy transaction id" transaction_id="{{ affiliate.id }}" class="copyTransactionID"><i class="far fa-clone fa-lg"></i></a>
+                    </td>
+                    <th scope="row">
+                      <div class="avatar-group">
+                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ affiliate.id }}">
+                          <img alt="{{ affiliate.user.first_name }}" src="{{ affiliate.get_avatar_url }}" class="rounded-circle">
+                        </a>{{ affiliate.user.first_name }} #{{ affiliate.tag }}
+                      </div>
+                    </th>
+                    <td>
+                        {{ affiliate.user.date_joined }}
+                    </td>
+                    <td>
+                      {% if affiliate.verified %}
+                      <i class="fas fa-check-circle text-success mr-2"></i>Verified
+                      {% else %}
+                      <i class="fas fa-times-circle text-danger mr-2"></i>Unverified
+                      {% endif %}
+                    </td>
+                    <td>
+                     {% if affiliate.first_order_amount %}
+                         <i class="fas fa-plus-square text-green mr-2"></i>${{ affiliate.earnings }}
+                     {% else %}
+                       <i class="mr-4"></i><b>---</b>
+                     {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Dark table -->
+      {% include "dashboard/includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

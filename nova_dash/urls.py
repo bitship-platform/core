@@ -1,6 +1,6 @@
 from django.urls import path, re_path, include
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
-    PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView
+    PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView, AffiliateView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, BackupDownload, set_app_config
 from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^how-to-deploy/', HelpView.as_view(), name="help_deploy"),
     url(r'^billing/process/', PaypalTransaction.as_view(), name='billing_process'),
     url(r'^billing/', BillingView.as_view(), name='billing'),
+    url(r'^affiliates/', AffiliateView.as_view(), name='affiliates'),
     url(r'^manage/app/backup/(?P<app_id>.*)', BackupDownload.as_view(), name='backup'),
     url(r'^manage/(?P<app_id>[0-9]+)/logs/', AppConsoleView.as_view(), name='app_log'),
     url(r'^manage/(?P<app_id>[0-9]+)/(?P<folder_id>.+)', ManageView.as_view(), name='browse'),

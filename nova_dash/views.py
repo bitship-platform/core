@@ -312,3 +312,11 @@ class ActivityView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
         return render(request, "dashboard/activity.html")
+
+
+class AffiliateView(LoginRequiredMixin, View, ResponseMixin):
+
+    def get(self, request):
+        if request.user.customer.settings.affiliate:
+            return render(request, "dashboard/affiliates.html")
+        return self.http_responce_404(request)

@@ -27,6 +27,7 @@ class Customer(models.Model):
     referrer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="affiliate")
     affiliate_commission = models.FloatField(default=0)
     affiliate_commission_spent = models.FloatField(default=0)
+    first_order_amount = models.FloatField(default=0)
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -47,6 +48,10 @@ class Customer(models.Model):
         self.verified = False
         self.address.reset()
         self.save()
+
+    @property
+    def earnings(self):
+        return self.first_order_amount/2
 
     @property
     def running_apps(self):
