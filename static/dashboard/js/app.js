@@ -244,7 +244,11 @@ $(document).ready(function () {
     $('#beta_features').on('change',function() {
             $.ajax({data: {beta_tester: this.checked}});
     });
+    $('#become_affiliate').on('change',function() {
+            $.ajax({data: {affiliate: this.checked}});
+    });
 })
+
 
 $(document).ready(function() {
 

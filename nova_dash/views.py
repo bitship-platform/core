@@ -87,10 +87,11 @@ class LoginView(View):
             client_ip, is_routable = get_client_ip(request)
             if is_routable:
                 try:
-                    affiliate = Customer.objects.get(id=referrer_id)
-                    if not Referral.objects.filter(ip=client_ip).exists():
-                        Referral.objects.create(affiliate=affiliate,
-                                                ip=client_ip)
+                    referrer = Customer.objects.get(id=referrer_id)
+                    if referrer.settings.affiliate:
+                        if not Referral.objects.filter(ip=client_ip).exists():
+                            Referral.objects.create(affiliate=referrer,
+                                                    ip=client_ip)
                 except Customer.DoesNotExist:
                     pass
         self.email = None
@@ -116,7 +117,7 @@ class LoginView(View):
                             pass
                     login(request, customer.user)
                 elif user.customer.banned:
-                    msg = "Your account has been banned. Contact admin if this was a mistake."
+                    msg = "Your account has been banned. Contact admin if you think this was a mistake."
                     return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
                 else:
                     login(request, user)

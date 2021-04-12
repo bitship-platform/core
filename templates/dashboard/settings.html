@@ -46,6 +46,10 @@
                       <div class="card">
                           <div class="card-body">
                             <dl class="row">
+                              <dt class="col-sm-3">Become an Affiliate</dt>
+                              <dd class="col-sm-9">
+                                <input type="checkbox" id="become_affiliate" {% if request.user.customer.settings.affiliate %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
                               <dt class="col-sm-3">Display terminated apps</dt>
                               <dd class="col-sm-9">
                                 <input type="checkbox" id="terminated_apps" {% if request.user.customer.terminated_apps %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
