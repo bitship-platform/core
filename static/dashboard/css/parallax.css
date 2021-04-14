@@ -363,8 +363,8 @@ body,
     display: block;
   }
   .login-header{
-    padding-bottom: 70px;
-    padding-top: 100px;
+    padding-bottom: 50px;
+    padding-top: 50px;
   }
   .c-button--gooey{
     font-size: 1.3em;

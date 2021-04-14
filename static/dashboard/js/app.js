@@ -808,6 +808,7 @@ $(document).ready(function (){
          $temp.val(transaction_id).select();
          document.execCommand("copy");
          $temp.remove()
+         alertSuccess("Copied to clipboard!")
     })
     $(document).on('click', '#hiddenRefreshButton', function (){
         $('#hiddenRefreshButton').fadeOut();

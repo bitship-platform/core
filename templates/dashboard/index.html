@@ -44,7 +44,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Affiliate Commission</h5>
-                      <span class="h2 font-weight-bold mb-0">${{ request.user.customer.affiliate_commission }}</span>
+                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.affiliate_commission %}${{ request.user.customer.affiliate_commission }}{% else %}$0{% endif %}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-teal text-white rounded-circle shadow">
@@ -66,7 +66,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Credits</h5>
-                      <span class="h2 font-weight-bold mb-0">${{ request.user.customer.rounded_credits }}</span>
+                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.rounded_credits %}${{ request.user.customer.rounded_credits }}{% else %}$0{% endif %}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -74,7 +74,7 @@
                       </div>
                     </div>
                   </div>
-                  <p class="mt-3 mb-0 text-muted text-sm">
+                  <p class="mt-3 mb-3 text-muted text-sm">
                       <a href="{% url 'billing' %}"><button class="btn btn-lg btn-outline-dark">Recharge</button></a>
                   </p>
                 </div>

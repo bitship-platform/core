@@ -27,9 +27,6 @@
                       </div>
                     </div>
                   </div>
-                  <p class="mt-3 mb-0 text-muted text-sm">
-                      <a href="#"><button class="btn btn-lg btn-outline-dark">Withdraw</button></a>
-                  </p>
                 </div>
               </div>
             </div>
@@ -47,6 +44,40 @@
     <div class="container-fluid mt--7">
       <!-- Table -->
       <div class="row">
+        <div class="col-xl-7 mb-4 mt-5">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Affiliate Panel</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+                <p class="text-black font-weight-400">Share this unique affiliate link and invite more people to our platform.</p>
+                <div class="input-group mb-3 w-75">
+                  <input type="text" class="form-control" value="https://dashboard.novanodes.com/?refID={{ request.user.username }}" placeholder="Your referral link" aria-label="Your referral link" aria-describedby="basic-addon2" disabled>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary copyTransactionID" type="button"  transaction_id="https://dashboard.novanodes.com/?refID={{ request.user.username }}"><i class="far fa-clone fa-lg"></i></button>
+                  </div>
+                </div>
+            <p class="text-black font-weight-400">For each customer joined through your link you'll get 50% of their first months' subscription.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-5 mb-4 mt-5">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Manage Affiliate Commission</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+            </div>
+          </div>
+        </div>
         <div class="col-xl-12 mb-5 mb-xl-0 mt-5">
           <div class="card shadow">
             <div class="card-header border-0">
