@@ -810,7 +810,7 @@ $(document).ready(function() {
                 data: {credits: credits},
                 success:function (data)
                 {
-                  $("#statsRefreshSection").html(data);
+                    $("#affiliateCommissionBox").text(`\$${data["balance"]}`)
                   alertSuccess("Credits successfully exchanged!")
                 },
                 error:function (resp) {

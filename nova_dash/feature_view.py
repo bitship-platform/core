@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from django.views import View
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import QueryDict
+from django.http import QueryDict, JsonResponse
 
 from utils.mixins import ResponseMixin
 from utils.handlers import EmailHandler
@@ -192,4 +192,4 @@ class ExchangeAffiliateView(LoginRequiredMixin, View, ResponseMixin):
                              update_time=datetime.now(timezone.utc),
                              service="Affiliate Credits Exchange",
                              status="fa-check-circle text-success")
-        return render(request, "dashboard/refresh_pages/stats_refresh.html", status=200)
+        return JsonResponse({"balance": customer.affiliate_commission}, status=200)
