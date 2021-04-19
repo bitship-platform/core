@@ -222,6 +222,12 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 description=f"{app.name} app",
                 customer=app.owner
             )
+            if not app.owner.first_order_amount:
+                if app.owner.verified:
+                    app.owner.first_order_amount = app.plan
+                    app.owner.save()
+                    app.owner.referrer.customer.affiliate_commission += app.plan/2
+                    app.owner.referrer.customer.save()
         if app.status == "bg-danger":
             bpd_api.manage(app_id=app_id, action="start")
         if app.last_deployment_timestamp is None:
