@@ -823,6 +823,7 @@ $(document).ready(function() {
                     }
                 },
             });
+            $('#affiliateConvertCreditsModal').modal('hide');
             $("#exchangeAffiliateCreditsBtn").prop('disabled', false);
         }
         else {
