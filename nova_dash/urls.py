@@ -3,7 +3,7 @@ from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
     PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView, AffiliateView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, BackupDownload, set_app_config
-from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView
+from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView, ExchangeAffiliateView
 from django.conf.urls import url
 urlpatterns = [
 
@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^transactions/utility/', TransactionUtility.as_view(), name='transaction_utility'),
     url(r'^transactions/', TransactionView.as_view(), name='transactions'),
     url(r'^promocode/', PromoCodeView.as_view(), name='promo_code'),
+    url(r'^exchange/affiliate/', ExchangeAffiliateView.as_view(), name='exchange_affiliate'),
     url(r'^exchange/', ExchangeView.as_view(), name='exchange'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),

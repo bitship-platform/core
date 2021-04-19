@@ -765,7 +765,6 @@ $(document).ready(function() {
 
 
     $(document).on('click','#exchangeCoinBtn', function(e) {
-
         let coins = $('input[name="coinInput"]').val();
         if(coins>=10){
             $("#exchangeCoinBtn").prop('disabled', true);
@@ -798,7 +797,42 @@ $(document).ready(function() {
 
     });
 
+    $(document).on('click','#exchangeAffiliateCreditsBtn', function(e) {
+        let credits = $('input[name="convertCreditsField"]').val();
+        if(credits>=1){
+            $("#exchangeAffiliateCreditsBtn").prop('disabled', true);
+            const csrftoken = getCookie('csrftoken');
+
+            $.ajax({
+                url: `/exchange/affiliate/`,
+                headers: {'X-CSRFToken': csrftoken},
+                type: 'POST',
+                data: {credits: credits},
+                success:function (data)
+                {
+                  $("#statsRefreshSection").html(data);
+                  alertSuccess("Credits successfully exchanged!")
+                },
+                error:function (resp) {
+                    switch (resp.status) {
+                        case 503:
+                            alertWarning("You don't have enough credits to exchange!");
+                            break;
+                        default:
+                            alertDanger("Something went wrong. please contact support");
+                    }
+                },
+            });
+            $("#exchangeAffiliateCreditsBtn").prop('disabled', false);
+        }
+        else {
+            alertWarning("Minimum amount to exchange is $1");
+        }
+
+    });
+
 });
+
 
 $(document).ready(function (){
     $(document).on('click', '.copyTransactionID', function (){

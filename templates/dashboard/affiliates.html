@@ -61,7 +61,7 @@
                     <button class="btn btn-outline-secondary copyTransactionID" type="button"  transaction_id="https://dashboard.novanodes.com/?refID={{ request.user.username }}"><i class="far fa-clone fa-lg"></i></button>
                   </div>
                 </div>
-            <p class="text-black font-weight-400">For each customer joined through your link you'll get 50% of their first months' subscription.</p>
+                <p class="text-black font-weight-400">For each customer joined through your link <b>you'll get 50% of their first month's subscription.</b><br>You can cash out these credits through Paypal or exchange them for hosting credits.<br><br><br></p>
             </div>
           </div>
         </div>
@@ -70,15 +70,37 @@
             <div class="card-header bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Manage Affiliate Commission</h3>
+                  <h3 class="mb-0">Manage Commission</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body bg-gradient-blue">
+                        <h3 class="card-title text-white">Convert to Credits</h3>
+                        <p class="card-text text-white">You can convert your affiliate credits to hosting credits.</p>
+                          <p class="card-text text-green font-weight-600" style="font-size: 13px; font-family: Courier;">*always available</p>
+                        <a href="#" data-toggle="modal" data-target="#affiliateConvertCreditsModal" class="btn btn-sm btn-outline-dark">Convert</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body bg-gradient-teal">
+                        <h3 class="card-title text-white">Transfer to Paypal</h3>
+                        <p class="card-text text-white">Request payout into your paypal account.</p>
+                        <p class="card-text text-red font-weight-600" style="font-size: 13px; font-family: Courier;">*end of the month</p>
+                        <a href="#" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#affiliateTransferPaypal">Request</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
-        <div class="col-xl-12 mb-5 mb-xl-0 mt-5">
+        <div class="col-xl-12 mb-5 mb-xl-0 mt-3">
           <div class="card shadow">
             <div class="card-header border-0">
               <div class="row align-items-center">
@@ -138,6 +160,48 @@
           </div>
         </div>
       </div>
+        <div class="modal fade" id="affiliateConvertCreditsModal" tabindex="-1" role="dialog" aria-labelledby="affiliateConvertCreditsModal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteAppModalCenterLongTitle">Convert Credits</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <label for="convertCreditsField">Enter the amount:</label>
+                  <input type="number" class="form-control form-control w-50" name="convertCreditsField" placeholder="(min $1)">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="exchangeAffiliateCreditsBtn">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="affiliateTransferPaypal" tabindex="-1" role="dialog" aria-labelledby="affiliateTransferPaypal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="affiliateTransferPaypalLong">Transfer to PayPal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <label for="affiliateEmail">Enter Paypal email:</label>
+                  <input type="email" class="form-control form-control" name="affiliateEmail" placeholder="">
+                  <label for="affiliateTransferPaypal">Enter the amount:</label>
+                  <input type="number" class="form-control form-control w-50" name="TransferPaypalField" placeholder="(min $5)">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Request</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
       <!-- Dark table -->
       {% include "dashboard/includes/footer.html" %}
 

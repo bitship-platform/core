@@ -172,3 +172,24 @@ class ExchangeView(LoginRequiredMixin, View, ResponseMixin):
                              service="Coin Exchange",
                              status="fa-check-circle text-success")
         return render(request, "dashboard/refresh_pages/stats_refresh.html", status=200)
+
+
+class ExchangeAffiliateView(LoginRequiredMixin, View, ResponseMixin):
+
+    def post(self, request):
+        affiliate_credits = float(request.POST.get("credits"))
+        if affiliate_credits > request.user.customer.affiliate_commission:
+            return self.json_response_503()
+        customer = request.user.customer
+        customer.affiliate_commission -= affiliate_credits
+        customer.affiliate_commission_spent += affiliate_credits
+        customer.credits += affiliate_credits
+        customer.save()
+        Order.objects.create(customer=customer,
+                             transaction_amount=affiliate_credits,
+                             credit=True,
+                             create_time=datetime.now(timezone.utc),
+                             update_time=datetime.now(timezone.utc),
+                             service="Affiliate Credits Exchange",
+                             status="fa-check-circle text-success")
+        return render(request, "dashboard/refresh_pages/stats_refresh.html", status=200)

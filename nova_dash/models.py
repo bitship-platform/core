@@ -429,3 +429,16 @@ class Promo(models.Model):
         if datetime.now(timezone.utc) > self.expiry_date:
             return True
         return False
+
+
+class CashoutRequest(models.Model):
+    STATUS = (
+        ("fa-ban text-danger", "Canceled"),
+        ("fa-times-circle text-danger", "Failed"),
+        ("fa-clock text-warning", "Pending"),
+        ("fa-check-circle text-success", "Success"),
+    )
+    customer = models.ForeignKey("Customer", on_delete=models.CASCADE)
+    paypal_email = models.CharField(max_length=100)
+    amount = models.FloatField()
+    status = models.CharField(max_length=30, choices=STATUS, default="fa-clock text-warning")
