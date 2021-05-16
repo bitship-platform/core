@@ -43,8 +43,8 @@ class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
         transaction_id = data.get("transaction_id")
         try:
             transaction = Transaction.objects.get(id=transaction_id, status="fa-clock text-warning")
-            return render(request, "dashboard/refresh_pages/transaction_refresh.html", {"recipient": transaction.recipient,
-                                                                          "transaction_id": transaction.id},
+            return render(request, "dashboard/refresh_pages/transaction_refresh.html",
+                          {"recipient": transaction.recipient, "transaction_id": transaction.id},
                           status=200)
         except Transaction.DoesNotExist:
             return self.json_response_500()
@@ -87,8 +87,9 @@ class TransactionView(LoginRequiredMixin, View, ResponseMixin):
             EmailHandler.send_email(request.user.email,
                                     "OTP for transaction",
                                     msg=msg)
-            return render(request, "dashboard/refresh_pages/transaction_refresh.html", {"recipient": recipient,
-                                                                          "transaction_id": transaction.id},
+            return render(request, "dashboard/refresh_pages/transaction_refresh.html",
+                          {"recipient": recipient,
+                           "transaction_id": transaction.id},
                           status=200)
         except Customer.DoesNotExist:
             return self.json_response_404()

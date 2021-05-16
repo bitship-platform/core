@@ -313,7 +313,6 @@ $(document).ready(function() {
             type: 'GET',
             success:function (data)
             {
-                console.log(data);
               $(".mainFileRefresh").html(data);
               alertSuccess(`Refreshed main file list.`);
             },
