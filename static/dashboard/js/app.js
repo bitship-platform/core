@@ -353,20 +353,20 @@ $(document).ready(function() {
                       $("#appDeployButton").prop('disabled', false);
                       $("#appStopButton").prop('disabled', false);
                       $("#appStartButton").prop('disabled', true);
-                      alertSuccess(`Deployment successful!`);
+                      swal("Deployed!", "Your app should now be working", "success");
                       clearInterval(interval);
                     },
                     error: function (jqXHR, textStatus, errorThrown){
                         if(jqXHR.status===503){
                            $("#manageRefreshSection").html(jqXHR.responseText);
                           $("#appDeployButton").prop('disabled', false);
-                          alertDanger(`Deployment Failed!`);
+                          swal("Deploy Failed!", "Please try running your code locally and see if it works", "error");
                           clearInterval(interval);
                         }
                         else if(jqXHR.status===500){
-                           $("#manageRefreshSection").html(jqXHR.responseText);
+                          $("#manageRefreshSection").html(jqXHR.responseText);
                           $("#appDeployButton").prop('disabled', false);
-                          alertDanger(`Build Rejected!`);
+                          swal("Build Rejected!", "Please inspect your code and try again", "error");
                           clearInterval(interval);
                         }
                     }
