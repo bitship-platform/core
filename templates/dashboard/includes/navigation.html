@@ -4,19 +4,53 @@
       <div class="container-fluid">
         <!-- Brand -->
         <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#">Dashboard</a>
-        <!-- Form -->
-       {% if not request.user.customer.joined_server %}
-        <div class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto mb-2">
-          <div class="card bg-secondary shadow">
-              <h5 class="card-title text-uppercase text-dark ml-1 mb-0"><i class="fa fa-lightbulb fa-sm"></i> Pro tip</h5>
-            <div class="card-header bg-secondary text-darker">
-                Join our support server to use all dashboard features <a href="https://discord.gg/g67HvNJgbY" target="_blank"><button class="btn btn-sm btn-outline-darker">Click here!</button></a>
-            </div>
-          </div>
-        </div>
-       {% endif %}
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="ni ni-bell-55"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-xl  dropdown-menu-right  py-0 overflow-hidden">
+            <!-- Dropdown header -->
+            <div class="px-3 py-3">
+              <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">1</strong> notifications.</h6>
+            </div>
+            <!-- List group -->
+            <div class="list-group list-group-flush">
+              <div class="list-group-item list-group-item-action">
+                <div class="row align-items-center">
+                  <div class="col ml--2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h4 class="mb-0 text-sm"><i class="fa fa-lightbulb fa-sm"></i> Pro Tip</h4>
+                      </div>
+                      <div class="text-right text-muted">
+                         <a target="_blank" href="https://discord.gg/UgvdzE6EWx" class="btn btn-sm btn-outline-darker">Join now</a>
+                      </div>
+                    </div>
+                    <p class="text-sm mb-0">Join our support server for deployment assistance</p>
+                  </div>
+                </div>
+              </div>
+{#              <a href="#!" class="list-group-item list-group-item-action">#}
+{#                <div class="row align-items-center">#}
+{#                  <div class="col ml--2">#}
+{#                    <div class="d-flex justify-content-between align-items-center">#}
+{#                      <div>#}
+{#                        <h4 class="mb-0 text-sm">John Snow</h4>#}
+{#                      </div>#}
+{#                      <div class="text-right text-muted">#}
+{#                        <small>Notificaiton time</small>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    <p class="text-sm mb-0">Notification context</p>#}
+{#                  </div>#}
+{#                </div>#}
+{#              </a>                #}
+            </div>
+{#            <a href="#!" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>#}
+          </div>
+        </li>
           <li class="nav-item dropdown">
             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
