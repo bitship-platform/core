@@ -116,7 +116,6 @@ $(document).ready(function() {
             "X-CSRFToken": csrftoken,
         },
         success: function (data) {
-            console.log(data)
             $('#refreshSection').html(data);
             $('#fileModalCenter').modal('hide');
             alertSuccess("File is uploaded");
@@ -353,14 +352,14 @@ $(document).ready(function() {
                       $("#appDeployButton").prop('disabled', false);
                       $("#appStopButton").prop('disabled', false);
                       $("#appStartButton").prop('disabled', true);
-                      swal("Deployed!", "Your app should now be working", "success");
+                      swal("Deployed!", "Your app should now be running", "success");
                       clearInterval(interval);
                     },
                     error: function (jqXHR, textStatus, errorThrown){
                         if(jqXHR.status===503){
                            $("#manageRefreshSection").html(jqXHR.responseText);
                           $("#appDeployButton").prop('disabled', false);
-                          swal("Deploy Failed!", "Please try running your code locally and see if it works", "error");
+                          swal("Deploy Failed!", "Please try running your app locally and see if it works", "error");
                           clearInterval(interval);
                         }
                         else if(jqXHR.status===500){
@@ -404,7 +403,7 @@ $(document).ready(function() {
             },
             error:function () {
                 $("#appStartButton").prop('disabled', false);
-                alertDanger('Failed to start app... please try redeploying')
+                swal("Failed!", "Failed to start app. Please try redeploying.", "error");
             },
         });
     });
@@ -428,7 +427,7 @@ $(document).ready(function() {
             },
             error:function () {
                 $("#appStopButton").prop('disabled', true);
-                alertDanger('Failed to stop app... please try again')
+                swal("Failed!", "Failed to stop app. Please refresh the page and try again.", "error");
             },
         });
     });
@@ -451,7 +450,7 @@ $(document).ready(function() {
             },
             error:function () {
                 $(".appRestartButton").prop('disabled', false);
-                alertDanger('Failed to restart app... please try redeploying')
+                swal("Failed!", "Failed to restart app. Please try redeploying.", "error");
             },
         });
     });
@@ -485,7 +484,7 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let script = $("#appMainSelect").val()
         let version = $("#pythonVersionSelectPref").val()
-        if((script!==undefined)||(version!==undefined))
+        if((script!==null)&&(version!==null))
         {
             $.ajax({
                 url: `/app/config/`,
@@ -497,15 +496,15 @@ $(document).ready(function() {
                     $("#appStartButton").prop('disabled', false);
                     $('#pythonAppConfigurationModal').modal('hide');
                     $("#unsetConfigNotifier").hide()
-                    alertSuccess(`App configuration set successfully...`);
+                    swal("Success!", "App configuration set successfully", "success");
                 },
                 error: function () {
-                    alertDanger('Failed to set configuration... contact admin')
+                    swal("Failed!", "Failed to set configuration. Contact admin", "error");
                 },
             });
         }
         else {
-            alertInfo("Some configuration missing")
+            swal("Uh huh!", "Some configurations seems missing", "info");
         }
     });
 
@@ -514,7 +513,7 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let script = $("#appStartSelect").val()
         let version = $("#nodeVersionSelectPref").val()
-        if((script!==undefined)||(version!==undefined))
+        if((script!==null)&&(version!==null))
         {
             $.ajax({
                 url: `/app/config/`,
@@ -526,18 +525,17 @@ $(document).ready(function() {
                     $("#appStartButton").prop('disabled', false);
                     $('#nodeAppConfigurationModal').modal('hide');
                     $("#unsetConfigNotifier").hide()
-                    alertSuccess(`App configuration set successfully...`);
+                    swal("Success!", "App configuration set successfully", "success");
                 },
                 error: function () {
-                    alertDanger('Failed to set configuration... contact admin')
+                    swal("Failed!", "Failed to set configuration. Contact admin", "error");
                 },
             });
         }
         else {
-            alertInfo("Some configuration missing")
+            swal("Uh huh!", "Some configurations seems missing", "info");
         }
     });
-
 
     $(document).on('keyup', "#coinInput", function (e){
         let coin_count = $("#coinInput").val()
