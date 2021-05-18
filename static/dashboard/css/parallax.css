@@ -3,7 +3,9 @@ html {
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   overflow: hidden;
 }
-
+body{
+  font-family: 'Poppins', sans-serif;
+}
 #stars {
   width: 1px;
   height: 1px;
@@ -62,7 +64,7 @@ html {
   right: 0;
   color: #FFF;
   text-align: center;
-  font-family: 'lato';, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 50px;
   letter-spacing: 10px;
@@ -101,7 +103,7 @@ html {
   margin-left: auto;
   margin-right: auto;
   color: white;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Poppins', sans-serif;
   max-width: 800px;
   display: block;
   padding-top: 150px;
@@ -377,8 +379,8 @@ body,
     display: block;
   }
     .login-header{
-    padding-bottom: 100px;
-    padding-top: 150px;
+    padding-bottom: 50px;
+    padding-top: 50px;
   }
   .c-button--gooey{
     font-size: 1.3em;
