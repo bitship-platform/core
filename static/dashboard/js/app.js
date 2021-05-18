@@ -471,7 +471,7 @@ $(document).ready(function() {
             },
             error:function () {
                 $(".appTerminateButton").prop('disabled', false);
-                alertDanger('Failed to terminate app... please contact administrator')
+                swal("Failed!", "Failed to terminate app. Please contact Administrator.", "error");
             },
         });}
         else{

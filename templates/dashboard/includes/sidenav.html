@@ -39,12 +39,12 @@
               <span>Settings</span>
             </a>
             <a href="https://discord.gg/g67HvNJgbY" class="dropdown-item">
-              <i class="ni ni-support-16"></i>
+              <i class="fa fa-headphones-alt"></i>
               <span>Support</span>
             </a>
             <div class="dropdown-divider"></div>
             <a href="{% url 'logout' %}" class="dropdown-item">
-              <i class="ni ni-button-power"></i>
+              <i class="fa fa-sign-out-alt"></i>
               <span>Logout</span>
             </a>
           </div>
@@ -87,7 +87,7 @@
           </li>
           <li class="nav-item {% if 'billing' in segment %} active {% endif %}">
             <a class="nav-link " href="{% url 'billing' %}">
-              <i class="ni ni-credit-card text-yellow"></i> Billing
+              <i class="fa fa-credit-card text-yellow"></i> Billing
             </a>
           </li>
           <li class="nav-item {% if 'transactions' in segment %} active {% endif %}">
@@ -98,25 +98,33 @@
         {% if request.user.customer.settings.affiliate %}
           <li class="nav-item {% if 'affiliates' in segment %} active {% endif %}">
             <a class="nav-link " href="{% url 'affiliates' %}">
-              <i class="fa fa-user-plus text-gray-dark"></i> Affiliate Panel
+              <i class="fa fa-sitemap text-gray-dark"></i> Affiliate Panel
             </a>
           </li>
         {% endif %}
+        </ul>
+        <!-- Divider -->
+        <hr class="my-3">
+        <!-- Heading -->
+        <h6 class="navbar-heading text-muted">Links&nbsp;<i class="fa fa-external-link-alt"></i></h6>
+        <!-- Navigation -->
+        <ul class="navbar-nav mb-md-3">
           <li class="nav-item {% if 'help_deploy' in segment %} active {% endif %}">
             <a class="nav-link " href="{% url 'help_deploy' %}" target="_blank">
               <i class="fa fa-question-circle text-blue"></i> How to deploy
             </a>
           </li>
+          <li class="nav-item {% if 'help_deploy' in segment %} active {% endif %}">
+            <a class="nav-link " href="https://discord.gg/g67HvNJgbY" target="_blank">
+              <i class="fa fa-headphones-alt text-blue"></i> Support
+            </a>
+          </li>
         </ul>
-        <!-- Divider -->
         <hr class="my-3">
-        <!-- Heading -->
-        <h6 class="navbar-heading text-muted">Links</h6>
-        <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">
-              <i class="ni ni-button-power text-red"></i> Logout
+              <i class="fa fa-sign-out-alt text-red"></i> Logout
             </a>
           </li>
         </ul>
