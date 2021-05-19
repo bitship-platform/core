@@ -251,9 +251,6 @@ class App(models.Model):
 
 
 class Address(models.Model):
-    """
-    Billing addresses of the verified users
-    """
     customer = models.OneToOneField(Customer, primary_key=True, on_delete=models.CASCADE)
     firstname = models.CharField(max_length=50, null=True)
     lastname = models.CharField(max_length=50, null=True)

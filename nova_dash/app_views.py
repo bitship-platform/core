@@ -2,7 +2,6 @@ import os
 import json
 from datetime import datetime, timezone
 
-import requests
 from django.views import View
 from django.conf import settings
 from django.db import DatabaseError
