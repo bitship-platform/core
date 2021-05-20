@@ -8,18 +8,18 @@
 {% block content %}
 
     <!-- Header -->
-    <div class="header bg-gradient-darker pb-8 pt-5 pt-md-8">
+    <div class="header {% if request.user.customer.dark_mode %}bg-translucent-default{% else %}bg-gradient-darker{% endif %} pb-8 pt-5 pt-md-8">
       <div class="container-fluid">
         <div class="header-body">
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card card-stats mb-4 mb-xl-0 {% if request.user.customer.dark_mode %}bg-gray{% endif %}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Affiliate Commission</h5>
-                      <span class="h2 font-weight-bold mb-0" id="affiliateCommissionBox">${{ request.user.customer.affiliate_commission }}</span>
+                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-darker{% else %}text-muted{% endif %} mb-0">Affiliate Commission</h5>
+                      <span class="h2 font-weight-bold mb-0 {% if request.user.customer.dark_mode %}text-darker{% else %}text-muted{% endif %}" id="affiliateCommissionBox">${{ request.user.customer.affiliate_commission }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-teal text-white rounded-circle shadow">
@@ -45,32 +45,32 @@
       <!-- Table -->
       <div class="row">
         <div class="col-xl-7 mb-4 mt-5">
-          <div class="card bg-secondary shadow">
-            <div class="card-header bg-white border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% else %}bg-secondary{% endif %} shadow">
+            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-white{% endif %} border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Affiliate Panel</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Affiliate Panel</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
-                <p class="text-black font-weight-400">Share this unique affiliate link and invite more people to our platform.</p>
+                <p class="{% if request.user.customer.dark_mode %}text-muted{% else %}text-black{% endif %} font-weight-400">Share this unique affiliate link and invite more people to our platform.</p>
                 <div class="input-group mb-3 w-75">
-                  <input type="text" class="form-control" value="https://dashboard.novanodes.com/?refID={{ request.user.username }}" placeholder="Your referral link" aria-label="Your referral link" aria-describedby="basic-addon2" disabled>
+                  <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" value="https://dashboard.novanodes.com/?refID={{ request.user.username }}" placeholder="Your referral link" aria-label="Your referral link" aria-describedby="basic-addon2" disabled>
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary copyTransactionID" type="button"  transaction_id="https://dashboard.novanodes.com/?refID={{ request.user.username }}"><i class="far fa-clone fa-lg"></i></button>
                   </div>
                 </div>
-                <p class="text-black font-weight-400">For each customer joined through your link <b>you'll get 50% of their first month's subscription.</b><br>You can cash out these credits through Paypal or exchange them for hosting credits.<br><br><br></p>
+                <p class="{% if request.user.customer.dark_mode %}text-muted{% else %}text-black{% endif %} font-weight-400">For each customer joined through your link <b>you'll get 50% of their first month's subscription.</b><br>You can cash out these credits through Paypal or exchange them for hosting credits.<br><br><br></p>
             </div>
           </div>
         </div>
         <div class="col-xl-5 mb-4 mt-5">
-          <div class="card bg-secondary shadow">
-            <div class="card-header bg-white border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% else %}bg-secondary{% endif %} shadow">
+            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-white{% endif %} border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Manage Commission</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Manage Commission</h3>
                 </div>
               </div>
             </div>
@@ -101,18 +101,18 @@
           </div>
         </div>
         <div class="col-xl-12 mb-5 mb-xl-0 mt-3">
-          <div class="card shadow">
-            <div class="card-header border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %} shadow">
+            <div class="card-header border-0 bg-transparent">
               <div class="row align-items-center">
                 <div class="col">
-                  <h3 class="mb-0">Your Referrals</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Your Referrals</h3>
                 </div>
               </div>
             </div>
             <div class="table-responsive">
               <!-- Projects table -->
-              <table class="table align-items-center table-flush">
-                <thead class="thead-light">
+              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}text-muted{% endif %}">
+                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
                   <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Customer</th>
