@@ -77,7 +77,7 @@
             <div class="card-body">
                 <div class="row">
                   <div class="col-sm-6">
-                    <div class="card">
+                    <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
                       <div class="card-body bg-gradient-blue">
                         <h3 class="card-title text-white">Convert to Credits</h3>
                         <p class="card-text text-white">You can convert your affiliate credits to hosting credits.</p>
@@ -87,7 +87,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="card">
+                    <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
                       <div class="card-body bg-gradient-teal">
                         <h3 class="card-title text-white">Transfer to Paypal</h3>
                         <p class="card-text text-white">Request payout into your paypal account.</p>
@@ -162,20 +162,20 @@
       </div>
         <div class="modal fade" id="affiliateConvertCreditsModal" tabindex="-1" role="dialog" aria-labelledby="affiliateConvertCreditsModal" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="deleteAppModalCenterLongTitle">Convert Credits</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="deleteAppModalCenterLongTitle">Convert Credits</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
                   <label for="convertCreditsField">Enter the amount:</label>
-                  <input type="number" class="form-control form-control w-50" name="convertCreditsField" placeholder="(min $1)">
+                  <input type="number" class="form-control form-control w-50 {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="convertCreditsField" placeholder="(min $1)">
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="exchangeAffiliateCreditsBtn">Confirm</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="exchangeAffiliateCreditsBtn">Confirm</button>
               </div>
             </div>
           </div>

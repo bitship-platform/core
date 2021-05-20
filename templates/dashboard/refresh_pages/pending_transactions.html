@@ -1,47 +1,43 @@
 {% if request.user.customer.pending_transactions %}
-  <div class="card card-profile shadow">
-    <div class="card-body pt-0 pt-md-4">
-      <div class="card shadow">
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h4 class="mb-0">Pending Transactions</h4>
-            </div>
-          </div>
+  <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
+    <div class="card-header bg-transparent border-0">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Pending Transactions</h3>
         </div>
       </div>
+    </div>
     <div class="table-responsive">
       <!-- Projects table -->
       <table class="table align-items-center table-flush">
-        <thead class="thead-light">
+        <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thead-light{% endif %}">
           <tr>
-            <th scope="col">Creation time</th>
+            <th scope="col">Creation Time</th>
             <th scope="col">Amount</th>
             <th scope="col">Recipient</th>
-            <th scope="col">Manage</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
         {% for transaction in request.user.customer.pending_transactions %}
           <tr>
             <th scope="row">
-                {{transaction.time}}
+             {{transaction.time}}
             </th>
             <td>
-                ${{ transaction.amount}}
+              ${{ transaction.amount}}
             </td>
             <td>
               {{ transaction.recipient.user.first_name }} #{{ transaction.recipient.user.customer.tag }}
             </td>
             <td>
-                <button type="button" onclick="setTransactionID('{{ transaction.id }}')" class="btn btn-sm btn-outline-success text-darker" id="transactionTriggerButton" data-toggle="modal" data-target="#transactionModalCenter">Authorize</button>
-                <button type="button" onclick="cancelTransaction('{{ transaction.id }}')" class="btn btn-sm btn-outline-danger text-darker" data-toggle="modal" data-target="#cancelTransactionModalCenter">Cancel</button>
+                <button type="button" onclick="setTransactionID('{{ transaction.id }}')" class="btn btn-sm btn-outline-success {% if request.user.customer.dark_mode %}text-white{% else %}text-darker{% endif %}" id="transactionTriggerButton" data-toggle="modal" data-target="#transactionModalCenter">Authorize</button>
+                <button type="button" onclick="cancelTransaction('{{ transaction.id }}')" class="btn btn-sm btn-outline-danger {% if request.user.customer.dark_mode %}text-white{% else %}text-darker{% endif %}" data-toggle="modal" data-target="#cancelTransactionModalCenter">Cancel</button>
             </td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
-    </div>
     </div>
   </div>
 <script>

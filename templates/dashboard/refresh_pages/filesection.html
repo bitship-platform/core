@@ -3,8 +3,8 @@
 <div class="pl-lg-4">
     <div class="row">
         <div class="col-lg-12 form-group">
-            <div class="card shadow">
-                <div class="card-header border-0">
+            <div class="card shadow {% if request.user.customer.dark_mode %}bg-gray{% endif %}">
+                <div class="card-header border-0 {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
                 <div class="row" id="manageRefreshSection">
                     {% include 'dashboard/refresh_pages/appmanagement.html' %}
                 </div>
@@ -12,8 +12,8 @@
             </div>
         </div>
         <div class="col-lg-9">
-            <div class="card shadow">
-                <div class="card-header border-0">
+            <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %} shadow">
+                <div class="card-header border-0 {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
                   <div class="row align-items-center">
                   <div>
                       {% if folder.folder.id %}
@@ -33,7 +33,7 @@
                 </div>
                 <div class="table-responsive">
                   <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
+                    <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
                       <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Creation date</th>
@@ -107,11 +107,11 @@
             </div>
         </div>
         <div class="col-lg-3">
-          <div class="card shadow">
-        <div class="card-header border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %} shadow">
+        <div class="card-header bg-transparent border-0">
           <div class="row align-items-center">
             <div class="col">
-              <h4 class="mb-0 text-uppercase">performance</h4>
+              <h4 class="mb-0 text-uppercase {% if request.user.customer.dark_mode %}text-white{% endif %}">performance</h4>
             </div>
             <div class="col text-right">
               {% if app.get_status_display != "Not Started" %}
@@ -122,7 +122,7 @@
         </div>
         <div class="table-responsive">
           <table class="table align-items-center table-flush">
-            <thead class="thead-light">
+            <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
               <tr>
                 <th scope="col">resource</th>
                 <th scope="col">% utilization</th>

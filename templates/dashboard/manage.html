@@ -10,7 +10,7 @@
     <!-- Header -->
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
       <!-- Mask -->
-      <span class="mask bg-gradient-darker opacity-8"></span>
+      <span class="mask {% if request.user.customer.dark_mode %}bg-translucent-default{% else %}bg-gradient-dark{% endif %} opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid align-items-center">
         <div class="row">
@@ -24,11 +24,11 @@
     <div class="container-fluid mt--7">
       <div class="row">
         <div class="col-xl-12 order-xl-1">
-          <div class="card bg-secondary shadow">
-            <div class="card-header bg-white border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-translucent-dark{% else %}bg-secondary{% endif %} shadow">
+            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-white{% endif %} border-0">
               <div class="row align-items-center">
                 <div class="col-12">
-                  <h3 class="mb-0">App management console</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">App management console</h3>
                 </div>
               </div>
             </div>
@@ -40,9 +40,9 @@
       </div>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add items</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="exampleModalLongTitle">Add items</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -53,7 +53,7 @@
                   <div class="form-row">
                     <label for="stack">Create new folder </label>
                     <div class="input-group mb-3">
-                      <input type="text" class="form-control" name="folder" placeholder="Name of your folder" aria-label="Name of your folder" aria-describedby="basic-addon2">
+                      <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="folder" placeholder="Name of your folder" aria-label="Name of your folder" aria-describedby="basic-addon2">
                       <input type="hidden" value="{{ folder.id }}" name="master">
                       <input type="hidden" value="{{ app.id }}" name="app_id">
                       <div class="input-group-append">
@@ -71,9 +71,9 @@
         </div>
         <div class="modal fade" id="fileModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add items</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="exampleModalLongTitle">Add items</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -108,9 +108,9 @@
         </div>
         <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete item</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="exampleModalLongTitle">Delete item</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -130,9 +130,9 @@
     <!--File rename model -->
         <div class="modal fade" id="renameFileModal" tabindex="-1" role="dialog" aria-labelledby="renameFileModal" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="renameFileModalTitle">Rename file</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="renameFileModalTitle">Rename file</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -142,7 +142,7 @@
                     {% csrf_token %}
                   <div class="form-row">
                     <div class="input-group mb-3">
-                      <input type="text" class="form-control" name="rename_file" placeholder="Enter new name" aria-label="Name of your folder" id="newFileName" aria-describedby="basic-addon2">
+                      <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="rename_file" placeholder="Enter new name" aria-label="Name of your folder" id="newFileName" aria-describedby="basic-addon2">
                       <input type="hidden" id="renameFileId">
                       <div class="input-group-append">
                         <button class="btn btn-primary renameFileButton">Rename</button>
@@ -161,9 +161,9 @@
     <!-- App configuration modal -->
       <div class="modal fade" id="pythonAppConfigurationModal" tabindex="-1" role="dialog" aria-labelledby="pythonAppConfigurationModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
+          <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
             <div class="modal-header">
-              <h5 class="modal-title" id="pythonAppConfigurationModalTitle">Configure your app</h5>
+              <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="pythonAppConfigurationModalTitle">Configure your app</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -173,7 +173,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-5">
                       <label class="my-1 mr-2" for="pythonVersionSelectPref">Python version</label><br>
-                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6" id="pythonVersionSelectPref" name="python_version" required>
+                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6 {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="pythonVersionSelectPref" name="python_version" required>
                         <option selected disabled>Choose...</option>
                          {% for item in app.config_options.versions %}
                             <option value="{{ item }}">Python {{ item }}</option>
@@ -196,9 +196,9 @@
 
       <div class="modal fade" id="nodeAppConfigurationModal" tabindex="-1" role="dialog" aria-labelledby="nodeAppConfigurationModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
+          <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
             <div class="modal-header">
-              <h5 class="modal-title" id="nodeAppConfigurationModalTitle">Configure your app</h5>
+              <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="nodeAppConfigurationModalTitle">Configure your app</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -208,7 +208,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-5">
                       <label class="my-1 mr-2" for="nodeVersionSelectPref">Node.js version</label><br>
-                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6" id="nodeVersionSelectPref" name="node_version" required>
+                      <select class="custom-select custom-select-sm my-1 mr-sm-2 col-md-6 {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="nodeVersionSelectPref" name="node_version" required>
                         <option selected disabled>Choose...</option>
                          {% for item in app.config_options.versions %}
                             <option value="{{ item }}">node.js {{ item }}</option>
@@ -230,9 +230,9 @@
       </div>
         <div class="modal fade" id="deleteAppModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteAppModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="deleteAppModalCenterLongTitle">Terminate app</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="deleteAppModalCenterLongTitle">Terminate app</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -240,7 +240,7 @@
               <div class="modal-body">
                   Are you sure you want to terminate this app?<br><br>
                   <strong>Warning:</strong> This actions is irreversible, you will lose all the data related to it.<br>Any credits used on the app subscription won't be refunded.<br><br>Enter <code>Terminate</code> below to proceed.<br>
-                  <input type="text" class="form-control form-control-sm" name="appTerminationField" placeholder="Terminate">
+                  <input type="text" class="form-control form-control-sm {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="appTerminationField" placeholder="Terminate">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-danger appTerminateButton">Confirm</button>
@@ -253,20 +253,20 @@
         <!-- Modal -->
         <div class="modal fade" id="configModalCenter" tabindex="-1" role="dialog" aria-labelledby="configModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
               <div class="modal-header">
-                <h5 class="modal-title" id="configModalLongTitle">Incomplete Configuration</h5>
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="configModalLongTitle">Incomplete Configuration</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body {% if request.user.customer.dark_mode %}text-muted{% else %}text-darker{% endif %}">
                   {% if app.python %}
-                <p style="color:black;">
+                <p>
                     <b>All python apps expect a <a href="#"><span>requirements.txt</span></a> or <a href="#"><span>Pipfile</span></a> containing all the packages listed, in the project root. Don't forget to add that or your app may fail.</b>
                 </p>
                   {% elif app.node %}
-                <p style="color:black;">
+                <p>
                    <b>All javascript apps expect a <a href="#"><span>package.json</span></a> containing all the packages listed, in the project root. Don't forget to add that or your app may fail.</b>
                 </p>
                   {% endif %}
