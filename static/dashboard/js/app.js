@@ -246,6 +246,9 @@ $(document).ready(function () {
     $('#become_affiliate').on('change',function() {
             $.ajax({data: {affiliate: this.checked}});
     });
+    $('#auto_dark_mode').on('change', function() {
+            $.ajax({data: {auto_dark_mode: this.checked}});
+    });
     $('#enableDarkMode').on('click', function() {
             $.ajax({data: {dark_mode: "true"}, success: ()=>{location.reload()}, error: ()=>{alertDanger("Oops! Something went wrong. Try reloading the page.")}});
     });

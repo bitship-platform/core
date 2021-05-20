@@ -58,6 +58,10 @@
                               <dd class="col-sm-9">
                                 <input type="checkbox" id="beta_features" {% if request.user.customer.settings.beta_tester %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
+                              <dt class="col-sm-3">Auto Mode Switch</dt>
+                              <dd class="col-sm-9">
+                                <input type="checkbox" id="auto_dark_mode" {% if request.user.customer.settings.auto_dark_mode %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                              </dd>
                             </dl>
                           </div>
                       </div>
