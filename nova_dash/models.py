@@ -28,6 +28,7 @@ class Customer(models.Model):
     affiliate_commission = models.FloatField(default=0)
     affiliate_commission_spent = models.FloatField(default=0)
     first_order_amount = models.FloatField(default=0)
+    dark_mode = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.avatar is not None:
