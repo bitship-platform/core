@@ -8,28 +8,25 @@
 {% block content %}
 
     <!-- Header -->
-    <div class="header bg-gradient-darker pb-8 pt-5 pt-md-8">
+    <div class="header {% if request.user.customer.dark_mode %}bg-translucent-default{% else %}bg-gradient-darker{% endif %} pb-8 pt-5 pt-md-8">
     </div>
 
     <div class="container-fluid mt--7">
       <!-- Table -->
       <div class="row">
         <div class="col-xl-12 mb-5 mb-xl-0">
-          <div class="card shadow">
-            <div class="card-header border-0">
+          <div class="card shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+            <div class="card-header bg-transparent border-0">
               <div class="row align-items-center">
                 <div class="col">
-                  <h3 class="mb-0">Billing log</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Billing log</h3>
                 </div>
-{#                <div class="col text-right">#}
-{#                  <a href="#!" class="btn btn-sm btn-primary">See all</a>#}
-{#                </div>#}
               </div>
             </div>
             <div class="table-responsive">
               <!-- Projects table -->
-              <table class="table align-items-center table-flush">
-                <thead class="thead-light">
+              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}text-muted{% endif %}">
+                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
                   <tr>
                     <th scope="col">Order id</th>
                     <th scope="col">Amount</th>
@@ -70,21 +67,18 @@
         </div>
 
         <div class="col-xl-12 mb-5 mb-xl-0 mt-5">
-          <div class="card shadow">
-            <div class="card-header border-0">
+          <div class="card shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+            <div class="card-header bg-transparent border-0">
               <div class="row align-items-center">
                 <div class="col">
-                  <h3 class="mb-0">Your transactions</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Your transactions</h3>
                 </div>
-{#                <div class="col text-right">#}
-{#                  <a href="#!" class="btn btn-sm btn-primary">See all</a>#}
-{#                </div>#}
               </div>
             </div>
             <div class="table-responsive">
               <!-- Projects table -->
-              <table class="table align-items-center table-flush">
-                <thead class="thead-light">
+              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}text-muted{% endif %}">
+                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
                   <tr>
                     <th scope="col">Transaction id</th>
                     <th scope="col">Amount</th>
@@ -98,7 +92,7 @@
                   <tr>
                     <td>
 {#                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ transaction.id }}</b>#}
-                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Copy transaction id" transaction_id="{{ transaction.id }}" class="copyTransactionID"><i class="far fa-clone fa-lg"></i></a>
+                        <a href="#!" data-toggle="tooltip" data-placement="bottom" title="Copy transaction id" transaction_id="{{ transaction.id }}" class="copyTransactionID"><i class="far fa-clone fa-lg"></i></a>
                     </td>
                     <th scope="row">
                       {% if transaction.recipient  == request.user.customer %}
