@@ -9,7 +9,7 @@
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
          style="min-height: 600px; background-size: cover; background-position: center top;">
       <!-- Mask -->
-      <span class="mask bg-gradient-darker opacity-8"></span>
+      <span class="mask {% if request.user.customer.dark_mode %}bg-translucent-default{% else %}bg-gradient-dark{% endif %} opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
@@ -25,7 +25,7 @@
 
       <div class="row">
         <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-          <div class="card card-profile shadow">
+          <div class="card card-profile {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %} shadow">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
@@ -35,24 +35,24 @@
                 </div>
               </div>
             </div>
-            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+            <div class="card-header bg-transparent text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
               <div class="d-flex justify-content-between">
-                <a href="{% url 'activity' %}" class="btn btn-sm btn-info mr-4">Activity</a>
-                <a href="{% url 'settings' %}" class="btn btn-sm btn-default float-right">Settings</a>
+                <a href="{% url 'activity' %}" class="btn btn-sm {% if request.user.customer.dark_mode %}btn-primary{% else %}btn-default{% endif %} mr-4">Activity</a>
+                <a href="{% url 'settings' %}" class="btn btn-sm {% if request.user.customer.dark_mode %}btn-primary{% else %}btn-default{% endif %} float-right">Settings</a>
               </div>
             </div>
             <div class="card-body pt-0 pt-md-4">
               <div class="text-center">
-                <h3>
+                <h3 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">
                   {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }} {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}{% else %}{{ request.user.first_name }}{% endif %}
                 </h3>
-                <div class="h5 font-weight-300">
+                <div class="h5 font-weight-300 {% if request.user.customer.dark_mode %}text-white{% endif %}">
                   {{ request.user.email }}
                 </div>
-                <div class="h5 mt-4">
+                <div class="h5 mt-4 {% if request.user.customer.dark_mode %}text-white{% endif %}">
                   <i class="ni business_briefcase-24 mr-2"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
                 </div>
-                <div>
+                <div class="{% if request.user.customer.dark_mode %}text-white{% endif %}">
                   <i class="ni education_hat mr-2"></i>Balance Credits: ${{ request.user.customer.rounded_credits }}
                 </div>
                 <hr class="my-4" />
@@ -61,7 +61,7 @@
                 <div id="smart-button-container">
                       <div style="text-align: center;">
                         <div style="margin-bottom: 1.25rem;">
-                          <p>Novanodes hosting</p>
+                          <p class="{% if request.user.customer.dark_mode %}text-white{% endif %}">Novanodes hosting</p>
                           <select id="item-options"><option value="Basic Plan" price="1.2">Basic Plan - 1.2 USD</option><option value="Standard Plan" price="2.4">Standard Plan - 2.4 USD</option><option value="Premium Plan" price="4.99">Premium Plan - 4.99 USD</option></select>
                           <select style="visibility: hidden" id="quantitySelect"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
                         </div>
@@ -186,11 +186,11 @@
           </div>
         </div>
         <div class="col-xl-8 order-xl-1">
-          <div class="card bg-secondary shadow">
-            <div class="card-header bg-white border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% else %}bg-secondary{% endif %} shadow">
+            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent text-white{% else %}bg-white{% endif %} border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">My account</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">My account</h3>
                 </div>
                 <div class="col-4 text-right">
                   <button type="submit" form="billing" class="btn btn-sm btn-primary">Save</button>
@@ -206,19 +206,19 @@
                       <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-first-name">First name</label>
-                        <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.firstname }}" name="firstname">
+                        <input type="text" id="input-first-name" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.firstname }}" name="firstname">
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-last-name">Last name</label>
-                        <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.lastname }}" name="lastname">
+                        <input type="text" id="input-last-name" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.lastname }}" name="lastname">
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-address">Address</label>
-                        <input id="input-address" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.location }}" type="text" name="location">
+                        <input id="input-address" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.location }}" type="text" name="location">
                       </div>
                     </div>
                   </div>
@@ -226,19 +226,19 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="input-city">City</label>
-                        <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.city }}" name="city">
+                        <input type="text" id="input-city" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.city }}" name="city">
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="input-country">Country</label>
-                        <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.country }}" name="country">
+                        <input type="text" id="input-country" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.country }}" name="country">
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="input-country">Postal code</label>
-                        <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="{{ request.user.customer.address.pincode }}" name="pincode">
+                        <input type="number" id="input-postal-code" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.pincode }}" name="pincode">
                       </div>
                     </div>
                   </div>
