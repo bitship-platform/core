@@ -8,18 +8,18 @@
 {% block content %}
 
     <!-- Header -->
-    <div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
+    <div class="header {% if request.user.customer.dark_mode %}bg-translucent-default{% else %}bg-gradient-dark{% endif %} pb-8 pt-5 pt-md-8">
       <div class="container-fluid">
         <div class="header-body">
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card card-stats mb-4 mb-xl-0 {% if request.user.customer.dark_mode %}bg-dark{% endif %}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Your apps</h5>
-                      <span class="h2 font-weight-bold mb-0">{{ request.user.customer.get_active_app_count }}</span>
+                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} mb-0">Your apps</h5>
+                      <span class="h2 font-weight-bold mb-0 {% if request.user.customer.dark_mode %}text-muted{% endif %}">{{ request.user.customer.get_active_app_count }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -29,7 +29,7 @@
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
                   <div class="btn-group">
-                      <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Launch</button>
+                      <button class="btn {% if request.user.customer.dark_mode %} btn-outline-white{% else %}btn-outline-dark{% endif %} btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Launch</button>
                       <div class="dropdown-menu">
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Python')"><i class="fab fa-python"></i>Python</a>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter" onclick="setStack('Node.js')"><i class="fab fa-node-js"></i>Node.js</a>
@@ -39,12 +39,12 @@
                 </div>
               </div>
               {% if request.user.customer.settings.affiliate %}
-              <div class="card card-stats mt-3">
+              <div class="card card-stats mt-3 {% if request.user.customer.dark_mode %}bg-dark{% endif %}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Affiliate Commission</h5>
-                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.affiliate_commission %}${{ request.user.customer.affiliate_commission }}{% else %}$0{% endif %}</span>
+                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} mb-0">Affiliate Commission</h5>
+                      <span class="h2 font-weight-bold {% if request.user.customer.dark_mode %}text-muted{% endif %} mb-0">{% if request.user.customer.affiliate_commission %}${{ request.user.customer.affiliate_commission }}{% else %}$0{% endif %}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-teal text-white rounded-circle shadow">
@@ -61,12 +61,12 @@
             <div class="col-xl-3 col-lg-6">
             </div>
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card card-stats mb-4 mb-xl-0 {% if request.user.customer.dark_mode %}bg-dark{% endif %}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Credits</h5>
-                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.rounded_credits %}${{ request.user.customer.rounded_credits }}{% else %}$0{% endif %}</span>
+                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} mb-0">Credits</h5>
+                      <span class="h2 font-weight-bold {% if request.user.customer.dark_mode %}text-muted{% endif %} mb-0">{% if request.user.customer.rounded_credits %}${{ request.user.customer.rounded_credits }}{% else %}$0{% endif %}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -75,16 +75,16 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-3 text-muted text-sm">
-                      <a href="{% url 'billing' %}"><button class="btn btn-lg btn-outline-dark">Recharge</button></a>
+                      <a href="{% url 'billing' %}"><button class="btn btn-lg {% if request.user.customer.dark_mode %} btn-outline-white{% else %}btn-outline-dark{% endif %}">Recharge</button></a>
                   </p>
                 </div>
               </div>
-              <div class="card card-stats mt-3">
+              <div class="card card-stats mt-3 {% if request.user.customer.dark_mode %}bg-dark{% endif %}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Coins</h5>
-                      <span class="h2 font-weight-bold mb-0">{{ request.user.customer.coins }}</span>
+                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} mb-0">Coins</h5>
+                      <span class="h2 font-weight-bold {% if request.user.customer.dark_mode %}text-muted{% endif %} mb-0">{{ request.user.customer.coins }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -104,13 +104,13 @@
       <!-- Table -->
       <div class="row">
         <div class="col">
-          <div class="card shadow">
-            <div class="card-header border-0">
-              <h3 class="mb-0">Your Applications</h3>
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %} shadow">
+            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% endif %} border-0">
+              <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Your Applications</h3>
             </div>
             <div class="table-responsive">
-              <table class="table align-items-center table-flush">
-                <thead class="thead-light">
+              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}{% endif %}">
+                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thead-light{% endif %}">
                   <tr>
                     <th scope="col">App</th>
                       <th scope="col">Stack</th>
@@ -185,7 +185,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="card-footer py-4">
+            <div class="card-footer bg-transparent thread-dark py-4">
               <nav aria-label="...">
                 <ul class="pagination justify-content-end mb-0">
                 {% if page_obj.has_previous %}
