@@ -9,7 +9,7 @@
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
          style="min-height: 100px; background-size: cover; background-position: center top;">
       <!-- Mask -->
-      <span class="mask bg-gradient-darker opacity-8"></span>
+      <span class="mask {% if request.user.customer.dark_mode %}bg-translucent-default{% else %}bg-gradient-darker{% endif %} opacity-8"></span>
       <!-- Header container -->
     </div>
 
@@ -17,17 +17,17 @@
       <div class="row">
         <div class="col-xl-1"></div>
         <div class="col-xl-10 order-xl-1">
-          <div class="card bg-secondary shadow">
-            <div class="card-header bg-white border-0">
+          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% else %}bg-secondary{% endif %} shadow">
+            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-white{% endif %} border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Deployment logs  {% if request.user.customer.settings.beta_tester %}<span><button class="btn-sm btn-outline-primary" disabled>beta feature</button></span>{% endif %}</h3>
+                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Deployment logs  {% if request.user.customer.settings.beta_tester %}<span><button class="btn-sm btn-outline-primary" disabled>beta feature</button></span>{% endif %}</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
               <div class="form-group">
-                <textarea class="form-control" style="height: 35em; color: black;" resize="none" id="consoleLogTextArea" rows="3" disabled></textarea>
+                <textarea class="form-control {% if request.user.customer.dark_mode %}bg-translucent-dark text-white{% endif %}" style="height: 35em; {% if not request.user.customer.dark_mode %}color: black;{% endif %}" resize="none" id="consoleLogTextArea" rows="3" disabled></textarea>
               </div>
               {% if app.running %}
               <div class="form-group">
@@ -49,6 +49,7 @@
                 </div>
               {% endif %}
               <div id="hiddenRefreshButton">
+                  <br>
                   <button class="btn-sm btn-outline-primary">Click to display logs</button>
               </div>
               </div>

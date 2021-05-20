@@ -246,6 +246,12 @@ $(document).ready(function () {
     $('#become_affiliate').on('change',function() {
             $.ajax({data: {affiliate: this.checked}});
     });
+    $('#enableDarkMode').on('click', function() {
+            $.ajax({data: {dark_mode: "true"}, success: ()=>{location.reload()}, error: ()=>{alertDanger("Oops! Something went wrong. Try reloading the page.")}});
+    });
+    $('#disableDarkMode').on('click', function() {
+            $.ajax({data: {dark_mode: "false"}, success: ()=>{location.reload()}, error: ()=>{alertDanger("Oops! Something went wrong. Try reloading the page.")}});
+    });
 })
 
 
@@ -847,4 +853,3 @@ $(document).ready(function (){
         $('#logAutoUpdate').prop("checked", true);
     })
 })
-

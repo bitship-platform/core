@@ -28,7 +28,6 @@ class Customer(models.Model):
     affiliate_commission = models.FloatField(default=0)
     affiliate_commission_spent = models.FloatField(default=0)
     first_order_amount = models.FloatField(default=0)
-    dark_mode = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -79,6 +78,9 @@ class Customer(models.Model):
     def pending_transactions(self):
         return self.patron.filter(status="fa-clock text-warning")
 
+    @property
+    def dark_mode(self):
+        return self.settings.dark_mode
 
 class App(models.Model):
     """
@@ -280,6 +282,8 @@ class Setting(models.Model):
     display_terminated_apps = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=False)
     affiliate = models.BooleanField(default=False)
+    dark_mode = models.BooleanField(default=False)
+    auto_dark_mode = models.BooleanField(default=False)
 
 
 def upload_location(instance, filename):
