@@ -33,7 +33,7 @@
 
   {% include "dashboard/includes/sidenav.html" %}
 
-  <div class="main-content {% if request.user.customer.dark_mode %}bg-gradient-gray{% endif %}">
+  <div class="main-content {% if request.user.customer.dark_mode %}bg-transparent{% endif %}">
 
     {% include "dashboard/includes/navigation.html" %}
 
