@@ -167,33 +167,36 @@ class DashView(LoginRequiredMixin, ListView, View):
         return ordered_queryset
 
     def post(self, request):
-        try:
-            rate = request.POST.get("rate")
-            if rate not in ["1.2", "2.4", "4.99"]:
-                raise ValueError
-            name = request.POST.get("name", None)
-            if name:
-                if " " in name:
-                    name = name.replace(" ", "-")
-                queryset = App.objects.filter(name=name, owner=request.user.customer)
-                if queryset.exists():
-                    for app in queryset:
-                        if app.status != "bg-dark":
-                            self.context["app"] = app
-                            self.context["folder"] = app.folder
-                            self.context["alert"] = Alert("Error", "App by that name already exists.")
-                            return render(request, "dashboard/manage.html", self.context)
-                app = App.objects.create(name=name,
-                                         owner=request.user.customer,
-                                         stack=icon_cache.get(request.POST.get("stack")),
-                                         plan=rate,
-                                         status=status_cache.get("Not Started")
-                                         )
-                self.context["app"] = app
-                self.context["folder"] = app.folder
-                return redirect(to=f"/manage/{app.id}/{app.folder.id}")
-        except DatabaseError:
-            return render(request, self.template_name, self.context)
+        if not request.user.customer.banned:
+            try:
+                rate = request.POST.get("rate")
+                if rate not in ["1.2", "2.4", "4.99"]:
+                    raise ValueError
+                name = request.POST.get("name", None)
+                if name:
+                    if " " in name:
+                        name = name.replace(" ", "-")
+                    queryset = App.objects.filter(name=name, owner=request.user.customer)
+                    if queryset.exists():
+                        for app in queryset:
+                            if app.status != "bg-dark":
+                                self.context["app"] = app
+                                self.context["folder"] = app.folder
+                                self.context["alert"] = Alert("Error", "App by that name already exists.")
+                                return render(request, "dashboard/manage.html", self.context)
+                    app = App.objects.create(name=name,
+                                             owner=request.user.customer,
+                                             stack=icon_cache.get(request.POST.get("stack")),
+                                             plan=rate,
+                                             status=status_cache.get("Not Started")
+                                             )
+                    self.context["app"] = app
+                    self.context["folder"] = app.folder
+                    return redirect(to=f"/manage/{app.id}/{app.folder.id}")
+            except DatabaseError:
+                return render(request, self.template_name, self.context)
+        logout(request)
+        return redirect("/")
 
 
 class BillingView(LoginRequiredMixin, View):
