@@ -5,26 +5,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
 
 {% block content %}
-    <!-- Header -->
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-         style="min-height: 600px; background-size: cover; background-position: center top;">
-      <!-- Mask -->
-      <span class="mask {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-darker{% endif %} opacity-8"></span>
-      <!-- Header container -->
-      <div class="container-fluid d-flex align-items-center">
-        <div class="row">
-          <div class="col-lg-7 col-md-10">
+    <div class="header {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-dark{% endif %} pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-9 col-lg-6">
             <h1 class="display-2 text-white">Hello {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }}{% else %}{{ request.user.first_name }}{% endif %}</h1>
-            <p class="text-white mt-0 mb-5">This is your billing page. You can recharge credits and edit your billing address here.</p>
+            <p class="text-white mt-0 mb-5">This is your billing page. You can recharge credits and make transactions here.</p>
+            </div>
+            <div class="col-xl-3 col-lg-6" id="statsRefreshSection">
+                {% include 'dashboard/refresh_pages/stats_refresh.html' %}
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="container-fluid mt--7">
 
       <div class="row">
-        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+        <div class="col-xl-4 order-xl-3 mb-5 mb-xl-0">
           <div class="card card-profile {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %} shadow">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
@@ -51,9 +51,6 @@
                 </div>
                 <div class="h5 mt-4 {% if request.user.customer.dark_mode %}text-white{% endif %}">
                   <i class="ni business_briefcase-24 mr-2"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
-                </div>
-                <div class="{% if request.user.customer.dark_mode %}text-white{% endif %}">
-                  <i class="ni education_hat mr-2"></i>Balance Credits: ${{ request.user.customer.rounded_credits }}
                 </div>
                 <hr class="my-4" />
               </div>
@@ -185,66 +182,87 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-8 order-xl-1">
-          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark{% else %}bg-secondary{% endif %} shadow">
-            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent text-white{% else %}bg-white{% endif %} border-0">
-              <div class="row align-items-center">
-                <div class="col-8">
-                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">My account</h3>
-                </div>
-                <div class="col-4 text-right">
-                  <button type="submit" form="billing" class="btn btn-sm btn-primary">Save</button>
+        <div class="col-xl-5 order-xl-1">
+            <div class="card card-profile shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
+                     <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">CREDITS TRANSFER</h4>
+                 </div>
+              <div class="card-body pt-0 pt-md-4">
+                <div class="card-body">
+                    <form>
+                     <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="formGroupExampleInput">Account no:</label>
+                        <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput" placeholder="Discord user_id" name="account_id">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="formGroupExampleInput2">Confirm Account no:</label>
+                        <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput2" placeholder="Discord user_id" name="account_id_conf">
+                      </div>
+                      <div class="form-group col-md-5">
+                        <label for="formGroupExampleInput3">Amount (min: $1):</label>
+                        <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput3" name="transaction_amount">
+                      </div>
+                      <div class="form-group col-md-12">
+                          <label for="formGroupExampleInput4">Message (optional):</label>
+                          <textarea class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput4" aria-label="With textarea" name="transaction_msg"></textarea>
+                      </div>
+                     </div>
+                     <button class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-default{% endif %}" id="transactionButton">Transfer</button>
+                    </form>
                 </div>
               </div>
             </div>
-            <div class="card-body">
-              <form id="billing" method="POST" action="{% url 'billing' %}">
-                  {% csrf_token %}
-                <h6 class="heading-small text-muted mb-4">Billing Address</h6>
-                <div class="pl-lg-4">
-                  <div class="row">
-                      <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-first-name">First name</label>
-                        <input type="text" id="input-first-name" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.firstname }}" name="firstname">
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-last-name">Last name</label>
-                        <input type="text" id="input-last-name" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.lastname }}" name="lastname">
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-address">Address</label>
-                        <input id="input-address" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.location }}" type="text" name="location">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-city">City</label>
-                        <input type="text" id="input-city" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.city }}" name="city">
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-country">Country</label>
-                        <input type="text" id="input-country" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.country }}" name="country">
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-country">Postal code</label>
-                        <input type="number" id="input-postal-code" class="form-control form-control-alternative {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="{{ request.user.customer.address.pincode }}" name="pincode">
-                      </div>
-                    </div>
+            <div class="mt-4" id="pendingTransactionRefresh">
+                    {% include "dashboard/refresh_pages/pending_transactions.html" %}
+            </div>
+        </div>
+        <div class="col-xl-3 order-xl-2">
+          <div class="row">
+            <div class="col-xl-12 mb-xl-0">
+              <div class="card card-profile shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+                <div class="row justify-content-center">
+                  <div class="border-0 pt-8 pt-md-4 pb-0">
+                        <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">EXCHANGE NOVACOINS</h4>
                   </div>
                 </div>
-                <hr class="my-4" />
-              </form>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 bg-transparent">
+                  <div class="d-flex justify-content-between">
+                      <h5 class="mr-4 {% if request.user.customer.dark_mode %}text-muted{% endif %}">Min qty: <span class="text-red">10c</span></h5>
+                      <h5 class="mr-4 float-right {% if request.user.customer.dark_mode %}text-muted{% endif %}">Exchange: <span class="text-red" id="coinSpan">10c = $1.2</span></h5>
+                  </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                    <div class="input-group mb-3">
+                      <input type="text" name="coinInput" id="coinInput" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="Amount of coin" aria-label="Amount of coin" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-dark{% endif %}" id="exchangeCoinBtn" type="button">Exchange</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-12 mt-3 mb-xl-0">
+              <div class="card card-profile shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+                <div class="row justify-content-center">
+                  <div class="border-0 pt-8 pt-md-4 pb-0">
+                        <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">APPLY PROMOCODE</h4>
+                  </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 bg-transparent">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="mr-4 {% if request.user.customer.dark_mode %}text-muted{% endif %}">Got a coupon? Redeem now.</h5>
+                  </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="promo_code" placeholder="Promocode" aria-label="NOVACODE" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-dark{% endif %}" type="button" id="promocodeButton">Redeem</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -256,6 +274,77 @@
                 });
             }, 2000);
         </script>
+        <div class="modal fade" id="transactionModalCenter" tabindex="-1" role="dialog" aria-labelledby="transactionModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+              <div class="modal-header">
+                <h5 class="modal-title  {% if request.user.customer.dark_mode %}text-white{% endif %}" id="transactionModalCenterTitle">Confirm OTP</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              <div class="card card-profile shadow mb-2 {% if request.user.customer.dark_mode %}bg-gradient-gray{% endif %}" id="transactionRefreshSection">
+                <div class="row justify-content-center">
+                  <div class="col-lg-3 order-lg-2">
+                    <div class="card-profile-image">
+                      <a href="#">
+                        <img src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
+                        <input type="hidden" name="transaction_id" id="transaction_id">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                  <div class="text-center">
+                    <h3>.</h3>
+                    <div class="h5 font-weight-300">
+                      .
+                    </div>
+                    <div class="h5 mt-4">
+                      <i class="ni business_briefcase-24 mr-2 {% if request.user.customer.dark_mode %}text-muted{% endif %}"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <style>
+                    .tooltip {
+                        z-index: 100000000;
+                    }
+                </style>
+                <label for="formGroupExampleInput" class="{% if request.user.customer.dark_mode %}text-muted{% endif %}">Enter the OTP</label> <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="A One Time Password (OTP) is sent to your email and your discord account (if you are a member of the support server)"></i>
+                <input type="password" class="form-control {% if request.user.customer.dark_mode %}text-darker bg-gray{% endif %}" id="formGroupExampleInput"  name="transaction_otp" placeholder="XXXXXX">
+              </div>
+              <button class="btn btn-sm btn-outline-primary" onclick="startCounter()" id="resendOtpButton">Resend OTP <span id="counter"></span></button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-default{% endif %}" id="transactionAuthorizationButton">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="cancelTransactionModalCenter" tabindex="-1" role="dialog" aria-labelledby="cancelTransactionModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+              <div class="modal-header">
+                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="cancelTransactionModalCenterLongTitle">Cancel transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body {% if request.user.customer.dark_mode %}text-muted{% endif %}">
+                Are you sure you want to cancel this transaction?
+              </div>
+              <input type="hidden" name="cancel_transaction" id="cancel_transaction">
+              <div class="modal-footer">
+                <button type="button" class="btn {% if request.user.customer.dark_mode %}btn-outline-secondary{% else %}btn-secondary{% endif %}" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="cancelTransactionButton">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
       {% include "dashboard/includes/footer.html" %}
 
     </div>

@@ -52,9 +52,6 @@ class TransactionUtility(LoginRequiredMixin, View, ResponseMixin):
 
 class TransactionView(LoginRequiredMixin, View, ResponseMixin):
 
-    def get(self, request):
-        return render(request, "dashboard/transactions.html")
-
     def post(self, request):
         if not request.user.customer.verified:
             return self.json_response_501()
