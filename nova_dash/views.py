@@ -206,25 +206,6 @@ class BillingView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, self.template_name)
 
-    def post(self, request):
-        fields = ["firstname", "lastname", "city", "country", "pincode", "location"]
-        address = Address.objects.get(customer__user=request.user)
-        for field in fields:
-            data = request.POST.get(field, None)
-            if data != "":
-                setattr(address, field, data)
-        if address.pincode is not None and len(str(address.pincode)) < 5:
-            self.context["alert"] = Alert("Error", "Zip Code looks invalid.")
-        elif address.location is not None and len(address.location) < 8:
-            self.context["alert"] = Alert("Error", "Address looks invalid.")
-        else:
-            try:
-                address.save()
-                self.context["alert"] = Alert("Success", "Data saved successfully!")
-            except ValidationError:
-                self.context["alert"] = Alert("Error", "Failed to save data... Try again.")
-        return render(request, self.template_name, self.context)
-
 
 class SettingView(LoginRequiredMixin, View, ResponseMixin):
     template_name = "dashboard/settings.html"

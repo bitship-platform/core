@@ -82,6 +82,7 @@ class Customer(models.Model):
     def dark_mode(self):
         return self.settings.dark_mode
 
+
 class App(models.Model):
     """
     User's running applications.
