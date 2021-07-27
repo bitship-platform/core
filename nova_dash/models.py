@@ -390,9 +390,8 @@ class Order(models.Model):
     credit = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"User: {self.customer.user.first_name or 'N/A'} #{self.customer.tag or 'N/A'}" \
-               f"| Amount: {self.transaction_amount} | Service: {self.service}" \
-               f"| Desc: {self.description or 'N/A'}"
+        return f"| Amount: {self.transaction_amount} | Service: {self.service}" \
+               f"| Desc: {self.description}"
 
 
 class Transaction(models.Model):
