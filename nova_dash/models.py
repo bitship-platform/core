@@ -82,6 +82,9 @@ class Customer(models.Model):
     def dark_mode(self):
         return self.settings.dark_mode
 
+    def __str__(self):
+        return f"{self.user.first_name} #{self.tag}"
+
 
 class App(models.Model):
     """
