@@ -394,6 +394,10 @@ class Order(models.Model):
                f"| Desc: {self.description}"
 
 
+def current_time():
+    return datetime.now(timezone.utc)
+
+
 class Transaction(models.Model):
     TRANSACTION_STATUS = (
         ("fa-ban text-danger", "Canceled"),
@@ -404,7 +408,7 @@ class Transaction(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     patron = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="patron")
     recipient = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="recipient")
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(default=current_time)
     amount = models.FloatField(default=0)
     status = models.CharField(max_length=30, choices=TRANSACTION_STATUS)
     failure_message = models.CharField(max_length=120, null=True, blank=True)
