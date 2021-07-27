@@ -392,7 +392,7 @@ class Order(models.Model):
     def __str__(self):
         return f"User: {self.customer.user.first_name} #{self.customer.tag}" \
                f"| Amount: {self.transaction_amount} | Service: {self.service}" \
-               f"| Desc: {self.description or 'N/A'}"
+               f"| Desc: {self.description}"
 
 
 class Transaction(models.Model):
