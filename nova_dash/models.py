@@ -415,8 +415,8 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"Patron: {self.patron.user.first_name} #{self.patron.tag}" \
-               f"| Recipient: {self.recipient.user.first_name} #{self.recipient.tag} |" \
-               f" Amount: {self.amount} | TSNID: {self.id}"
+               f"| Recipient: {self.recipient.user.first_name} #{self.recipient.tag}" \
+               f"| Amount: {self.amount} | TSNID: {self.id}"
 
 
 class Offer(models.Model):
