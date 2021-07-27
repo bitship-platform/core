@@ -408,6 +408,9 @@ class Transaction(models.Model):
     otp = models.CharField(max_length=6, null=True, blank=True)
     last_otp_generation_time = models.DateTimeField(null=True, blank=True)
 
+    def __str__(self):
+        return f"User: {self.patron.user.first_name} #{self.patron.tag}| Amount: {self.amount} | TSNID: {self.id}"
+
 
 class Offer(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
