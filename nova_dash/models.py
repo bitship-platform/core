@@ -389,6 +389,11 @@ class Order(models.Model):
     description = models.TextField(blank=True, null=True)
     credit = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"User: {self.customer.user.first_name} #{self.customer.tag}" \
+               f"| Amount: {self.transaction_amount} | Service: {self.service}" \
+               f"| Desc: {self.description or 'N/A'}"
+
 
 class Transaction(models.Model):
     TRANSACTION_STATUS = (
@@ -409,7 +414,9 @@ class Transaction(models.Model):
     last_otp_generation_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"User: {self.patron.user.first_name} #{self.patron.tag}| Amount: {self.amount} | TSNID: {self.id}"
+        return f"Patron: {self.patron.user.first_name} #{self.patron.tag}" \
+               f"| Recipient: {self.recipient.user.first_name} #{self.recipient.tag} |" \
+               f" Amount: {self.amount} | TSNID: {self.id}"
 
 
 class Offer(models.Model):
