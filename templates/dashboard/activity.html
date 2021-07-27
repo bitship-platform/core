@@ -84,6 +84,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Recipient/Patron</th>
                     <th scope="col">Time</th>
+                    <th scope="col">Message</th>
                     <th scope="col">Status</th>
                   </tr>
                 </thead>
@@ -116,6 +117,9 @@
                     </td>
                     <td>
                       {{ transaction.time }}
+                    </td>
+                    <td>
+                      {{ transaction.msg }}
                     </td>
                     <td>
                         <i class="fas {{ transaction.status }} mr-3"></i>{{ transaction.get_status_display }}
