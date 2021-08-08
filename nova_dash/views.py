@@ -105,17 +105,21 @@ class LoginView(View):
                 password = hashing.hashed_user_pass(self.user_id, self.email)
                 user = authenticate(username=self.user_id, password=password)
                 if user is None:
-                    customer = create_customer(self.user_json, password)
-                    client_ip, is_routable = get_client_ip(request)
-                    if is_routable:
-                        try:
-                            ref_obj = Referral.objects.get(ip=client_ip)
-                            customer.referrer = ref_obj.affiliate.user
-                            customer.save()
-                            ref_obj.delete()
-                        except Referral.DoesNotExist:
-                            pass
-                    login(request, customer.user)
+                    msg = "Sorry. Sign-ups are closed for the moment. We are " \
+                          "dealing with an ongoing issue, Until it is resolved we will only be providing services to " \
+                          "our existing customers."
+                    return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
+                    # customer = create_customer(self.user_json, password)
+                    # client_ip, is_routable = get_client_ip(request)
+                    # if is_routable:
+                    #     try:
+                    #         ref_obj = Referral.objects.get(ip=client_ip)
+                    #         customer.referrer = ref_obj.affiliate.user
+                    #         customer.save()
+                    #         ref_obj.delete()
+                    #     except Referral.DoesNotExist:
+                    #         pass
+                    # login(request, customer.user)
                 elif user.customer.banned:
                     msg = "Your account has been banned. Contact admin if you think this was a mistake."
                     return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
