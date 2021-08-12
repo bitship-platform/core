@@ -7,7 +7,6 @@ from django.views import View
 from django.conf import settings
 from django.core.files import File
 from django.db import DatabaseError
-from django.forms import ValidationError
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -15,13 +14,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 
-
-from utils.handlers import AlertHandler as Alert, PaypalHandler
-from .models import Address, App, File, Order, Customer, Referral
-from utils.hashing import Hasher
 from utils.oauth import Oauth
-from utils.operations import create_customer, update_customer
+from utils.hashing import Hasher
 from utils.mixins import ResponseMixin
+from .models import App, File, Order, Customer, Referral
+from utils.operations import update_customer, create_customer
+from utils.handlers import AlertHandler as Alert, PaypalHandler
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
@@ -105,21 +103,17 @@ class LoginView(View):
                 password = hashing.hashed_user_pass(self.user_id, self.email)
                 user = authenticate(username=self.user_id, password=password)
                 if user is None:
-                    msg = "Sorry. Sign-ups are closed for the moment. We are " \
-                          "dealing with an ongoing issue, Until it is resolved we will only be providing services to " \
-                          "our existing customers."
-                    return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
-                    # customer = create_customer(self.user_json, password)
-                    # client_ip, is_routable = get_client_ip(request)
-                    # if is_routable:
-                    #     try:
-                    #         ref_obj = Referral.objects.get(ip=client_ip)
-                    #         customer.referrer = ref_obj.affiliate.user
-                    #         customer.save()
-                    #         ref_obj.delete()
-                    #     except Referral.DoesNotExist:
-                    #         pass
-                    # login(request, customer.user)
+                    customer = create_customer(self.user_json, password)
+                    client_ip, is_routable = get_client_ip(request)
+                    if is_routable:
+                        try:
+                            ref_obj = Referral.objects.get(ip=client_ip)
+                            customer.referrer = ref_obj.affiliate.user
+                            customer.save()
+                            ref_obj.delete()
+                        except Referral.DoesNotExist:
+                            pass
+                    login(request, customer.user)
                 elif user.customer.banned:
                     msg = "Your account has been banned. Contact admin if you think this was a mistake."
                     return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
