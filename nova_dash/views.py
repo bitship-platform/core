@@ -109,7 +109,7 @@ class LoginView(View):
                         {
                             "type": "rich",
                             "title": "",
-                            "description": f"New user signed up\n\nUserid: `{customer.id}`",
+                            "description": f"New user signed up\n\nID: `{customer.id}`",
                             "color": 0xfd9c00,
                             "author": {
                                 "name": f"{customer.user.first_name}#{customer.tag}",
@@ -134,7 +134,7 @@ class LoginView(View):
                         {
                             "type": "rich",
                             "title": "",
-                            "description": f"Banned user attempted sign in\n\nUserid: `{user.customer.id}`",
+                            "description": f"Banned user attempted sign in\n\nID: `{user.customer.id}`",
                             "color": 0xff0707,
                             "author": {
                                 "name": f"{user.first_name}#{user.customer.tag}",
@@ -150,7 +150,7 @@ class LoginView(View):
                         {
                             "type": "rich",
                             "title": "",
-                            "description": f"User signed in\n\nUserid: `{user.customer.id}`",
+                            "description": f"User signed in\n\nID: `{user.customer.id}`",
                             "color": 0x00aaff,
                             "author": {
                                 "name": f"{user.first_name}#{user.customer.tag}",
