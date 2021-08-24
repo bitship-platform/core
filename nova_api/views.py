@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timezone
 from django.core.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions
 
 
 class PingView(APIView, ResponseMixin):

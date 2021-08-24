@@ -20,6 +20,7 @@ class WebhookHandler:
         payload = json.dumps(payload)
         try:
             self.resp = requests.post(url=self.url, headers=self.headers, data=payload)
+            print(self.resp)
         except Exception:
             pass
 

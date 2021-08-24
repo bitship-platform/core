@@ -19,7 +19,7 @@ from utils.hashing import Hasher
 from utils.mixins import ResponseMixin
 from .models import App, File, Order, Customer, Referral
 from utils.operations import update_customer, create_customer
-from utils.handlers import AlertHandler as Alert, PaypalHandler
+from utils.handlers import AlertHandler as Alert, PaypalHandler, WebhookHandler
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
@@ -27,6 +27,7 @@ paypal = PaypalHandler(settings.PAYPAL_ID, settings.PAYPAL_SECRET)
 
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
+webhook = WebhookHandler(settings.WEBHOOK_ID, settings.WEBHOOK_SECRET)
 
 
 def media_access(request, path):
@@ -104,6 +105,18 @@ class LoginView(View):
                 user = authenticate(username=self.user_id, password=password)
                 if user is None:
                     customer = create_customer(self.user_json, password)
+                    webhook.send_embed(
+                        {
+                            "type": "rich",
+                            "title": "",
+                            "description": f"New user signed up\n\nUserid: `{customer.id}`",
+                            "color": 0xfd9c00,
+                            "author": {
+                                "name": f"{customer.user.first_name}#{customer.tag}",
+                                "icon_url": f"{customer.get_avatar_url()}"
+                            }
+                        }
+                    )
                     client_ip, is_routable = get_client_ip(request)
                     if is_routable:
                         try:
@@ -114,12 +127,37 @@ class LoginView(View):
                         except Referral.DoesNotExist:
                             pass
                     login(request, customer.user)
+
                 elif user.customer.banned:
                     msg = "Your account has been banned. Contact admin if you think this was a mistake."
+                    webhook.send_embed(
+                        {
+                            "type": "rich",
+                            "title": "",
+                            "description": f"Banned user attempted sign in\n\nUserid: `{user.customer.id}`",
+                            "color": 0xff0707,
+                            "author": {
+                                "name": f"{user.first_name}#{user.customer.tag}",
+                                "icon_url": f"{user.customer.get_avatar_url()}"
+                            }
+                        }
+                    )
                     return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
                 else:
                     login(request, user)
                     update_customer(user_json=self.user_json)
+                    webhook.send_embed(
+                        {
+                            "type": "rich",
+                            "title": "",
+                            "description": f"User signed in\n\nUserid: `{user.customer.id}`",
+                            "color": 0x00aaff,
+                            "author": {
+                                "name": f"{user.first_name}#{user.customer.tag}",
+                                "icon_url": f"{user.customer.get_avatar_url()}"
+                            }
+                        }
+                    )
                 return redirect("/panel")
             else:
                 msg = "Please add an email to your discord account and try again."
