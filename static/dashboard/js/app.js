@@ -91,7 +91,7 @@ $(document).ready(function() {
     let files =  document.getElementById('file_upload').files
     if(files.length===0){return}
     for (let x = 0; x < files.length; x++) {
-      if(files[x].size > 2500000){
+      if(files[x].size > 4500000){
           exceeded_limit = true
       }
       else {

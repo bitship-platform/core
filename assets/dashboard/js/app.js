@@ -91,7 +91,7 @@ $(document).ready(function() {
     let files =  document.getElementById('file_upload').files
     if(files.length===0){return}
     for (let x = 0; x < files.length; x++) {
-      if(files[x].size > 2500000){
+      if(files[x].size > 4500000){
           exceeded_limit = true
       }
       else {
@@ -116,7 +116,6 @@ $(document).ready(function() {
             "X-CSRFToken": csrftoken,
         },
         success: function (data) {
-            console.log(data)
             $('#refreshSection').html(data);
             $('#fileModalCenter').modal('hide');
             alertSuccess("File is uploaded");
@@ -240,32 +239,24 @@ $(document).ready(function () {
     $('#terminated_apps').on('change',function() {
             $.ajax({data: {display_terminated_apps: this.checked}});
     });
+
+    $('#beta_features').on('change',function() {
+            $.ajax({data: {beta_tester: this.checked}});
+    });
+    $('#become_affiliate').on('change',function() {
+            $.ajax({data: {affiliate: this.checked}});
+    });
+    $('#auto_dark_mode').on('change', function() {
+            $.ajax({data: {auto_dark_mode: this.checked}});
+    });
+    $('#enableDarkMode').on('click', function() {
+            $.ajax({data: {dark_mode: "true"}, success: ()=>{location.reload()}, error: ()=>{alertDanger("Oops! Something went wrong. Try reloading the page.")}});
+    });
+    $('#disableDarkMode').on('click', function() {
+            $.ajax({data: {dark_mode: "false"}, success: ()=>{location.reload()}, error: ()=>{alertDanger("Oops! Something went wrong. Try reloading the page.")}});
+    });
 })
 
-// $(document).ready(function() {
-//
-//     $(document).on('click','.renameFolderButton', function(e) {
-//         e.preventDefault();
-//         let folder_name = $('input[name="rename_folder"]').val();
-//         let folder_id = $('#renameFolderId').val();
-//         const csrftoken = getCookie('csrftoken');
-//         $.ajax({
-//             url: `/manage/`,
-//             headers: {'X-CSRFToken': csrftoken},
-//             type: 'PUT',
-//             data: {folder: folder_name, folder_id: folder_id},
-//             success:function (data)
-//             {
-//               $('#refreshSection').html(data);
-//               $('#renameFolderModal').modal('hide');
-//               alertSuccess(`Folder renamed to ${folder_name}`);
-//             },
-//             error:function () {
-//                 alertDanger('Something went wrong')
-//             },
-//         });
-//     });
-// });
 
 $(document).ready(function() {
 
@@ -330,7 +321,6 @@ $(document).ready(function() {
             type: 'GET',
             success:function (data)
             {
-                console.log(data);
               $(".mainFileRefresh").html(data);
               alertSuccess(`Refreshed main file list.`);
             },
@@ -354,11 +344,43 @@ $(document).ready(function() {
             data: {app_id: app_id},
             success:function (data)
             {
-              $(".manageRefreshSection").html(data);
+              $("#manageRefreshSection").html(data);
               $("#appDeployButton").prop('disabled', false);
               $("#appStopButton").prop('disabled', false);
               $("#appStartButton").prop('disabled', true);
               alertSuccess(`Deployment in progress...`);
+
+                let interval = setInterval(function (){
+                  $.ajax({
+                    url: `/app/panel/options/` + '?' + $.param({"app_id": app_id,}) ,
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'GET',
+                    success:function (data)
+                    {
+                      $("#manageRefreshSection").html(data);
+                      $("#appDeployButton").prop('disabled', false);
+                      $("#appStopButton").prop('disabled', false);
+                      $("#appStartButton").prop('disabled', true);
+                      swal("Deployed!", "Your app should now be running", "success");
+                      clearInterval(interval);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        if(jqXHR.status===503){
+                           $("#manageRefreshSection").html(jqXHR.responseText);
+                          $("#appDeployButton").prop('disabled', false);
+                          swal("Deploy Failed!", "Please try running your app locally and see if it works", "error");
+                          clearInterval(interval);
+                        }
+                        else if(jqXHR.status===500){
+                          $("#manageRefreshSection").html(jqXHR.responseText);
+                          $("#appDeployButton").prop('disabled', false);
+                          swal("Build Rejected!", "Please inspect your code and try again", "error");
+                          clearInterval(interval);
+                        }
+                    }
+                    });
+                }, 5000)
+
             },
             error:function (resp) {
                 $("#appDeployButton").prop('disabled', false);
@@ -384,12 +406,13 @@ $(document).ready(function() {
             data: {app_id: app_id, action: "start"},
             success:function (data)
             {
+              $("#manageRefreshSection").html(data);
               $("#appStopButton").prop('disabled', false);
               alertSuccess(`App started successfully...`);
             },
             error:function () {
                 $("#appStartButton").prop('disabled', false);
-                alertDanger('Failed to start app... please try redeploying')
+                swal("Failed!", "Failed to start app. Please try redeploying.", "error");
             },
         });
     });
@@ -407,12 +430,13 @@ $(document).ready(function() {
             data: {app_id: app_id, action: "stop"},
             success:function (data)
             {
+              $("#manageRefreshSection").html(data);
               $("#appStartButton").prop('disabled', false);
               alertSuccess(`App stopped successfully...`);
             },
             error:function () {
                 $("#appStopButton").prop('disabled', true);
-                alertDanger('Failed to stop app... please try again')
+                swal("Failed!", "Failed to stop app. Please refresh the page and try again.", "error");
             },
         });
     });
@@ -435,7 +459,7 @@ $(document).ready(function() {
             },
             error:function () {
                 $(".appRestartButton").prop('disabled', false);
-                alertDanger('Failed to restart app... please try redeploying')
+                swal("Failed!", "Failed to restart app. Please try redeploying.", "error");
             },
         });
     });
@@ -456,7 +480,7 @@ $(document).ready(function() {
             },
             error:function () {
                 $(".appTerminateButton").prop('disabled', false);
-                alertDanger('Failed to terminate app... please contact administrator')
+                swal("Failed!", "Failed to terminate app. Please contact Administrator.", "error");
             },
         });}
         else{
@@ -469,7 +493,7 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let script = $("#appMainSelect").val()
         let version = $("#pythonVersionSelectPref").val()
-        if((script!==undefined)||(version!==undefined))
+        if((script!==null)&&(version!==null))
         {
             $.ajax({
                 url: `/app/config/`,
@@ -481,15 +505,15 @@ $(document).ready(function() {
                     $("#appStartButton").prop('disabled', false);
                     $('#pythonAppConfigurationModal').modal('hide');
                     $("#unsetConfigNotifier").hide()
-                    alertSuccess(`App configuration set successfully...`);
+                    swal("Success!", "App configuration set successfully", "success");
                 },
                 error: function () {
-                    alertDanger('Failed to set configuration... contact admin')
+                    swal("Failed!", "Failed to set configuration. Contact admin", "error");
                 },
             });
         }
         else {
-            alertInfo("Some configuration missing")
+            swal("Uh huh!", "Some configurations seems missing", "info");
         }
     });
 
@@ -498,7 +522,7 @@ $(document).ready(function() {
         const csrftoken = getCookie('csrftoken');
         let script = $("#appStartSelect").val()
         let version = $("#nodeVersionSelectPref").val()
-        if((script!==undefined)||(version!==undefined))
+        if((script!==null)&&(version!==null))
         {
             $.ajax({
                 url: `/app/config/`,
@@ -510,18 +534,17 @@ $(document).ready(function() {
                     $("#appStartButton").prop('disabled', false);
                     $('#nodeAppConfigurationModal').modal('hide');
                     $("#unsetConfigNotifier").hide()
-                    alertSuccess(`App configuration set successfully...`);
+                    swal("Success!", "App configuration set successfully", "success");
                 },
                 error: function () {
-                    alertDanger('Failed to set configuration... contact admin')
+                    swal("Failed!", "Failed to set configuration. Contact admin", "error");
                 },
             });
         }
         else {
-            alertInfo("Some configuration missing")
+            swal("Uh huh!", "Some configurations seems missing", "info");
         }
     });
-
 
     $(document).on('keyup', "#coinInput", function (e){
         let coin_count = $("#coinInput").val()
@@ -748,7 +771,6 @@ $(document).ready(function() {
 
 
     $(document).on('click','#exchangeCoinBtn', function(e) {
-
         let coins = $('input[name="coinInput"]').val();
         if(coins>=10){
             $("#exchangeCoinBtn").prop('disabled', true);
@@ -781,7 +803,44 @@ $(document).ready(function() {
 
     });
 
+    $(document).on('click','#exchangeAffiliateCreditsBtn', function(e) {
+        let credits = $('input[name="convertCreditsField"]').val();
+        if(credits>=1){
+            $("#exchangeAffiliateCreditsBtn").prop('disabled', true);
+            const csrftoken = getCookie('csrftoken');
+
+            $.ajax({
+                url: `/exchange/affiliate/`,
+                headers: {'X-CSRFToken': csrftoken},
+                type: 'POST',
+                data: {credits: credits},
+                success:function (data)
+                {
+                    $("#affiliateCommissionBox").text(`\$${data["balance"]}`)
+                  alertSuccess("Credits successfully exchanged!")
+                },
+                error:function (resp) {
+                    switch (resp.status) {
+                        case 503:
+                            alertWarning("You don't have enough credits to exchange!");
+                            break;
+                        default:
+                            alertDanger("Something went wrong. please contact support");
+                    }
+                },
+            });
+            $('#affiliateConvertCreditsModal').modal('hide');
+            $("#exchangeAffiliateCreditsBtn").prop('disabled', false);
+        }
+        else {
+            alertWarning("Minimum amount to exchange is $1");
+        }
+
+    });
+
 });
+
+
 $(document).ready(function (){
     $(document).on('click', '.copyTransactionID', function (){
         let transaction_id = $(this).attr("transaction_id");
@@ -790,5 +849,10 @@ $(document).ready(function (){
          $temp.val(transaction_id).select();
          document.execCommand("copy");
          $temp.remove()
+         alertSuccess("Copied to clipboard!")
+    })
+    $(document).on('click', '#hiddenRefreshButton', function (){
+        $('#hiddenRefreshButton').fadeOut();
+        $('#logAutoUpdate').prop("checked", true);
     })
 })
