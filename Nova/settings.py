@@ -37,7 +37,7 @@ DEBUG = env('DEBUG')
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = ['.novanodes.com']
+    ALLOWED_HOSTS = ['.novanodes.com', '.novanodes.ml']
 
 # Application definition
 
