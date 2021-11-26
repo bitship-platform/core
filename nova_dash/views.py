@@ -104,30 +104,31 @@ class LoginView(View):
                 password = hashing.hashed_user_pass(self.user_id, self.email)
                 user = authenticate(username=self.user_id, password=password)
                 if user is None:
-                    customer = create_customer(self.user_json, password)
-                    webhook.send_embed(
-                        {
-                            "type": "rich",
-                            "title": "",
-                            "description": f"New user signed up\n\nID: `{customer.id}`",
-                            "color": 0xfd9c00,
-                            "author": {
-                                "name": f"{customer.user.first_name}#{customer.tag}",
-                                "icon_url": f"{customer.get_avatar_url()}"
-                            }
-                        }
-                    )
-                    client_ip, is_routable = get_client_ip(request)
-                    if is_routable:
-                        try:
-                            ref_obj = Referral.objects.get(ip=client_ip)
-                            customer.referrer = ref_obj.affiliate.user
-                            customer.save()
-                            ref_obj.delete()
-                        except Referral.DoesNotExist:
-                            pass
-                    login(request, customer.user)
-
+                    # customer = create_customer(self.user_json, password)
+                    # webhook.send_embed(
+                    #     {
+                    #         "type": "rich",
+                    #         "title": "",
+                    #         "description": f"New user signed up\n\nID: `{customer.id}`",
+                    #         "color": 0xfd9c00,
+                    #         "author": {
+                    #             "name": f"{customer.user.first_name}#{customer.tag}",
+                    #             "icon_url": f"{customer.get_avatar_url()}"
+                    #         }
+                    #     }
+                    # )
+                    # client_ip, is_routable = get_client_ip(request)
+                    # if is_routable:
+                    #     try:
+                    #         ref_obj = Referral.objects.get(ip=client_ip)
+                    #         customer.referrer = ref_obj.affiliate.user
+                    #         customer.save()
+                    #         ref_obj.delete()
+                    #     except Referral.DoesNotExist:
+                    #         pass
+                    # login(request, customer.user)
+                    msg = "Novanodes is about to shutdown. We are no longer accepting new customers!"
+                    return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
                 elif user.customer.banned:
                     msg = "Your account has been banned. Contact admin if you think this was a mistake."
                     webhook.send_embed(
