@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class MainSiteConfig(AppConfig):
+class SiteConfig(AppConfig):
     name = 'core.apps.site'
+    default_auto_field = 'django.db.models.AutoField'
