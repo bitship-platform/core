@@ -68,8 +68,8 @@ MIDDLEWARE = [
     'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
-ROOT_URLCONF = 'Nova.urls'
-ROOT_HOSTCONF = 'Nova.hosts'
+ROOT_URLCONF = 'core.urls'
+ROOT_HOSTCONF = 'core.hosts'
 DEFAULT_HOST = 'www'
 
 TEMPLATES = [
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Nova.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database

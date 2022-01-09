@@ -1,6 +1,6 @@
 .env
 log.txt
-.idea
+.idea/
 __pycache__/
 media
 db.sqlite3
