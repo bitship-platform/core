@@ -47,10 +47,6 @@ class Customer(models.Model):
         self.save()
 
     @property
-    def earnings(self):
-        return self.first_order_amount/2
-
-    @property
     def running_apps(self):
         return len(self.app_set.filter(status__in=["bg-success", "bg-danger"]))
 
@@ -65,15 +61,6 @@ class Customer(models.Model):
     @property
     def get_orders(self):
         return self.order.all().order_by("-create_time")
-
-    @property
-    def get_transactions(self):
-        result_list = list(chain(self.recipient.all(), self.patron.all()))
-        return sorted(result_list, key=lambda instance: instance.time, reverse=True)
-
-    @property
-    def pending_transactions(self):
-        return self.patron.filter(status="fa-clock text-warning")
 
     @property
     def dark_mode(self):

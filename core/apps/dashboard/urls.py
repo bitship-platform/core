@@ -1,4 +1,4 @@
-from django.urls import path, re_path, include
+from django.urls import path, re_path
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
     PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView, AffiliateView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
