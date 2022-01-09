@@ -49,9 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_hosts',
-    'nova_dash',
-    'main_site',
-    'nova_api.apps.NovaApiConfig',
+    'core.apps.site',
+    'core.apps.api',
+    'core.apps.dashboard',
     'rest_framework',
     'rest_framework.authtoken',
 ]
