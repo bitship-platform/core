@@ -58,6 +58,14 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-hosts"
+version = "5.0"
+description = "Dynamic and static host resolving for Django. Maps hostnames to URLconfs."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "django-ipware"
 version = "4.0.2"
 description = "A Django application to retrieve user's IP address"
@@ -145,6 +153,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "python-decouple"
+version = "3.5"
+description = "Strict separation of settings from code."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pytz"
 version = "2021.3"
 description = "World timezone definitions, modern and historical"
@@ -202,7 +218,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "59ff842cf6caf49a85ad728a6097540848fe141414fa5bd9f6a4f2950857a00e"
+content-hash = "d8cd09820be93ea33a9fc81c8c74fd85381fdad36738963d434b513d1679ad1b"
 
 [metadata.files]
 asgiref = [
@@ -238,6 +254,10 @@ charset-normalizer = [
 django = [
     {file = "Django-4.0.1-py3-none-any.whl", hash = "sha256:7cd8e8a3ed2bc0dfda05ce1e53a9c81b30eefd7aa350e538a18884475e4d4ce2"},
     {file = "Django-4.0.1.tar.gz", hash = "sha256:2485eea3cc4c3bae13080dee866ebf90ba9f98d1afe8fda89bfb0eb2e218ef86"},
+]
+django-hosts = [
+    {file = "django-hosts-5.0.tar.gz", hash = "sha256:e917f8f55a144cee305cbf3a04656f94174cdcf0dddbc2cd5a110a3e842746dc"},
+    {file = "django_hosts-5.0-py2.py3-none-any.whl", hash = "sha256:a45492c50b0a87f583074360f87d2fff97a954188a12cc942cf87e3e241dc7aa"},
 ]
 django-ipware = [
     {file = "django-ipware-4.0.2.tar.gz", hash = "sha256:602a58325a4808bd19197fef2676a0b2da2df40d0ecf21be414b2ff48c72ad05"},
@@ -328,6 +348,10 @@ pycodestyle = [
 pyflakes = [
     {file = "pyflakes-2.4.0-py2.py3-none-any.whl", hash = "sha256:3bb3a3f256f4b7968c9c788781e4ff07dce46bdf12339dcda61053375426ee2e"},
     {file = "pyflakes-2.4.0.tar.gz", hash = "sha256:05a85c2872edf37a4ed30b0cce2f6093e1d0581f8c19d7393122da7e25b2b24c"},
+]
+python-decouple = [
+    {file = "python-decouple-3.5.tar.gz", hash = "sha256:68e4b3fcc97e24bc90eecc514852d0bf970f4ff031f5f7a6728ddafa9afefcaf"},
+    {file = "python_decouple-3.5-py3-none-any.whl", hash = "sha256:011d3f785367c54a72cf8a07d3a7a48bb8cc1a0f8e6c70353ca5767ebf7c8c9d"},
 ]
 pytz = [
     {file = "pytz-2021.3-py2.py3-none-any.whl", hash = "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c"},

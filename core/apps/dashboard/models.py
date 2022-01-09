@@ -191,7 +191,7 @@ class App(models.Model):
         if self.python:
             return "python_version" and "app_json" and "main_executable" in self.config
         elif self.node:
-            return "node_version" and "app_json" and "start_script" in self.config:
+            return "node_version" and "app_json" and "start_script" in self.config
 
     @property
     def app_stack(self):
@@ -377,28 +377,6 @@ def current_time():
     return datetime.now(timezone.utc)
 
 
-class Transaction(models.Model):
-    TRANSACTION_STATUS = (
-        ("fa-ban text-danger", "Canceled"),
-        ("fa-times-circle text-danger", "Failed"),
-        ("fa-clock text-warning", "Pending"),
-        ("fa-check-circle text-success", "Success"),
-    )
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    patron = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="patron")
-    recipient = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="recipient")
-    time = models.DateTimeField(default=current_time)
-    amount = models.FloatField(default=0)
-    status = models.CharField(max_length=30, choices=TRANSACTION_STATUS)
-    failure_message = models.CharField(max_length=120, null=True, blank=True)
-    msg = models.TextField(null=True, blank=True)
-    otp = models.CharField(max_length=6, null=True, blank=True)
-    last_otp_generation_time = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"| Amount: {self.amount} | TSNID: {self.id}"
-
-
 class Offer(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     name = models.CharField(max_length=30)
@@ -421,16 +399,3 @@ class Promo(models.Model):
     @property
     def expired(self):
         return datetime.now(timezone.utc) > self.expiry_date
-
-
-class CashoutRequest(models.Model):
-    STATUS = (
-        ("fa-ban text-danger", "Canceled"),
-        ("fa-times-circle text-danger", "Failed"),
-        ("fa-clock text-warning", "Pending"),
-        ("fa-check-circle text-success", "Success"),
-    )
-    customer = models.ForeignKey("Customer", on_delete=models.CASCADE)
-    paypal_email = models.CharField(max_length=100)
-    amount = models.FloatField()
-    status = models.CharField(max_length=30, choices=STATUS, default="fa-clock text-warning")
