@@ -8,9 +8,6 @@ from utils.misc import PythonAppConfig, NodeAppConfig
 
 
 class Customer(models.Model):
-    """
-    Users signed up to the site.
-    """
     id = models.BigIntegerField(primary_key=True)
     tag = models.CharField(max_length=5, default="0000")
     avatar = models.CharField(max_length=50, null=True)
@@ -87,9 +84,6 @@ class Customer(models.Model):
 
 
 class App(models.Model):
-    """
-    User's running applications.
-    """
     STATUS_CHOICES = [
         ("bg-warning", "Not Started"),
         ("bg-success", "Running"),
@@ -138,33 +132,23 @@ class App(models.Model):
 
     @property
     def python(self):
-        if self.get_stack_display() == "Python":
-            return True
-        return False
+        return self.get_stack_display() == "Python"
 
     @property
     def node(self):
-        if self.get_stack_display() == "Node.js":
-            return True
-        return False
+        return self.get_stack_display() == "Node.js"
 
     @property
     def ruby(self):
-        if self.get_stack_display() == "Ruby":
-            return True
-        return False
+        return self.get_stack_display() == "Ruby"
 
     @property
     def terminated(self):
-        if self.get_status_display() == "Terminated":
-            return True
-        return False
+        return self.get_status_display() == "Terminated"
 
     @property
     def running(self):
-        if self.get_status_display() == "Running":
-            return True
-        return False
+        return self.get_status_display() == "Running"
 
     @property
     def pending(self):
@@ -184,9 +168,7 @@ class App(models.Model):
 
     @property
     def idle(self):
-        if self.get_status_display() in ["Pending", "Not Started", "Stopped"]:
-            return True
-        return False
+        return self.get_status_display() in ["Pending", "Not Started", "Stopped"]
 
     @property
     def primary_file_set(self):
@@ -207,12 +189,9 @@ class App(models.Model):
     @property
     def configuration(self):
         if self.python:
-            if "python_version" and "app_json" and "main_executable" in self.config:
-                return True
+            return "python_version" and "app_json" and "main_executable" in self.config
         elif self.node:
-            if "node_version" and "app_json" and "start_script" in self.config:
-                return True
-        return False
+            return "node_version" and "app_json" and "start_script" in self.config:
 
     @property
     def app_stack(self):
@@ -431,9 +410,7 @@ class Offer(models.Model):
 
     @property
     def expired(self):
-        if datetime.now(timezone.utc) > self.expiry_date:
-            return True
-        return False
+        return datetime.now(timezone.utc) > self.expiry_date
 
 
 class Promo(models.Model):
@@ -443,9 +420,7 @@ class Promo(models.Model):
 
     @property
     def expired(self):
-        if datetime.now(timezone.utc) > self.expiry_date:
-            return True
-        return False
+        return datetime.now(timezone.utc) > self.expiry_date
 
 
 class CashoutRequest(models.Model):
