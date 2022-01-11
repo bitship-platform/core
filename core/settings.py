@@ -138,6 +138,8 @@ OAUTH_REDIRECT_URI = config("OAUTH_REDIRECT_URI")
 ENCRYPTION_SALT = config("ENCRYPTION_SALT")
 ENCRYPTION_ITERATION = config("ENCRYPTION_ITERATION")
 MAX_FILE_SIZE = 4500000
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -151,6 +153,7 @@ PAYPAL_SECRET = config("PAYPAL_SECRET")
 PAYPAL_ID = config("PAYPAL_ID")
 BPD_ENDPOINT = config("BPD_ENDPOINT")
 BPD_SECRET = config("BPD_SECRET")
+
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

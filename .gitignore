@@ -2,6 +2,6 @@
 log.txt
 .idea/
 __pycache__/
-media
+media/
 db.sqlite3
 *.tar.gz
