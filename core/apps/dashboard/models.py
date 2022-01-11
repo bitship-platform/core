@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime, timezone
-from itertools import chain
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -181,10 +180,6 @@ class App(models.Model):
     @property
     def app_status(self):
         return self.get_status_display()
-
-    @property
-    def app_plan(self):
-        return self.get_plan_display()
 
     def primary_files(self):
         primary_file_list = []
