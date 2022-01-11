@@ -6,7 +6,7 @@
     <!-- Header -->
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
       <!-- Mask -->
-      <span class="mask {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-darker{% endif %} opacity-8"></span>
+      <span class="mask bg-gradient-darker opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
       </div>
@@ -17,11 +17,11 @@
 
       <div class="row">
         <div class="col-xl-12 order-xl-2">
-          <div class="card {% if request.user.customer.dark_mode %}bg-translucent-dark{% else %}bg-secondary{% endif %} shadow">
-            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-white{% endif %} border-0">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Account Settings</h3>
+                  <h3 class="mb-0">Account Settings</h3>
                 </div>
               </div>
             </div>
@@ -43,7 +43,7 @@
               <div class="col-8">
                 <div class="tab-content" id="nav-tabContent">
                   <div class="tab-pane fade show active" id="list-dashboard" role="tabpanel" aria-labelledby="list-dashboard-list">
-                      <div class="card {% if request.user.customer.dark_mode %}bg-gradient-gray text-darker{% endif %}">
+                      <div class="card">
                           <div class="card-body">
                             <dl class="row">
                               <dt class="col-sm-3">Become an Affiliate</dt>
@@ -58,16 +58,12 @@
                               <dd class="col-sm-9">
                                 <input type="checkbox" id="beta_features" {% if request.user.customer.settings.beta_tester %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
-                              <dt class="col-sm-3">Auto Mode Switch</dt>
-                              <dd class="col-sm-9">
-                                <input type="checkbox" id="auto_dark_mode" {% if request.user.customer.settings.auto_dark_mode %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
-                              </dd>
                             </dl>
                           </div>
                       </div>
                   </div>
                   <div class="tab-pane fade" id="list-notification" role="tabpanel" aria-labelledby="list-notification-list">
-                      <div class="card {% if request.user.customer.dark_mode %}bg-gradient-gray text-darker{% endif %}">
+                      <div class="card">
                           <div class="card-body">
                             <dl class="row">
 
@@ -235,7 +231,7 @@
                         transition: all 0.3s ease-in-out
                     }
                 </style>
-                <div class="card user-card-full {% if request.user.customer.dark_mode %}bg-gradient-gray text-darker{% endif %}">
+                <div class="card user-card-full">
                     <div class="row m-l-0 m-r-0">
                         <div class="col-sm-4 bg-gradient-dark user-profile">
                             <div class="card-block text-center text-white">
@@ -257,11 +253,11 @@
                                 {% if request.user.customer.address.firstname %}
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Name</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.customer.address.firstname }}  {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.customer.address.firstname }}  {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Billing Address</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">
+                                        <h6 class="text-muted f-w-400">
                                         {{ request.user.customer.address.location }}<br>{{ request.user.customer.address.city }}, {{ request.user.customer.address.country }}<br>
                                         {% if request.user.customer.address.pincode %}{{ request.user.customer.address.pincode }}{% endif %}
                                         </h6>
@@ -269,38 +265,38 @@
                                 {% endif %}
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Email</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.email }}</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.email }}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Account ID</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.username }}</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.username }}</h6>
                                     </div>
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Account Information</h6>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Creation Date</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.date_joined }}</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.date_joined }}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Last Login</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.last_login }}</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.last_login }}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Credits</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">${{ request.user.customer.rounded_credits }}</h6>
+                                        <h6 class="text-muted f-w-400">${{ request.user.customer.rounded_credits }}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Coins</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.customer.coins }}c</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.customer.coins }}c</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Credits spend</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">${{ request.user.customer.credits_spend }}</h6>
+                                        <h6 class="text-muted f-w-400">${{ request.user.customer.credits_spend }}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Coins redeemed</p>
-                                        <h6 class="{% if request.user.customer.dark_mode %}text-white{% else %}text-muted{% endif %} f-w-400">{{ request.user.customer.coins_redeemed }}c</h6>
+                                        <h6 class="text-muted f-w-400">{{ request.user.customer.coins_redeemed }}c</h6>
                                     </div>
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Danger zone</h6>
