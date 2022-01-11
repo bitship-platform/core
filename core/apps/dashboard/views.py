@@ -35,7 +35,6 @@ def media_access(request, path):
     user = request.user
     if user.is_authenticated:
         if user.is_superuser:
-            # If admin, everything is granted
             access_granted = True
         else:
             file = File.objects.filter(item__exact=path)[0]
@@ -43,7 +42,6 @@ def media_access(request, path):
                 access_granted = True
     if access_granted:
         response = HttpResponse()
-        # Content-type will be detected by nginx
         del response['Content-Type']
         response['X-Accel-Redirect'] = '/protected/media/' + path
         return response
