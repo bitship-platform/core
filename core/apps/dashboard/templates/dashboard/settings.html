@@ -46,10 +46,6 @@
                       <div class="card">
                           <div class="card-body">
                             <dl class="row">
-                              <dt class="col-sm-3">Become an Affiliate</dt>
-                              <dd class="col-sm-9">
-                                <input type="checkbox" id="become_affiliate" {% if request.user.customer.settings.affiliate %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
-                              </dd>
                               <dt class="col-sm-3">Display terminated apps</dt>
                               <dd class="col-sm-9">
                                 <input type="checkbox" id="terminated_apps" {% if request.user.customer.terminated_apps %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
@@ -287,16 +283,8 @@
                                         <h6 class="text-muted f-w-400">${{ request.user.customer.rounded_credits }}</h6>
                                     </div>
                                     <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Coins</p>
-                                        <h6 class="text-muted f-w-400">{{ request.user.customer.coins }}c</h6>
-                                    </div>
-                                    <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Credits spend</p>
                                         <h6 class="text-muted f-w-400">${{ request.user.customer.credits_spend }}</h6>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Coins redeemed</p>
-                                        <h6 class="text-muted f-w-400">{{ request.user.customer.coins_redeemed }}c</h6>
                                     </div>
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Danger zone</h6>
