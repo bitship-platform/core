@@ -8,18 +8,18 @@
 {% block content %}
 
     <!-- Header -->
-    <div class="header {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-dark{% endif %} pb-8 pt-5 pt-md-8">
+    <div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
       <div class="container-fluid">
         <div class="header-body">
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0 {% if request.user.customer.dark_mode %}bg-gray{% endif %}">
+              <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-darker font-weight-800{% else %}text-muted{% endif %} mb-0">Your apps</h5>
-                      <span class="h2 font-weight-bold mb-0 {% if request.user.customer.dark_mode %}text-darker{% endif %}">{{ request.user.customer.get_active_app_count }}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Your apps</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ request.user.customer.get_active_app_count }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -39,12 +39,12 @@
                 </div>
               </div>
               {% if request.user.customer.settings.affiliate %}
-              <div class="card card-stats mt-3 {% if request.user.customer.dark_mode %}bg-gray{% endif %}">
+              <div class="card card-stats mt-3">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-darker font-weight-800{% else %}text-muted{% endif %} mb-0">Affiliate Commission</h5>
-                      <span class="h2 font-weight-bold {% if request.user.customer.dark_mode %}text-darker{% endif %} mb-0">{% if request.user.customer.affiliate_commission %}${{ request.user.customer.affiliate_commission }}{% else %}$0{% endif %}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Affiliate Commission</h5>
+                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.affiliate_commission %}${{ request.user.customer.affiliate_commission }}{% else %}$0{% endif %}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
@@ -61,12 +61,12 @@
             <div class="col-xl-3 col-lg-6">
             </div>
             <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0 {% if request.user.customer.dark_mode %}bg-gray{% endif %}">
+              <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-darker font-weight-800{% else %}text-muted{% endif %} mb-0">Credits</h5>
-                      <span class="h2 font-weight-bold {% if request.user.customer.dark_mode %}text-darker{% endif %} mb-0">{% if request.user.customer.rounded_credits %}${{ request.user.customer.rounded_credits }}{% else %}$0{% endif %}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Credits</h5>
+                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.rounded_credits %}${{ request.user.customer.rounded_credits }}{% else %}$0{% endif %}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -79,12 +79,12 @@
                   </p>
                 </div>
               </div>
-              <div class="card card-stats mt-3 {% if request.user.customer.dark_mode %}bg-gray{% endif %}">
+              <div class="card card-stats mt-3">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase {% if request.user.customer.dark_mode %}text-darker font-weight-800{% else %}text-muted{% endif %} mb-0">Coins</h5>
-                      <span class="h2 font-weight-bold {% if request.user.customer.dark_mode %}text-darker{% endif %} mb-0">{{ request.user.customer.coins }}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Coins</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ request.user.customer.coins }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -104,13 +104,13 @@
       <!-- Table -->
       <div class="row">
         <div class="col">
-          <div class="card {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %} shadow">
-            <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% endif %} border-0">
-              <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Your Applications</h3>
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Your Applications</h3>
             </div>
             <div class="table-responsive">
-              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}{% endif %}">
-                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thead-light{% endif %}">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
                   <tr>
                     <th scope="col">App</th>
                     <th scope="col">Stack</th>
@@ -215,9 +215,9 @@
       </div>
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+        <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title {% if request.user.customer.dark_mode %}text-primary{% endif %}" id="exampleModalLongTitle">Launch new app</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Launch new app</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -228,11 +228,11 @@
               <div class="form-row">
                 <div class="form-group col-md-8">
                   <label for="inputCity">Name of your app</label>
-                  <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" pattern="[^' ']+" name="name" id="inputCity" required>
+                  <input type="text" class="form-control" pattern="[^' ']+" name="name" id="inputCity" required>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="inputState">Plan</label>
-                  <select id="inputState" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="plan" onchange="adjustRate()" required>
+                  <select id="inputState" class="form-control" name="plan" onchange="adjustRate()" required>
                     <option selected disabled>Choose...</option>
                     <option value="Base">Base</option>
                     <option value="Standard">Standard</option>
@@ -243,18 +243,18 @@
               <div class="form-row">
                 <div class="form-group col-md-3">
                   <label for="stack">Stack</label>
-                  <input type="text" id="stack" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="stack" readonly>
+                  <input type="text" id="stack" class="form-control" name="stack" readonly>
                 </div>
                 <div class="form-group col-md-3">
                   <label for="rate">Rate</label>
-                  <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="rate" value="0" id="rate" readonly>
+                  <input type="text" class="form-control" name="rate" value="0" id="rate" readonly>
                 </div>
               </div>
                 <p class="font-weight-500"><b>Note:</b> You won't be charged unless you deploy the app</p>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn {% if request.user.customer.dark_mode %}btn-outline-secondary{% else %}btn-secondary{% endif %}" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" form="app-launch" class="btn btn-primary">Launch</button>
           </div>
         </div>

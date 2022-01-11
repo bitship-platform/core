@@ -21,7 +21,7 @@
             <div class="card-header {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-white{% endif %} border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0 {% if request.user.customer.dark_mode %}text-white{% endif %}">Deployment logs  {% if request.user.customer.settings.beta_tester %}<span><button class="btn-sm btn-outline-primary" disabled>beta feature</button></span>{% endif %}</h3>
+                  <h3 class="mb-0">Deployment logs  {% if request.user.customer.settings.beta_tester %}<span><button class="btn-sm btn-outline-primary" disabled>beta feature</button></span>{% endif %}</h3>
                 </div>
               </div>
             </div>
