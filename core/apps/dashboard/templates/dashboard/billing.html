@@ -25,7 +25,7 @@
 
       <div class="row">
         <div class="col-xl-4 order-xl-3 mb-5 mb-xl-0">
-          <div class="card card-profile {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %} shadow">
+          <div class="card card-profile shadow">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class="col-xl-5 order-xl-1">
-            <div class="card card-profile shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+            <div class="card card-profile shadow">
                  <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
                      <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">CREDITS TRANSFER</h4>
                  </div>
@@ -97,7 +97,7 @@
         <div class="col-xl-3 order-xl-2">
           <div class="row">
             <div class="col-xl-12 mb-xl-0">
-              <div class="card card-profile shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+              <div class="card card-profile shadow">
                 <div class="row justify-content-center">
                   <div class="border-0 pt-8 pt-md-4 pb-0">
                         <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">EXCHANGE NOVACOINS</h4>
@@ -105,8 +105,8 @@
                 </div>
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 bg-transparent">
                   <div class="d-flex justify-content-between">
-                      <h5 class="mr-4 {% if request.user.customer.dark_mode %}text-muted{% endif %}">Min qty: <span class="text-red">10c</span></h5>
-                      <h5 class="mr-4 float-right {% if request.user.customer.dark_mode %}text-muted{% endif %}">Exchange: <span class="text-red" id="coinSpan">10c = $1.2</span></h5>
+                      <h5 class="mr-4">Min qty: <span class="text-red">10c</span></h5>
+                      <h5 class="mr-4 float-right">Exchange: <span class="text-red" id="coinSpan">10c = $1.2</span></h5>
                   </div>
                 </div>
                 <div class="card-body pt-0 pt-md-4">
@@ -120,7 +120,7 @@
               </div>
             </div>
             <div class="col-xl-12 mt-3 mb-xl-0">
-              <div class="card card-profile shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+              <div class="card card-profile shadow">
                 <div class="row justify-content-center">
                   <div class="border-0 pt-8 pt-md-4 pb-0">
                         <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">APPLY PROMOCODE</h4>
@@ -128,7 +128,7 @@
                 </div>
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 bg-transparent">
                   <div class="d-flex justify-content-between">
-                    <h5 class="mr-4 {% if request.user.customer.dark_mode %}text-muted{% endif %}">Got a coupon? Redeem now.</h5>
+                    <h5 class="mr-4">Got a coupon? Redeem now.</h5>
                   </div>
                 </div>
                 <div class="card-body pt-0 pt-md-4">
@@ -150,78 +150,7 @@
                     $(this).remove();
                 });
             }, 2000);
-        </script>
-        <div class="modal fade" id="transactionModalCenter" tabindex="-1" role="dialog" aria-labelledby="transactionModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
-              <div class="modal-header">
-                <h5 class="modal-title  {% if request.user.customer.dark_mode %}text-white{% endif %}" id="transactionModalCenterTitle">Confirm OTP</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-              <div class="card card-profile shadow mb-2 {% if request.user.customer.dark_mode %}bg-gradient-gray{% endif %}" id="transactionRefreshSection">
-                <div class="row justify-content-center">
-                  <div class="col-lg-3 order-lg-2">
-                    <div class="card-profile-image">
-                      <a href="#">
-                        <img src="{{ request.user.customer.get_avatar_url }}" class="rounded-circle">
-                        <input type="hidden" name="transaction_id" id="transaction_id">
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body pt-0 pt-md-4">
-                  <div class="text-center">
-                    <h3>.</h3>
-                    <div class="h5 font-weight-300">
-                      .
-                    </div>
-                    <div class="h5 mt-4">
-                      <i class="ni business_briefcase-24 mr-2 {% if request.user.customer.dark_mode %}text-muted{% endif %}"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <style>
-                    .tooltip {
-                        z-index: 100000000;
-                    }
-                </style>
-                <label for="formGroupExampleInput" class="{% if request.user.customer.dark_mode %}text-muted{% endif %}">Enter the OTP</label> <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="A One Time Password (OTP) is sent to your email and your discord account (if you are a member of the support server)"></i>
-                <input type="password" class="form-control {% if request.user.customer.dark_mode %}text-darker bg-gray{% endif %}" id="formGroupExampleInput"  name="transaction_otp" placeholder="XXXXXX">
-              </div>
-              <button class="btn btn-sm btn-outline-primary" onclick="startCounter()" id="resendOtpButton">Resend OTP <span id="counter"></span></button>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
-                <button type="button" class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-default{% endif %}" id="transactionAuthorizationButton">Confirm</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade" id="cancelTransactionModalCenter" tabindex="-1" role="dialog" aria-labelledby="cancelTransactionModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
-              <div class="modal-header">
-                <h5 class="modal-title {% if request.user.customer.dark_mode %}text-white{% endif %}" id="cancelTransactionModalCenterLongTitle">Cancel transaction</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body {% if request.user.customer.dark_mode %}text-muted{% endif %}">
-                Are you sure you want to cancel this transaction?
-              </div>
-              <input type="hidden" name="cancel_transaction" id="cancel_transaction">
-              <div class="modal-footer">
-                <button type="button" class="btn {% if request.user.customer.dark_mode %}btn-outline-secondary{% else %}btn-secondary{% endif %}" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="cancelTransactionButton">Confirm</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        </script>iv>
       {% include "dashboard/includes/footer.html" %}
 
     </div>
