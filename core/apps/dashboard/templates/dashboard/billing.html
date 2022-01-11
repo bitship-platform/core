@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
 
 {% block content %}
-    <div class="header {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-dark{% endif %} pb-8 pt-5 pt-md-8">
+    <div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
       <div class="container-fluid">
         <div class="header-body">
           <!-- Card stats -->
@@ -78,9 +78,9 @@
                 </div>
                 <div class="card-body pt-0 pt-md-4">
                     <div class="input-group mb-3">
-                      <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" name="promo_code" placeholder="Promocode" aria-label="NOVACODE" aria-describedby="basic-addon2">
+                      <input type="text" class="form-control" name="promo_code" placeholder="Promocode" aria-label="NOVACODE" aria-describedby="basic-addon2">
                       <div class="input-group-append">
-                        <button class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-dark{% endif %}" type="button" id="promocodeButton">Redeem</button>
+                        <button class="btn btn-outline-dark" type="button" id="promocodeButton">Redeem</button>
                       </div>
                     </div>
                 </div>
