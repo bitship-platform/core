@@ -6,7 +6,7 @@
     <!-- Header -->
     <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
       <!-- Mask -->
-      <span class="mask {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-darker{% endif %} opacity-8"></span>
+      <span class="mask bg-gradient-darker opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
       </div>
@@ -17,8 +17,8 @@
 
       <div class="row">
         <div class="col-xl-12 order-xl-2">
-          <div class="card {% if request.user.customer.dark_mode %}bg-gray{% else %}bg-secondary{% endif %} shadow">
-            <div class="card-header {% if request.user.customer.dark_mode %}bg-gray{% else %}bg-white{% endif %} border-0">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
                   <h3 class="mb-0">Deployment tutorial</h3>
@@ -76,14 +76,14 @@
                         <p class="font-weight-400">This file is essential for using Pipenv. When you create a Pipenv environment either for a new or an existing project, the Pipfile is generated automatically.</p>
                         <p class="font-weight-400"><b>Your app needs either Pipfile or requirements.txt in the root folder to run.</b></p>
                     </div>
-                    <div class="col-lg-3 {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-gradient-secondary{% endif %}" id="pythonTableOfContents">
+                    <div class="col-lg-3 bg-gradient-secondary" id="pythonTableOfContents">
                         <h3>Table of contents</h3>
-                        <a href="#launchapp" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Launch your app</a><br>
-                        <a href="#uploadfiles" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Upload the bot files</a><br>
-                        <a href="#setconfig" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Set app configurations</a><br>
-                        <a href="#deployyourapp" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Deploy your app</a><br>
-                        <a href="#requirements" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">What is requirements.txt</a><br>
-                        <a href="#pipfile" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">What is a Pipfile</a><br>
+                        <a href="#launchapp" >Launch your app</a><br>
+                        <a href="#uploadfiles" >Upload the bot files</a><br>
+                        <a href="#setconfig" >Set app configurations</a><br>
+                        <a href="#deployyourapp" >Deploy your app</a><br>
+                        <a href="#requirements" >What is requirements.txt</a><br>
+                        <a href="#pipfile" >What is a Pipfile</a><br>
                     </div>
 
 
@@ -114,13 +114,13 @@
                         <p class="font-weight-400">This file is used to give information to npm that allows it to identify the project as well as handle the project's dependencies. </p>
                         <p class="font-weight-400"><b>Your app needs this file in the root folder to run</b></p>
                     </div>
-                    <div class="col-lg-3 {% if request.user.customer.dark_mode %}bg-transparent{% else %}bg-gradient-secondary{% endif %}" id="nodeTableOfContents" style="display: none;">
+                    <div class="col-lg-3 bg-gradient-secondary" id="nodeTableOfContents" style="display: none;">
                         <h3>Table of contents</h3>
-                        <a href="#launchappnode" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Launch your app</a><br>
-                        <a href="#uploadfilesnode" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Upload the bot files</a><br>
-                        <a href="#setconfignode" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Set app configurations</a><br>
-                        <a href="#deployyourappnode" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">Deploy your app</a><br>
-                        <a href="#package_json" class="{% if request.user.customer.dark_mode %}text-darker{% endif %}">What is package.json</a><br>
+                        <a href="#launchappnode" >Launch your app</a><br>
+                        <a href="#uploadfilesnode" >Upload the bot files</a><br>
+                        <a href="#setconfignode" >Set app configurations</a><br>
+                        <a href="#deployyourappnode" >Deploy your app</a><br>
+                        <a href="#package_json" >What is package.json</a><br>
                     </div>
 
                 </div>
