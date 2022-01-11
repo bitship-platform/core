@@ -48,12 +48,6 @@ def media_access(request, path):
         return HttpResponseForbidden('Not authorized to access this file.')
 
 
-class TestView(View):
-
-    def get(self, request):
-        return render(request, "dashboard/accounts/user_login.html")
-
-
 class LogoutView(View):
 
     def get(self, request):

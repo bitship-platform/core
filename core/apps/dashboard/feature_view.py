@@ -29,24 +29,3 @@ class PromoCodeView(LoginRequiredMixin, View, ResponseMixin):
         except Promo.DoesNotExist:
             return self.json_response_404()
 
-
-class ExchangeView(LoginRequiredMixin, View, ResponseMixin):
-
-    def post(self, request):
-        coins = int(request.POST.get("coins"))
-        if coins > request.user.customer.coins:
-            return self.json_response_503()
-        customer = request.user.customer
-        customer.coins -= coins
-        customer.credits += coins * 0.12
-        customer.coins_redeemed += coins
-        customer.save()
-        Order.objects.create(customer=customer,
-                             transaction_amount=format(coins * 0.12, '.2f'),
-                             credit=True,
-                             create_time=datetime.now(timezone.utc),
-                             update_time=datetime.now(timezone.utc),
-                             service="Coin Exchange",
-                             status="fa-check-circle text-success")
-        return render(request, "dashboard/refresh_pages/stats_refresh.html", status=200)
-
