@@ -37,19 +37,19 @@
             </div>
             <div class="card-header bg-transparent text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
               <div class="d-flex justify-content-between">
-                <a href="{% url 'activity' %}" class="btn btn-sm {% if request.user.customer.dark_mode %}btn-primary{% else %}btn-default{% endif %} mr-4">Activity</a>
-                <a href="{% url 'settings' %}" class="btn btn-sm {% if request.user.customer.dark_mode %}btn-primary{% else %}btn-default{% endif %} float-right">Settings</a>
+                <a href="{% url 'activity' %}" class="btn btn-sm btn-default mr-4">Activity</a>
+                <a href="{% url 'settings' %}" class="btn btn-sm btn-primary float-right">Settings</a>
               </div>
             </div>
             <div class="card-body pt-0 pt-md-4">
               <div class="text-center">
-                <h3 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">
+                <h3 >
                   {% if request.user.customer.address.firstname %}{{ request.user.customer.address.firstname }} {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}{% else %}{{ request.user.first_name }}{% endif %}
                 </h3>
-                <div class="h5 font-weight-300 {% if request.user.customer.dark_mode %}text-white{% endif %}">
+                <div class="h5 font-weight-300">
                   {{ request.user.email }}
                 </div>
-                <div class="h5 mt-4 {% if request.user.customer.dark_mode %}text-white{% endif %}">
+                <div class="h5 mt-4">
                   <i class="ni business_briefcase-24 mr-2"></i>Discord: {{ request.user.first_name }} #{{ request.user.customer.tag }}
                 </div>
                 <hr class="my-4" />
@@ -62,68 +62,13 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-5 order-xl-1">
-            <div class="card card-profile shadow">
-                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 {% if request.user.customer.dark_mode %}bg-gradient-dark text-muted{% endif %}">
-                     <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">CREDITS TRANSFER</h4>
-                 </div>
-              <div class="card-body pt-0 pt-md-4">
-                <div class="card-body">
-                    <form>
-                     <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="formGroupExampleInput">Account no:</label>
-                        <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput" placeholder="Discord user_id" name="account_id">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="formGroupExampleInput2">Confirm Account no:</label>
-                        <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput2" placeholder="Discord user_id" name="account_id_conf">
-                      </div>
-                      <div class="form-group col-md-5">
-                        <label for="formGroupExampleInput3">Amount (min: $1):</label>
-                        <input type="text" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput3" name="transaction_amount">
-                      </div>
-                      <div class="form-group col-md-12">
-                          <label for="formGroupExampleInput4">Message (optional):</label>
-                          <textarea class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="formGroupExampleInput4" aria-label="With textarea" name="transaction_msg"></textarea>
-                      </div>
-                     </div>
-                     <button class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-default{% endif %}" id="transactionButton">Transfer</button>
-                    </form>
-                </div>
-              </div>
-            </div>
-        </div>
         <div class="col-xl-3 order-xl-2">
           <div class="row">
-            <div class="col-xl-12 mb-xl-0">
-              <div class="card card-profile shadow">
-                <div class="row justify-content-center">
-                  <div class="border-0 pt-8 pt-md-4 pb-0">
-                        <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">EXCHANGE NOVACOINS</h4>
-                  </div>
-                </div>
-                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 bg-transparent">
-                  <div class="d-flex justify-content-between">
-                      <h5 class="mr-4">Min qty: <span class="text-red">10c</span></h5>
-                      <h5 class="mr-4 float-right">Exchange: <span class="text-red" id="coinSpan">10c = $1.2</span></h5>
-                  </div>
-                </div>
-                <div class="card-body pt-0 pt-md-4">
-                    <div class="input-group mb-3">
-                      <input type="text" name="coinInput" id="coinInput" class="form-control {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" placeholder="Amount of coin" aria-label="Amount of coin" aria-describedby="basic-addon2">
-                      <div class="input-group-append">
-                        <button class="btn {% if request.user.customer.dark_mode %}btn-outline-primary{% else %}btn-outline-dark{% endif %}" id="exchangeCoinBtn" type="button">Exchange</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
             <div class="col-xl-12 mt-3 mb-xl-0">
               <div class="card card-profile shadow">
                 <div class="row justify-content-center">
                   <div class="border-0 pt-8 pt-md-4 pb-0">
-                        <h4 class="{% if request.user.customer.dark_mode %}text-white{% endif %}">APPLY PROMOCODE</h4>
+                        <h4 >APPLY PROMOCODE</h4>
                   </div>
                 </div>
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 bg-transparent">
