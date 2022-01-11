@@ -12,7 +12,7 @@ from django.utils.timezone import make_aware
 from django.db.models.signals import post_save, post_delete
 
 from utils.handlers import BPDAPIHandler
-from nova_dash.models import Customer, Address, Folder, App, File, Setting
+from core.apps.dashboard.models import Customer, Address, Folder, App, File, Setting
 
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
 

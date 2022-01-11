@@ -90,17 +90,11 @@ class App(models.Model):
         ("https://cdn.discordapp.com/attachments/785734963458342973/786647100749774908/node-js.png", "Node.js"),
         ("https://cdn.discordapp.com/attachments/785734963458342973/786646064878845982/ruby.png", "Ruby"),
     ]
-    TYPE_CHOICES = [
-        (1.2, "Base"),
-        (2.4, "Standard"),
-        (4.99, "Premium"),
-    ]
     name = models.CharField(max_length=50, default="nova-app")
     unique_id = models.UUIDField(default=uuid.uuid4, null=True)
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_CHOICES, default="STOPPED", max_length=20)
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
-    plan = models.FloatField(choices=TYPE_CHOICES)
     cpu = models.IntegerField(default=0, null=True)
     ram = models.IntegerField(default=0, null=True)
     disk = models.IntegerField(default=0, null=True)

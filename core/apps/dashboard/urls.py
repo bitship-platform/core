@@ -1,9 +1,9 @@
 from django.urls import path, re_path
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
-    PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView, AffiliateView
+    PaypalTransaction, media_access, ActivityView, HelpView, TestView, AdminLoginView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, BackupDownload, set_app_config
-from .feature_view import TransactionView, TransactionUtility, PromoCodeView, ExchangeView, ExchangeAffiliateView
+from .feature_view import PromoCodeView, ExchangeView
 
 
 urlpatterns = [
@@ -16,7 +16,6 @@ urlpatterns = [
     re_path(r'^how-to-deploy/', HelpView.as_view(), name="help_deploy"),
     re_path(r'^billing/process/', PaypalTransaction.as_view(), name='billing_process'),
     re_path(r'^billing/', BillingView.as_view(), name='billing'),
-    re_path(r'^affiliates/', AffiliateView.as_view(), name='affiliates'),
     re_path(r'^manage/app/backup/(?P<app_id>.*)', BackupDownload.as_view(), name='backup'),
     re_path(r'^manage/(?P<app_id>[0-9]+)/logs/', AppConsoleView.as_view(), name='app_log'),
     re_path(r'^manage/(?P<app_id>[0-9]+)/(?P<folder_id>.+)', ManageView.as_view(), name='browse'),
@@ -24,10 +23,7 @@ urlpatterns = [
     re_path(r'^manage/', ManageView.as_view(), name='rename'),
     re_path(r'^settings/', SettingView.as_view(), name='settings'),
     re_path(r'^activity/', ActivityView.as_view(), name='activity'),
-    re_path(r'^transactions/utility/', TransactionUtility.as_view(), name='transaction_utility'),
-    re_path(r'^transactions/', TransactionView.as_view(), name='transactions'),
     re_path(r'^promocode/', PromoCodeView.as_view(), name='promo_code'),
-    re_path(r'^exchange/affiliate/', ExchangeAffiliateView.as_view(), name='exchange_affiliate'),
     re_path(r'^exchange/', ExchangeView.as_view(), name='exchange'),
     re_path(r'^logout/', LogoutView.as_view(), name='logout'),
     re_path(r'^accounts/login/', LoginView.as_view(), name='login'),

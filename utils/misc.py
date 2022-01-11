@@ -34,7 +34,7 @@ sample_app_json = {
   "formation": {
     "worker": {
       "quantity": 1,
-      "size": "free"
+      "size": "free"  # For Testing, Will accept all types after working alpha release.
     }
   },
   "addons": [
