@@ -14,16 +14,10 @@ class Customer(models.Model):
     credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
     credits_spend = models.FloatField(default=0)
-    coins = models.IntegerField(default=0)
-    coins_redeemed = models.IntegerField(default=0)
     banned = models.BooleanField(default=False)
     applied_offers = models.ManyToManyField("Offer", blank=True)
     creation_date = models.DateTimeField(null=True, blank=True)
     joined_server = models.BooleanField(default=False)
-    referrer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="affiliate")
-    affiliate_commission = models.FloatField(default=0)
-    affiliate_commission_spent = models.FloatField(default=0)
-    first_order_amount = models.FloatField(default=0)
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -236,9 +230,6 @@ class Setting(models.Model):
     new_offers_alert = models.BooleanField(default=False)
     display_terminated_apps = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=False)
-    affiliate = models.BooleanField(default=False)
-    dark_mode = models.BooleanField(default=False)
-    auto_dark_mode = models.BooleanField(default=False)
 
 
 def upload_location(instance, filename):
