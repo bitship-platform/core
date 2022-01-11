@@ -1,4 +1,3 @@
-import os
 import json
 from datetime import datetime, timezone
 from ipware import get_client_ip
