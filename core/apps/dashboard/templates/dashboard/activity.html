@@ -8,14 +8,14 @@
 {% block content %}
 
     <!-- Header -->
-    <div class="header {% if request.user.customer.dark_mode %}bg-default{% else %}bg-gradient-darker{% endif %} pb-8 pt-5 pt-md-8">
+    <div class="header bg-gradient-darker pb-8 pt-5 pt-md-8">
     </div>
 
     <div class="container-fluid mt--7">
       <!-- Table -->
       <div class="row">
         <div class="col-xl-12 mb-5 mb-xl-0">
-          <div class="card shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
+          <div class="card shadow">
             <div class="card-header bg-transparent border-0">
               <div class="row align-items-center">
                 <div class="col">
@@ -25,8 +25,8 @@
             </div>
             <div class="table-responsive">
               <!-- Projects table -->
-              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}text-muted{% endif %}">
-                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
+              <table class="table align-items-center table-flush">
+                <thead class="thread-light">
                   <tr>
                     <th scope="col">Order id</th>
                     <th scope="col">Amount</th>
@@ -57,72 +57,6 @@
                     </td>
                     <td>
                         <i class="fas {{ order.status }} mr-3"></i>{{ order.get_status_display }}
-                    </td>
-                  </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xl-12 mb-5 mb-xl-0 mt-5">
-          <div class="card shadow {% if request.user.customer.dark_mode %}bg-gradient-dark{% endif %}">
-            <div class="card-header bg-transparent border-0">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h3 class="mb-0">Your transactions</h3>
-                </div>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <!-- Projects table -->
-              <table class="table align-items-center table-flush {% if request.user.customer.dark_mode %}text-muted{% endif %}">
-                <thead class="{% if request.user.customer.dark_mode %}thread-dark{% else %}thread-light{% endif %}">
-                  <tr>
-                    <th scope="col">Transaction id</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Recipient/Patron</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for transaction in request.user.customer.get_transactions %}
-                  <tr>
-                    <td>
-{#                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ transaction.id }}</b>#}
-                        <a href="#!" data-toggle="tooltip" data-placement="bottom" title="Copy transaction id" transaction_id="{{ transaction.id }}" class="copyTransactionID"><i class="far fa-clone fa-lg"></i></a>
-                    </td>
-                    <th scope="row">
-                      {% if transaction.recipient  == request.user.customer %}
-                      <i class="fas fa-plus-square text-green mr-3"></i> ${{ transaction.amount }}
-                      {% else %}
-                     <i class="fas fa-minus-square text-red mr-3"></i> ${{ transaction.amount }}
-                      {% endif %}
-                    </th>
-                    <td>
-                      <div class="avatar-group">
-                        {% if transaction.recipient  == request.user.customer %}
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ transaction.patron.user.username }}">
-                          <img alt="{{ transaction.patron.first_name }}" src="{{ transaction.patron.get_avatar_url }}" class="rounded-circle">
-                        </a>{{ transaction.patron.user.first_name }} #{{ transaction.patron.tag }}
-                       {% else %}
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="{{ transaction.recipient.user.username }}">
-                          <img alt="{{ transaction.recipient.first_name }}" src="{{ transaction.recipient.get_avatar_url }}" class="rounded-circle">
-                        </a>{{ transaction.recipient.user.first_name }} #{{ transaction.recipient.tag }}
-                        {% endif %}
-                      </div>
-                    </td>
-                    <td>
-                      {{ transaction.time }}
-                    </td>
-                    <td>
-                      {{ transaction.msg }}
-                    </td>
-                    <td>
-                        <i class="fas {{ transaction.status }} mr-3"></i>{{ transaction.get_status_display }}
                     </td>
                   </tr>
                 {% endfor %}
