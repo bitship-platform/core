@@ -14,7 +14,7 @@ LOCAL_DEVELOPMENT = config("LOCAL_DEVELOPMENT", default=False, cast=bool)
 if LOCAL_DEVELOPMENT:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = [".christcs.in"]
+    ALLOWED_HOSTS = [".bitship.com"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -157,6 +157,6 @@ BPD_SECRET = config("BPD_SECRET")
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'novanodeshost@gmail.com'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_TOKEN')
 EMAIL_USE_TLS = True

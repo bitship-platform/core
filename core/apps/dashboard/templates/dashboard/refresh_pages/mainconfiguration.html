@@ -2,7 +2,7 @@
 
 <label class="my-1 mr-2" for="appMainSelect">Select main file</label>
 <div class="input-group input-group-sm mb-3">
-<select class="custom-select custom-select-sm my-1 mr-sm-2 {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="appMainSelect" name="main_executable" required>
+<select class="custom-select custom-select-sm my-1 mr-sm-2" id="appMainSelect" name="main_executable" required>
 {% for file in app.primary_files %}
     <option value="{{ file.pk }}">{{ file.name }}</option>
 {% endfor %}
@@ -16,7 +16,7 @@
 
 <label class="my-1 mr-2" for="appStartSelect">Select start file</label>
 <div class="input-group input-group-sm mb-3">
-<select class="custom-select custom-select-sm my-1 mr-sm-2 {% if request.user.customer.dark_mode %}bg-gray text-darker{% endif %}" id="appStartSelect" name="start_script" required>
+<select class="custom-select custom-select-sm my-1 mr-sm-2" id="appStartSelect" name="start_script" required>
 {% for file in app.primary_files %}
     <option value="{{ file.pk }}">{{ file.name }}</option>
 {% endfor %}

@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
-    PaypalTransaction, media_access, ActivityView, HelpView, AdminLoginView
+    PaypalTransaction, media_access, ActivityView, HelpView, AdminLoginView, RedirectLoginView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, set_app_config
 from .feature_view import PromoCodeView
@@ -8,7 +8,7 @@ from .feature_view import PromoCodeView
 
 urlpatterns = [
 
-    path('', LoginView.as_view(), name='home'),
+    path('', RedirectLoginView.as_view(), name='redirect'),
     path('login/', LoginView.as_view()),
     re_path(r'^admin/login/', AdminLoginView.as_view(), name="admin_login"),
     re_path(r'^panel/', DashView.as_view(), name="panel"),

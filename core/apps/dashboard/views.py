@@ -62,6 +62,12 @@ class HelpView(View):
         return render(request, self.template)
 
 
+class RedirectLoginView(View):
+
+    def get(self, request):
+        return redirect(to=oauth.discord_login_url)
+
+
 class LoginView(View):
     template_name = "dashboard/accounts/user_login.html"
     context = {}
