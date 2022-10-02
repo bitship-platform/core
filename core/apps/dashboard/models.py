@@ -6,18 +6,14 @@ from django.contrib.auth.models import User
 from utils.misc import PythonAppConfig, NodeAppConfig
 
 
-class Customer(models.Model):
+class Member(models.Model):
     id = models.BigIntegerField(primary_key=True)
     tag = models.CharField(max_length=5, default="0000")
     avatar = models.CharField(max_length=50, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
-    credits = models.FloatField(default=0)
     verified = models.BooleanField(default=False)
-    credits_spend = models.FloatField(default=0)
     banned = models.BooleanField(default=False)
-    applied_offers = models.ManyToManyField("Offer", blank=True)
     creation_date = models.DateTimeField(null=True, blank=True)
-    joined_server = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.avatar is not None:
@@ -31,12 +27,10 @@ class Customer(models.Model):
     def reset(self):
         self.coins = 0
         self.coins_redeemed = 0
-        self.credits = 0
         self.credits_spend = 0
         self.app_set.all().delete()
         self.order.all().delete()
         self.verified = False
-        self.address.reset()
         self.save()
 
     @property
@@ -46,10 +40,6 @@ class Customer(models.Model):
     @property
     def terminated_apps(self):
         return self.settings.display_terminated_apps
-
-    @property
-    def rounded_credits(self):
-        return round(self.credits, 2)
 
     @property
     def get_orders(self):
@@ -85,7 +75,7 @@ class App(models.Model):
     ]
     name = models.CharField(max_length=50, default="nova-app")
     unique_id = models.UUIDField(default=uuid.uuid4, null=True)
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Member, on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_CHOICES, default="STOPPED", max_length=20)
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
     disk = models.IntegerField(default=0, null=True)
@@ -202,32 +192,12 @@ class App(models.Model):
         return color_cls
 
 
-class Address(models.Model):
-    customer = models.OneToOneField(Customer, primary_key=True, on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=50, null=True)
-    lastname = models.CharField(max_length=50, null=True)
-    location = models.TextField(null=True)
-    city = models.CharField(max_length=100, null=True)
-    country = models.CharField(max_length=100, null=True)
-    pincode = models.IntegerField(null=True)
-
-    def reset(self):
-        self.firstname = None
-        self.lastname = None
-        self.location = None
-        self.city = None
-        self.country = None
-        self.pincode = None
-        self.save()
-
-
 class Setting(models.Model):
-    customer = models.OneToOneField(Customer, primary_key=True, on_delete=models.CASCADE, related_name="settings")
+    customer = models.OneToOneField(Member, primary_key=True, on_delete=models.CASCADE, related_name="settings")
     email_notification = models.BooleanField(default=False)
     app_status_alert = models.BooleanField(default=False)
     down_time_alert = models.BooleanField(default=False)
     maintenance_break_alert = models.BooleanField(default=False)
-    new_offers_alert = models.BooleanField(default=False)
     display_terminated_apps = models.BooleanField(default=False)
     beta_tester = models.BooleanField(default=False)
 
@@ -242,17 +212,11 @@ def upload_location(instance, filename):
     return f"{instance.folder.owner.id}" + path + f"/{filename}"
 
 
-class Referral(models.Model):
-    affiliate = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    ip = models.CharField(max_length=50)
-    creation_time = models.DateTimeField(auto_now_add=True)
-
-
 class Folder(models.Model):
     """
     Emulates an app folder
     """
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True)
     app = models.OneToOneField(App, on_delete=models.CASCADE, null=True, blank=True, related_name="folder")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
@@ -320,7 +284,7 @@ class Order(models.Model):
         ("fa-check-circle text-success", "Success"),
     )
     id = models.CharField(default=uuid.uuid4, max_length=50, primary_key=True)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
+    customer = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name="order")
     transaction_amount = models.FloatField(default=0)
     payer_id = models.CharField(max_length=20, blank=True, null=True)
     payer_email = models.CharField(max_length=30, blank=True, null=True)
@@ -339,26 +303,3 @@ class Order(models.Model):
 def current_time():
     return datetime.now(timezone.utc)
 
-
-class Offer(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    name = models.CharField(max_length=30)
-    description = models.TextField(blank=True, null=True)
-    creation_date = models.DateTimeField(auto_now_add=True)
-    expiry_date = models.DateTimeField()
-    coin_reward = models.IntegerField(default=0)
-    credit_reward = models.FloatField(default=0.0)
-
-    @property
-    def expired(self):
-        return datetime.now(timezone.utc) > self.expiry_date
-
-
-class Promo(models.Model):
-    code = models.CharField(max_length=20, primary_key=True)
-    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    expiry_date = models.DateTimeField()
-
-    @property
-    def expired(self):
-        return datetime.now(timezone.utc) > self.expiry_date

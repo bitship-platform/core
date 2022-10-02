@@ -11,7 +11,7 @@ class AppStatusSerializer(serializers.ModelSerializer):
 class CustomerDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ("id", "credits", "coins", "verified", "running_apps", "joined_server", "creation_date")
+        fields = ("id",  "coins", "verified", "running_apps", "joined_server", "creation_date")
 
 
 class CustomerPutSerializer(serializers.ModelSerializer):

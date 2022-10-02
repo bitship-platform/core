@@ -16,7 +16,7 @@ from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 from utils.oauth import Oauth
 from utils.hashing import Hasher
 from utils.mixins import ResponseMixin
-from .models import App, File, Order, Customer, Referral
+from .models import App, File, Order, Member
 from utils.operations import update_customer, create_customer
 from utils.handlers import AlertHandler as Alert, PaypalHandler, WebhookHandler
 
@@ -78,18 +78,6 @@ class LoginView(View):
 
     def get(self, request):
         code = request.GET.get('code', None)
-        referrer_id = request.GET.get('refID', None)
-        if referrer_id:
-            client_ip, is_routable = get_client_ip(request)
-            if is_routable:
-                try:
-                    referrer = Customer.objects.get(id=referrer_id)
-                    if referrer.settings.affiliate:
-                        if not Referral.objects.filter(ip=client_ip).exists():
-                            Referral.objects.create(affiliate=referrer,
-                                                    ip=client_ip)
-                except Customer.DoesNotExist:
-                    pass
         self.email = None
         msg = None
         if code is not None:
@@ -114,18 +102,8 @@ class LoginView(View):
                             }
                         }
                     )
-                    client_ip, is_routable = get_client_ip(request)
-                    if is_routable:
-                        try:
-                            ref_obj = Referral.objects.get(ip=client_ip)
-                            customer.referrer = ref_obj.affiliate.user
-                            customer.save()
-                            ref_obj.delete()
-                        except Referral.DoesNotExist:
-                            pass
                     login(request, customer.user)
                     return redirect("/panel")
-                    # return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
                 elif user.customer.banned:
                     msg = "Your account has been banned. Contact admin if you think this was a mistake."
                     webhook.send_embed(

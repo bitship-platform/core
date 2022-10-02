@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from utils.mixins import ResponseMixin
-from core.apps.dashboard.models import App, Customer
+from core.apps.dashboard.models import App, Member
 from .serializers import CustomerDataSerializer, CustomerPutSerializer, AppDataSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -13,7 +13,7 @@ class PingView(APIView, ResponseMixin):
 
 
 class CustomerDataView(APIView, ResponseMixin):
-    model = Customer
+    model = Member
     serializer = CustomerDataSerializer
     permission_classes = [DjangoModelPermissions]
 
