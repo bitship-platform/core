@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from utils.mixins import ResponseMixin
 from core.apps.dashboard.models import App, Member
-from .serializers import CustomerDataSerializer, CustomerPutSerializer, AppDataSerializer
+from .serializers import MemberDataSerializer, MemberPutSerializer, AppDataSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import DjangoModelPermissions
@@ -14,7 +14,7 @@ class PingView(APIView, ResponseMixin):
 
 class CustomerDataView(APIView, ResponseMixin):
     model = Member
-    serializer = CustomerDataSerializer
+    serializer = MemberDataSerializer
     permission_classes = [DjangoModelPermissions]
 
     def get_queryset(self):
@@ -30,7 +30,7 @@ class CustomerDataView(APIView, ResponseMixin):
 
     def put(self, request, c_id):
         customer = get_object_or_404(self.model, id=c_id)
-        serializer = CustomerPutSerializer(customer, data=request.data)
+        serializer = MemberPutSerializer(customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=200)

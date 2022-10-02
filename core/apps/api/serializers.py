@@ -1,22 +1,16 @@
 from rest_framework import serializers
-from nova_dash.models import App, Customer
+from core.apps.dashboard.models import App, Member
 
 
-class AppStatusSerializer(serializers.ModelSerializer):
+class MemberDataSerializer(serializers.ModelSerializer):
     class Meta:
-        model = App
-        fields = ("cpu", "ram", "disk", "network", "glacier")
+        model = Member
+        fields = ("id",  "verified", "running_apps", "joined_server", "creation_date")
 
 
-class CustomerDataSerializer(serializers.ModelSerializer):
+class MemberPutSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Customer
-        fields = ("id",  "coins", "verified", "running_apps", "joined_server", "creation_date")
-
-
-class CustomerPutSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
+        model = Member
         fields = ("banned", "verified", "joined_server")
 
 
