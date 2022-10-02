@@ -126,8 +126,7 @@
                   <tr>
                     <th scope="row">
                       <div class="media align-items-center">
-                        <a {% if not app.terminated %} href="/manage/{{ app.pk }}" {% endif %} class="avatar rounded-circle mr-3 bg-dark">
-                          <img alt="Image placeholder" src="{{ app.stack }}">
+                        <a {% if not app.terminated %} href="/manage/{{ app.pk }}" {% endif %} class="bg-dark">
                         </a>
                         <div class="media-body">
                           <a {% if not app.terminated %} href="/manage/{{ app.pk }}" {% endif %}>

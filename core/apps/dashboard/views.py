@@ -65,6 +65,8 @@ class HelpView(View):
 class RedirectLoginView(View):
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect(to="/panel")
         return redirect(to=oauth.discord_login_url)
 
 
