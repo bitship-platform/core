@@ -12,7 +12,7 @@ class PingView(APIView, ResponseMixin):
         return self.json_response_200()
 
 
-class CustomerDataView(APIView, ResponseMixin):
+class MemberDataView(APIView, ResponseMixin):
     model = Member
     serializer = MemberDataSerializer
     permission_classes = [DjangoModelPermissions]
@@ -37,7 +37,7 @@ class CustomerDataView(APIView, ResponseMixin):
         return self.json_response_400()
 
 
-class CustomerAppView(APIView, ResponseMixin):
+class MemberAppView(APIView, ResponseMixin):
     model = App
     serializer = AppDataSerializer
 
@@ -47,4 +47,3 @@ class CustomerAppView(APIView, ResponseMixin):
     def get(self, request, c_id):
         serializer = self.serializer(self.model.objects.filter(owner__id=c_id), many=True)
         return Response(serializer.data, status=200)
-
