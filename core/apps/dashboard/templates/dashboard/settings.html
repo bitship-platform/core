@@ -246,19 +246,6 @@
                             <div class="card-block">
                                 <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Personal Information</h6>
                                 <div class="row">
-                                {% if request.user.customer.address.firstname %}
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Name</p>
-                                        <h6 class="text-muted f-w-400">{{ request.user.customer.address.firstname }}  {% if request.user.customer.address.lastname %}{{ request.user.customer.address.lastname }}{% endif %}</h6>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Billing Address</p>
-                                        <h6 class="text-muted f-w-400">
-                                        {{ request.user.customer.address.location }}<br>{{ request.user.customer.address.city }}, {{ request.user.customer.address.country }}<br>
-                                        {% if request.user.customer.address.pincode %}{{ request.user.customer.address.pincode }}{% endif %}
-                                        </h6>
-                                    </div>
-                                {% endif %}
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Email</p>
                                         <h6 class="text-muted f-w-400">{{ request.user.email }}</h6>
@@ -277,14 +264,6 @@
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Last Login</p>
                                         <h6 class="text-muted f-w-400">{{ request.user.last_login }}</h6>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Credits</p>
-                                        <h6 class="text-muted f-w-400">${{ request.user.customer.rounded_credits }}</h6>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Credits spend</p>
-                                        <h6 class="text-muted f-w-400">${{ request.user.customer.credits_spend }}</h6>
                                     </div>
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Danger zone</h6>
