@@ -2,10 +2,11 @@ import json
 
 from django.views import View
 from django.conf import settings
+from rest_framework import status
+from rest_framework.response import Response
 from django.http import HttpResponse, QueryDict, JsonResponse
 
 from .models import App, File
-from utils.mixins import ResponseMixin
 from utils.misc import sample_app_json
 from utils.operations import make_tarfile, create_backup, set_system_files
 
@@ -48,12 +49,12 @@ def set_app_config(request):
         return JsonResponse({"message": "Success"}, status=200)
 
 
-class TarballDownload(View, ResponseMixin):
+class TarballDownload(View):
     def get(self, request, uu_id):
         try:
             app = App.objects.get(unique_id=uu_id)
         except App.DoesNotExist:
-            return self.json_response_404()
+            return Response(status=status.HTTP_404_NOT_FOUND)
         path = settings.MEDIA_ROOT + f'/{app.owner.id}/{app.name}'
         response = HttpResponse()
         make_tarfile(f"{app.unique_id}.tar.gz", path)
@@ -62,4 +63,3 @@ class TarballDownload(View, ResponseMixin):
         response['X-Accel-Redirect'] = "/protected/media/" + f"{app.unique_id}.tar.gz"
         response['Content-Disposition'] = f"attachment; filename={app.unique_id}.tar.gz"
         return response
-

@@ -1,5 +1,5 @@
+from rest_framework import status
 from rest_framework.views import APIView
-from utils.mixins import ResponseMixin
 from core.apps.dashboard.models import App, Member
 from .serializers import MemberDataSerializer, MemberPutSerializer, AppDataSerializer
 from rest_framework.response import Response
@@ -7,12 +7,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import DjangoModelPermissions
 
 
-class PingView(APIView, ResponseMixin):
+class PingView(APIView):
     def get(self, request):
-        return self.json_response_200()
+        return Response(status=status.HTTP_200_OK)
 
 
-class MemberDataView(APIView, ResponseMixin):
+class MemberDataView(APIView):
     model = Member
     serializer = MemberDataSerializer
     permission_classes = [DjangoModelPermissions]
@@ -34,10 +34,10 @@ class MemberDataView(APIView, ResponseMixin):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=200)
-        return self.json_response_400()
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class MemberAppView(APIView, ResponseMixin):
+class MemberAppView(APIView):
     model = App
     serializer = AppDataSerializer
 

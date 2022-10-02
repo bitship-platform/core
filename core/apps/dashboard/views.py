@@ -1,13 +1,11 @@
-import json
-from datetime import datetime, timezone
-from ipware import get_client_ip
-
 from django.views import View
 from django.conf import settings
+from rest_framework import status
 from django.core.files import File
 from django.db import DatabaseError
 from django.views.generic import ListView
 from django.contrib.auth.models import User
+from rest_framework.response import Response
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
@@ -15,8 +13,7 @@ from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 
 from utils.oauth import Oauth
 from utils.hashing import Hasher
-from utils.mixins import ResponseMixin
-from .models import App, File, Order, Member
+from .models import App, File
 from utils.operations import update_customer, create_customer
 from utils.handlers import AlertHandler as Alert, PaypalHandler, WebhookHandler
 
@@ -217,7 +214,7 @@ class TeamsView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
 
-class SettingView(LoginRequiredMixin, View, ResponseMixin):
+class SettingView(LoginRequiredMixin, View):
     template_name = "dashboard/settings.html"
 
     def get(self, request):
@@ -228,30 +225,30 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
         try:
             option = list(data)[0]
         except IndexError:
-            return self.json_response_500()
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        status = data.get(option, None)
-        if status in ["true", "false"]:
-            if status == "true":
+        status_resp = data.get(option, None)
+        if status_resp in ["true", "false"]:
+            if status_resp == "true":
                 setattr(request.user.customer.settings, option, True)
-            elif status == "false":
+            elif status_resp == "false":
                 setattr(request.user.customer.settings, option, False)
             try:
                 request.user.customer.settings.save()
             except DatabaseError:
-                return self.json_response_500()
-            return self.json_response_200()
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(status=status.HTTP_200_OK)
         else:
-            return self.json_response_500()
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request):
         user = User.objects.get(username=request.user.username)
         user.customer.reset()
         logout(request)
-        return self.json_response_200()
+        return Response(status=status.HTTP_200_OK)
 
 
-class ActivityView(LoginRequiredMixin, View, ResponseMixin):
+class ActivityView(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, "dashboard/activity.html")
