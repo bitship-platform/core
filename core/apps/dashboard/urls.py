@@ -3,7 +3,6 @@ from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
     PaypalTransaction, media_access, ActivityView, HelpView, AdminLoginView, RedirectLoginView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, set_app_config
-from .feature_view import PromoCodeView
 
 
 urlpatterns = [
@@ -21,7 +20,6 @@ urlpatterns = [
     re_path(r'^manage/', ManageView.as_view(), name='rename'),
     re_path(r'^settings/', SettingView.as_view(), name='settings'),
     re_path(r'^activity/', ActivityView.as_view(), name='activity'),
-    re_path(r'^promocode/', PromoCodeView.as_view(), name='promo_code'),
     re_path(r'^logout/', LogoutView.as_view(), name='logout'),
     re_path(r'^accounts/login/', LoginView.as_view(), name='login'),
     re_path(r'^media/(?P<path>.*)', media_access, name='media'),

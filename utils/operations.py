@@ -12,7 +12,7 @@ from django.utils.timezone import make_aware
 from django.db.models.signals import post_save, post_delete
 
 from utils.handlers import BPDAPIHandler
-from core.apps.dashboard.models import Customer, Address, Folder, App, File, Setting
+from core.apps.dashboard.models import Member, Folder, App, File, Setting
 
 bpd_api = BPDAPIHandler(token=settings.BPD_SECRET)
 
@@ -73,13 +73,11 @@ def create_customer(user_json: dict, password: str):
                                     email=user_json["email"],
                                     first_name=user_json["username"]
                                     )
-    customer = Customer.objects.create(id=user_id,
-                                       user=user,
-                                       credits=0,
-                                       avatar=user_json["avatar"],
-                                       tag=user_json["discriminator"],
-                                       creation_date=make_aware(discord_id_to_time(int(user_id))))
-    Address.objects.create(customer=customer)
+    customer = Member.objects.create(id=user_id,
+                                     user=user,
+                                     avatar=user_json["avatar"],
+                                     tag=user_json["discriminator"],
+                                     creation_date=make_aware(discord_id_to_time(int(user_id))))
     Setting.objects.create(customer=customer)
     return customer
 
@@ -87,7 +85,7 @@ def create_customer(user_json: dict, password: str):
 def update_customer(user_json: dict):
     user_id = user_json["id"]
     try:
-        user = Customer.objects.get(id=user_id)
+        user = Member.objects.get(id=user_id)
         user.avatar = user_json["avatar"]
         user.tag = str(user_json["discriminator"])
         user.user.first_name = user_json["username"]
