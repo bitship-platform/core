@@ -1,6 +1,6 @@
 from django.urls import path, re_path
-from .views import DashView, BillingView, LoginView, LogoutView, SettingView,\
-    PaypalTransaction, media_access, ActivityView, HelpView, AdminLoginView, RedirectLoginView
+from .views import DashView, TeamsView, LoginView, LogoutView, SettingView,\
+    media_access, ActivityView, HelpView, AdminLoginView, RedirectLoginView
 from .app_views import ManageView, AppManageView, AppLogView, AppConsoleView, AppManagementView
 from .utility_view import TarballDownload, set_app_config
 
@@ -12,8 +12,7 @@ urlpatterns = [
     re_path(r'^admin/login/', AdminLoginView.as_view(), name="admin_login"),
     re_path(r'^panel/', DashView.as_view(), name="panel"),
     re_path(r'^how-to-deploy/', HelpView.as_view(), name="help_deploy"),
-    re_path(r'^billing/process/', PaypalTransaction.as_view(), name='billing_process'),
-    re_path(r'^teams/', BillingView.as_view(), name='teams'),
+    re_path(r'^teams/', TeamsView.as_view(), name='teams'),
     re_path(r'^manage/(?P<app_id>[0-9]+)/logs/', AppConsoleView.as_view(), name='app_log'),
     re_path(r'^manage/(?P<app_id>[0-9]+)/(?P<folder_id>.+)', ManageView.as_view(), name='browse'),
     re_path(r'^manage/(?P<app_id>[0-9]+)', ManageView.as_view(), name='manage'),
