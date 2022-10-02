@@ -65,6 +65,8 @@ class HelpView(View):
 class RedirectLoginView(View):
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect(to="/panel")
         return redirect(to=oauth.discord_login_url)
 
 
@@ -207,8 +209,8 @@ class DashView(LoginRequiredMixin, ListView, View):
         return redirect("/")
 
 
-class BillingView(LoginRequiredMixin, View):
-    template_name = "dashboard/billing.html"
+class TeamsView(LoginRequiredMixin, View):
+    template_name = "dashboard/teams.html"
     context = {}
 
     def get(self, request):
@@ -249,59 +251,7 @@ class SettingView(LoginRequiredMixin, View, ResponseMixin):
         return self.json_response_200()
 
 
-class PaypalTransaction(LoginRequiredMixin, View, ResponseMixin):
-
-    def post(self, request):
-        data = json.loads(request.body)
-        order_id = data['details']['id']
-        details = paypal.get_order_details(order_id)
-        status = details["purchase_units"][0]["payments"]["captures"][0]["status"]
-        amount = details["purchase_units"][0]["payments"]["captures"][0]["amount"]["value"]
-        create_time = details["create_time"]
-        update_time = details["update_time"]
-        order_id = details["id"]
-        payer_id = details["payer"]["payer_id"]
-        email = details["payer"]["email_address"]
-        customer = request.user.customer
-        if status == "COMPLETED":
-            status = "fa-check-circle text-success"
-            customer.credits += float(amount)
-            if not customer.verified:
-                customer.verified = True
-            customer.save()
-        elif status == "PAYER_ACTION_REQUIRED":
-            status = "fa-clock text-warning"
-        else:
-            status = "fa-times-circle text-danger"
-        if not Order.objects.filter(id=order_id).exists():
-            Order.objects.create(id=order_id,
-                                 payer_email=email,
-                                 payer_id=payer_id,
-                                 create_time=create_time,
-                                 update_time=update_time,
-                                 status=status,
-                                 customer=customer,
-                                 transaction_amount=amount,
-                                 service="Credit Recharge",
-                                 description=f"Paypal: {payer_id}",
-                                 credit=True)
-        if float(amount) >= 12:
-            Order.objects.create(create_time=datetime.now(timezone.utc),
-                                 update_time=datetime.now(timezone.utc),
-                                 status="fa-check-circle text-success",
-                                 customer=customer,
-                                 transaction_amount=2.4,
-                                 service="Annual Subscription Bonus",
-                                 credit=True)
-            customer.credits += 2.4
-            customer.save()
-        else:
-            return self.json_response_401()
-        return self.json_response_200()
-
-
 class ActivityView(LoginRequiredMixin, View, ResponseMixin):
 
     def get(self, request):
         return render(request, "dashboard/activity.html")
-

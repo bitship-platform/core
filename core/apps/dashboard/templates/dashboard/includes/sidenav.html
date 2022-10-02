@@ -7,7 +7,7 @@
       </button>
       <!-- Brand -->
       <a class="navbar-brand pt-0" href="/">
-        <img src="/static/dashboard/img/brand/nn_v_black.png" class="navbar-brand-img" alt="...">
+{#        <img src="/static/dashboard/img/brand/nn_v_black.png" class="navbar-brand-img" alt="...">#}
       </a>
       <!-- User -->
       <ul class="nav align-items-center d-md-none">
@@ -85,23 +85,16 @@
           <a class=" nav-link" href="{% url 'panel' %}"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
             </a>
           </li>
-          <li class="nav-item {% if 'billing' in segment %} active {% endif %}">
-            <a class="nav-link " href="{% url 'billing' %}">
-              <i class="fa fa-credit-card text-yellow"></i> Billing
+          <li class="nav-item {% if 'teams' in segment %} active {% endif %}">
+            <a class="nav-link " href="{% url 'teams' %}">
+              <i class="fa fa-users text-yellow"></i> Teams
             </a>
           </li>
           <li class="nav-item {% if 'transactions' in segment %} active {% endif %}">
             <a class="nav-link " href="{% url 'activity' %}">
-              <i class="fa fa-receipt text-teal"></i> Transactions
+              <i class="fa fa-receipt text-teal"></i> Activity
             </a>
           </li>
-        {% if request.user.customer.settings.affiliate %}
-          <li class="nav-item {% if 'affiliates' in segment %} active {% endif %}">
-            <a class="nav-link " href="{% url 'affiliates' %}">
-              <i class="fa fa-sitemap text-gray-dark"></i> Affiliate Panel
-            </a>
-          </li>
-        {% endif %}
         </ul>
         <!-- Divider -->
         <hr class="my-3">

@@ -2,7 +2,7 @@ import json
 
 from django.views import View
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseForbidden, QueryDict, JsonResponse
+from django.http import HttpResponse, QueryDict, JsonResponse
 
 from .models import App, File
 from utils.mixins import ResponseMixin
