@@ -6,14 +6,14 @@ from django.db import DatabaseError
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from rest_framework.response import Response
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 
 from utils.oauth import Oauth
 from utils.hashing import Hasher
-from .models import App, File
+from .models import App, File, Team
 from utils.operations import update_customer, create_customer
 from utils.handlers import AlertHandler as Alert, PaypalHandler, WebhookHandler
 
@@ -34,7 +34,7 @@ def media_access(request, path):
             access_granted = True
         else:
             file = File.objects.filter(item__exact=path)[0]
-            if file.folder.owner == request.user.customer:
+            if file.folder.owner == request.user.member:
                 access_granted = True
     if access_granted:
         response = HttpResponse()
@@ -170,21 +170,21 @@ class DashView(LoginRequiredMixin, ListView, View):
     context = {}
 
     def get_queryset(self):
-        if self.request.user.customer.terminated_apps:
-            queryset = App.objects.filter(owner=self.request.user.customer)
+        if self.request.user.member.terminated_apps:
+            queryset = App.objects.filter(owner=self.request.user.member)
         else:
-            queryset = App.objects.filter(owner=self.request.user.customer, status__in=list(status_cache.values())[:-1])
+            queryset = App.objects.filter(owner=self.request.user.member, status__in=list(status_cache.values())[:-1])
         ordered_queryset = sorted(queryset, key=lambda query: self.order.get(query.get_status_display(), 0))
         return ordered_queryset
 
     def post(self, request):
-        if not request.user.customer.banned:
+        if not request.user.member.banned:
             try:
                 name = request.POST.get("name", None)
                 if name:
                     if " " in name:
                         name = name.replace(" ", "-")
-                    queryset = App.objects.filter(name=name, owner=request.user.customer)
+                    queryset = App.objects.filter(name=name, owner=request.user.member)
                     if queryset.exists():
                         for app in queryset:
                             if app.status != "bg-dark":
@@ -193,7 +193,7 @@ class DashView(LoginRequiredMixin, ListView, View):
                                 self.context["alert"] = Alert("Error", "App by that name already exists.")
                                 return render(request, "dashboard/manage.html", self.context)
                     app = App.objects.create(name=name,
-                                             owner=request.user.customer,
+                                             owner=request.user.member,
                                              stack=icon_cache.get(request.POST.get("stack")),
                                              status=status_cache.get("Not Started")
                                              )
@@ -208,9 +208,24 @@ class DashView(LoginRequiredMixin, ListView, View):
 
 class TeamsView(LoginRequiredMixin, View):
     template_name = "dashboard/teams.html"
+    template_single = "dashboard/teams.html"
     context = {}
+    model = Team
 
-    def get(self, request):
+    def get(self, request, team_name=None):
+        if team_name is not None:
+            team = get_object_or_404(self.model, name=team_name)
+            return render(request, self.template_single, {"team": team})
+        teams = request.user.member.teams
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+    def put(self, request, team_name):
+        return render(request, self.template_name)
+
+    def delete(self, request, team_name):
         return render(request, self.template_name)
 
 
@@ -230,11 +245,11 @@ class SettingView(LoginRequiredMixin, View):
         status_resp = data.get(option, None)
         if status_resp in ["true", "false"]:
             if status_resp == "true":
-                setattr(request.user.customer.settings, option, True)
+                setattr(request.user.member.settings, option, True)
             elif status_resp == "false":
-                setattr(request.user.customer.settings, option, False)
+                setattr(request.user.member.settings, option, False)
             try:
-                request.user.customer.settings.save()
+                request.user.member.settings.save()
             except DatabaseError:
                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response(status=status.HTTP_200_OK)

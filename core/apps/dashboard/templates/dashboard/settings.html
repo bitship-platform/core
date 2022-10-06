@@ -48,11 +48,11 @@
                             <dl class="row">
                               <dt class="col-sm-3">Display terminated apps</dt>
                               <dd class="col-sm-9">
-                                <input type="checkbox" id="terminated_apps" {% if request.user.customer.terminated_apps %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="terminated_apps" {% if request.user.member.terminated_apps %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dt class="col-sm-3">Beta features</dt>
                               <dd class="col-sm-9">
-                                <input type="checkbox" id="beta_features" {% if request.user.customer.settings.beta_tester %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="beta_features" {% if request.user.member.settings.beta_tester %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                             </dl>
                           </div>
@@ -65,27 +65,27 @@
 
                               <dt class="col-sm-3">Email notifications</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" id="email_alert_option" {% if request.user.customer.settings.email_notification %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="email_alert_option" {% if request.user.member.settings.email_notification %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               <dd class="col-sm-7">
                                   <p class="text-darker">Notification and alerts will be sent to your mail address.</p>
                               </dd>
                               <dt class="col-sm-3">App status alerts</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" id="app_status_option" {% if request.user.customer.settings.app_status_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="app_status_option" {% if request.user.member.settings.app_status_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p class="text-darker">Alerts will be pushed when app status changes</p>
                               </dd>
                               <dt class="col-sm-3">Down time alerts</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" id="down_time_option" {% if request.user.customer.settings.down_time_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="down_time_option" {% if request.user.member.settings.down_time_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p class="text-darker">You'll be notified of unexpected downtimes.</p>
                               </dd>
                               <dt class="col-sm-3">Maintenance break alerts</dt>
                               <dd class="col-sm-2">
-                                <input type="checkbox" id="maintenance_option" {% if request.user.customer.settings.maintenance_break_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
+                                <input type="checkbox" id="maintenance_option" {% if request.user.member.settings.maintenance_break_alert %}checked{% endif %} data-toggle="toggle" data-onstyle="info" data-offstyle="dark" data-size="xs">
                               </dd>
                               <dd class="col-sm-7">
                                   <p class="text-darker">You'll be notified of scheduled maintenance breaks.</p>
@@ -224,11 +224,11 @@
                     <div class="row m-l-0 m-r-0">
                         <div class="col-sm-4 bg-gradient-dark user-profile">
                             <div class="card-block text-center text-white">
-                                <div class="m-b-25"> <img src="{{ request.user.customer.get_avatar_url }}" class="img-radius" alt="User-Profile-Image"> </div>
+                                <div class="m-b-25"> <img src="{{ request.user.member.get_avatar_url }}" class="img-radius" alt="User-Profile-Image"> </div>
                                 <h6 class="f-w-600x text-white">
-                                {{ request.user.first_name }} #{{ request.user.customer.tag }}
+                                {{ request.user.first_name }} #{{ request.user.member.tag }}
                                 </h6>
-                                {% if request.user.customer.verified %}
+                                {% if request.user.member.verified %}
                                 <button class="btn-sm btn-outline-success" disabled>verified</button>
                                 {% else %}
                                     <button class="btn-sm btn-outline-danger" disabled>unverified</button>

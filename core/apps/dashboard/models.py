@@ -11,7 +11,7 @@ class Member(models.Model):
     id = models.BigIntegerField(primary_key=True)
     tag = models.CharField(max_length=5, default="0000")
     avatar = models.CharField(max_length=50, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="member")
     verified = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)
     creation_date = models.DateTimeField(null=True, blank=True)
@@ -96,7 +96,7 @@ class App(models.Model):
     ]
     name = models.CharField(max_length=50, default="nova-app")
     unique_id = models.UUIDField(default=uuid.uuid4, null=True)
-    owner = models.ForeignKey(Member, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     status = models.CharField(choices=STATUS_CHOICES, default="STOPPED", max_length=20)
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
     disk = models.IntegerField(default=0, null=True)
