@@ -299,27 +299,18 @@ class File(models.Model):
             return f"{mb_size}mb"
 
 
-class Order(models.Model):
-    ORDER_STATUS = (
+class Activity(models.Model):
+    ACTIVITY_STATUS = (
         ("fa-times-circle text-danger", "Failed"),
         ("fa-clock text-warning", "Pending"),
         ("fa-check-circle text-success", "Success"),
     )
     id = models.CharField(default=uuid.uuid4, max_length=50, primary_key=True)
-    customer = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name="order")
-    transaction_amount = models.FloatField(default=0)
-    payer_id = models.CharField(max_length=20, blank=True, null=True)
-    payer_email = models.CharField(max_length=30, blank=True, null=True)
+    member = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name="activity")
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, related_name="all_activity")
     create_time = models.DateTimeField(null=True)
-    update_time = models.DateTimeField(null=True)
-    status = models.CharField(max_length=30, choices=ORDER_STATUS)
-    service = models.CharField(max_length=30, blank=True, null=True)
+    status = models.CharField(max_length=30, choices=ACTIVITY_STATUS)
     description = models.TextField(blank=True, null=True)
-    credit = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"| Amount: {self.transaction_amount} | Service: {self.service}" \
-               f"| Desc: {self.description}"
 
 
 def current_time():

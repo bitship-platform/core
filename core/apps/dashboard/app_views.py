@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import QueryDict, JsonResponse, HttpResponse
 
 from utils.mixins import ResponseMixin
-from .models import App, Folder, File, Order
+from .models import App, Folder, File
 from utils.operations import remove_file_from_storage, remove_dir_from_storage, bpd_api
 
 
@@ -52,7 +52,6 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
                         if file.name in ["app.json", "Procfile", "runtime.txt", ".env"]:
-                            # ignoring system files
                             forbidden_file_type = True
                             continue
                         try:
@@ -205,7 +204,6 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 return JsonResponse({"message": "Something went wrong! please reconfigure your app and save."},
                                     status=500)
 
-        # Deploying the app and adding a billing plan if it doesn't have one
         if app.status == "bg-danger":
             bpd_api.manage(app_id=app_id, action="start")
         if app.last_deployment_timestamp is None:
