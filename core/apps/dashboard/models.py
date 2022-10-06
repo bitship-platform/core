@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from utils.misc import PythonAppConfig, NodeAppConfig
 
 
@@ -51,6 +52,26 @@ class Member(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} #{self.tag}"
+
+
+class Team(models.Model):
+    id = models.SlugField(auto_created=True, primary_key=True)
+    name = models.CharField(max_length=30)
+    created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="created_teams")
+    members = models.ManyToManyField(Member, related_name="teams")
+
+    @classmethod
+    def team_id_setter(cls, instance, **kwargs):
+        if not instance.id:
+            instance.link = slugify(instance.name)
+
+
+class TeamPrivilege(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    read = models.BooleanField(default=True)
+    edit = models.BooleanField(default=False)
+    manage = models.BooleanField(default=False)
 
 
 class App(models.Model):
