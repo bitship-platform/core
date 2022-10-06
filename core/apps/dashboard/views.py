@@ -236,10 +236,19 @@ class TeamsView(LoginRequiredMixin, View):
         return render(request, self.template_name, {"team": team})
 
     def put(self, request, team_name):
-        return render(request, self.template_name)
+        team = get_object_or_404(self.model, name=team_name)
+        if request.user.member.teamprivilege_set.get(team=team).admin:
+            team.name = team_name
+            team.save()
+            return render(request, self.template_name)
+        return Response(status.HTTP_401_UNAUTHORIZED)
 
     def delete(self, request, team_name):
-        return render(request, self.template_name)
+        team = get_object_or_404(self.model, name=team_name)
+        if request.user.member.teamprivilege_set.get(team=team).admin:
+            team.delete()
+            return Response(status.HTTP_204_NO_CONTENT)
+        return Response(status.HTTP_401_UNAUTHORIZED)
 
 
 class SettingView(LoginRequiredMixin, View):
