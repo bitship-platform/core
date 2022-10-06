@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import CustomerDataView, PingView, CustomerAppView
+from .views import MemberDataView, PingView, MemberAppView
 
 urlpatterns = [
-    path('customer/<int:c_id>/apps/', CustomerAppView.as_view(), name="customer_apps"),
-    path('customer/<int:c_id>/', CustomerDataView.as_view(), name="customer_data"),
-    path('customer/', CustomerDataView.as_view(), name="customer"),
+    path('member/<int:c_id>/apps/', MemberAppView.as_view(), name="customer_apps"),
+    path('member/<int:c_id>/', MemberDataView.as_view(), name="customer_data"),
+    path('member/', MemberDataView.as_view(), name="customer"),
     path('ping/', PingView.as_view(), name="ping"),
 ]

@@ -1,20 +1,20 @@
+from rest_framework import status
 from rest_framework.views import APIView
-from utils.mixins import ResponseMixin
 from core.apps.dashboard.models import App, Member
-from .serializers import CustomerDataSerializer, CustomerPutSerializer, AppDataSerializer
+from .serializers import MemberDataSerializer, MemberPutSerializer, AppDataSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import DjangoModelPermissions
 
 
-class PingView(APIView, ResponseMixin):
+class PingView(APIView):
     def get(self, request):
-        return self.json_response_200()
+        return Response(status=status.HTTP_200_OK)
 
 
-class CustomerDataView(APIView, ResponseMixin):
+class MemberDataView(APIView):
     model = Member
-    serializer = CustomerDataSerializer
+    serializer = MemberDataSerializer
     permission_classes = [DjangoModelPermissions]
 
     def get_queryset(self):
@@ -30,14 +30,14 @@ class CustomerDataView(APIView, ResponseMixin):
 
     def put(self, request, c_id):
         customer = get_object_or_404(self.model, id=c_id)
-        serializer = CustomerPutSerializer(customer, data=request.data)
+        serializer = MemberPutSerializer(customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=200)
-        return self.json_response_400()
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomerAppView(APIView, ResponseMixin):
+class MemberAppView(APIView):
     model = App
     serializer = AppDataSerializer
 
@@ -47,4 +47,3 @@ class CustomerAppView(APIView, ResponseMixin):
     def get(self, request, c_id):
         serializer = self.serializer(self.model.objects.filter(owner__id=c_id), many=True)
         return Response(serializer.data, status=200)
-

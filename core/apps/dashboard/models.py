@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from utils.misc import PythonAppConfig, NodeAppConfig
 
 
@@ -10,7 +11,7 @@ class Member(models.Model):
     id = models.BigIntegerField(primary_key=True)
     tag = models.CharField(max_length=5, default="0000")
     avatar = models.CharField(max_length=50, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="member")
     verified = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)
     creation_date = models.DateTimeField(null=True, blank=True)
@@ -53,6 +54,26 @@ class Member(models.Model):
         return f"{self.user.first_name} #{self.tag}"
 
 
+class Team(models.Model):
+    id = models.SlugField(auto_created=True, primary_key=True)
+    name = models.CharField(max_length=30)
+    created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="created_teams")
+    members = models.ManyToManyField(Member, related_name="teams")
+
+    @classmethod
+    def team_id_setter(cls, instance, **kwargs):
+        if not instance.id:
+            instance.link = slugify(instance.name)
+
+
+class TeamPrivilege(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    read = models.BooleanField(default=True)
+    edit = models.BooleanField(default=False)
+    manage = models.BooleanField(default=False)
+
+
 class App(models.Model):
     STATUS_CHOICES = [
         ("bg-warning", "Not Started"),
@@ -75,7 +96,7 @@ class App(models.Model):
     ]
     name = models.CharField(max_length=50, default="nova-app")
     unique_id = models.UUIDField(default=uuid.uuid4, null=True)
-    owner = models.ForeignKey(Member, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
     status = models.CharField(choices=STATUS_CHOICES, default="STOPPED", max_length=20)
     stack = models.URLField(choices=STACK_CHOICES, default="Python")
     disk = models.IntegerField(default=0, null=True)
@@ -209,14 +230,14 @@ def upload_location(instance, filename):
         if folder.name:
             path = f"/{folder.name}" + path
         folder = folder.folder
-    return f"{instance.folder.owner.id}" + path + f"/{filename}"
+    return f"{instance.folder.team.id}" + path + f"/{filename}"
 
 
 class Folder(models.Model):
     """
     Emulates an app folder
     """
-    owner = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
     app = models.OneToOneField(App, on_delete=models.CASCADE, null=True, blank=True, related_name="folder")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
@@ -242,7 +263,7 @@ class Folder(models.Model):
             except AttributeError:
                 folder = None
 
-        return f"/{self.folder.owner.id}" + path
+        return f"/{self.folder.team.id}" + path
 
 
 class File(models.Model):
@@ -267,7 +288,7 @@ class File(models.Model):
             except AttributeError:
                 folder = None
 
-        return f"/{self.folder.owner.id}" + path + f"/{self.name}"
+        return f"/{self.folder.team.id}" + path + f"/{self.name}"
 
     def get_size(self):
         mb_size = self.size//1000000

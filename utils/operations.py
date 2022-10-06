@@ -1,5 +1,4 @@
 import os
-import json
 import shutil
 import tarfile
 from zipfile import ZipFile

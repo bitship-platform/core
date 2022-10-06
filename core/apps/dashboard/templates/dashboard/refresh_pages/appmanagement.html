@@ -14,7 +14,7 @@
          {% endif %}
         </button>
     {% endif %}
-    {% if request.user.customer.settings.beta_tester %}
+    {% if request.user.member.settings.beta_tester %}
        {% if app.running %}
             <a href="{{ app.id }}/logs/" target="_blank"><button class="btn-sm btn-outline-primary ml-2" type="button"><i class="fa fa-terminal"></i> Console logs</button></a>
        {% endif %}

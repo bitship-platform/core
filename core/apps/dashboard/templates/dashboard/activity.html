@@ -36,7 +36,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                {% for order in request.user.customer.get_orders %}
+                {% for order in request.user.member.get_orders %}
                   <tr>
                     <td>
 {#                      <b style="color:black; background: aliceblue; padding:2px; font-size: 11px;">{{ order.id }}</b>#}

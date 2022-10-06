@@ -5,11 +5,10 @@ from django.conf import settings
 class Oauth(object):
     client_id = settings.OAUTH_CLIENT_ID
     client_secret = settings.OAUTH_CLIENT_SECRET
-    redirect_uri = "http://dashboard.novanodes.co:8000/login/"
     discord_token_url = "https://discord.com/api/oauth2/token"
     discord_api_url = "https://discord.com/api"
 
-    def __init__(self, redirect_uri="http://dashboard.novanodes.co:8000/login/",
+    def __init__(self, redirect_uri,
                  scope="identify%20email"):
         self.redirect_uri = redirect_uri
         self.scope = scope

@@ -19,7 +19,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Your apps</h5>
-                      <span class="h2 font-weight-bold mb-0">{{ request.user.customer.get_active_app_count }}</span>
+                      <span class="h2 font-weight-bold mb-0">{{ request.user.member.get_active_app_count }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -38,62 +38,10 @@
                   </p>
                 </div>
               </div>
-              {% if request.user.customer.settings.affiliate %}
-              <div class="card card-stats mt-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Affiliate Commission</h5>
-                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.affiliate_commission %}${{ request.user.customer.affiliate_commission }}{% else %}$0{% endif %}</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-danger text-white rounded-circle shadow">
-                        <i class="fas fa-user-plus"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {% endif %}
             </div>
             <div class="col-xl-3 col-lg-6">
             </div>
             <div class="col-xl-3 col-lg-6">
-            </div>
-            <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Credits</h5>
-                      <span class="h2 font-weight-bold mb-0">{% if request.user.customer.rounded_credits %}${{ request.user.customer.rounded_credits }}{% else %}$0{% endif %}</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                        <i class="fas fa-dollar-sign"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-3 text-muted text-sm">
-                      <a href="#"><button class="btn btn-lg btn-outline-dark">Recharge</button></a>
-                  </p>
-                </div>
-              </div>
-              <div class="card card-stats mt-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Coins</h5>
-                      <span class="h2 font-weight-bold mb-0">{{ request.user.customer.coins }}</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                        <i class="fas fa-coins"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

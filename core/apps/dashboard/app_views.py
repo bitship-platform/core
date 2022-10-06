@@ -24,7 +24,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             if app.get_status_display() == "Terminated":
                 return self.http_responce_404(request)
         self.context["app"] = app
-        if app.owner != request.user.customer:
+        if request.user.member not in app.team.members:
             return self.http_responce_400(request)
         if folder_id:
             try:
@@ -47,7 +47,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                     return self.json_response_403()
                 if Folder.objects.filter(name=folder_name, folder_id=master).exists():
                     return self.json_response_405()
-                Folder.objects.create(name=folder_name, owner=request.user.customer, folder_id=master)
+                Folder.objects.create(name=folder_name, owner=request.user.member, folder_id=master)
             if files:
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
@@ -87,7 +87,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         file_name = data.get("file_name")
         if folder_id and folder_name:
             folder = Folder.objects.get(id=folder_id)
-            if folder.owner == request.user.customer:
+            if folder.owner == request.user.member:
                 dir_path = folder.get_absolute_path()
                 new_path = dir_path.rsplit("/", 1)[0] + f"/{folder_name}"
                 absolute_path = os.path.join(settings.BASE_DIR, 'media', dir_path[1:])
@@ -107,7 +107,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
             if "." in file_name:
                 return JsonResponse({"message": "File name should not contain extension"}, status=403)
             file = File.objects.get(pk=file_id)
-            if file.folder.owner == request.user.customer:
+            if file.folder.owner == request.user.member:
                 file_path = file.item.path
                 file_extension = None
                 try:
@@ -141,7 +141,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         app = App.objects.get(pk=int(app_id))
         if file:
             file = File.objects.get(pk=file)
-            if file.folder.owner == request.user.customer:
+            if file.folder.owner == request.user.member.teamprivilege_set.get(app=app).edit:
                 if file.folder == app.folder:
                     app.config = {}
                 file.delete()
@@ -150,7 +150,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 return self.json_response_401()
         if folder:
             folder = Folder.objects.get(id=folder)
-            if folder.owner == request.user.customer:
+            if folder.owner == request.user.member:
                 folder.delete()
             else:
                 return self.json_response_401()
@@ -180,7 +180,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             return self.json_response_400()
         try:
             app = App.objects.get(id=app_id)
-            if app.owner != request.user.customer:
+            if request.user.member not in app.team.members:
                 return self.json_response_401()
         except App.DoesNotExist:
             return self.json_response_404()
@@ -248,7 +248,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             return self.json_response_400()
         if app_id and action:
             app = App.objects.get(id=app_id)
-            if app.owner != request.user.customer:
+            if request.user.member not in app.team.members:
                 return self.json_response_401()
             app_id = str(app.unique_id)
             if action == "stop":
@@ -270,7 +270,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             return self.json_response_400()
         try:
             app = App.objects.get(id=int(app_id))
-            if app.owner != request.user.customer:
+            if request.user.member not in app.team.members and request.user.member.teamprivilege_set.get(app=app).edit:
                 return self.json_response_401()
             remove_dir_from_storage(f"{request.user.username}/{app.folder.name}")
             remove_file_from_storage(f"{request.user.username}/{app.unique_id}.tar.gz")
