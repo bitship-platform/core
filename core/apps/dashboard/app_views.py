@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import QueryDict, JsonResponse, HttpResponse
 
 from utils.mixins import ResponseMixin
-from .models import App, Folder, File, Order
+from .models import App, Folder, File
 from utils.operations import remove_file_from_storage, remove_dir_from_storage, bpd_api
 
 
@@ -52,7 +52,6 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
                 for file in files:
                     if file.size < settings.MAX_FILE_SIZE:
                         if file.name in ["app.json", "Procfile", "runtime.txt", ".env"]:
-                            # ignoring system files
                             forbidden_file_type = True
                             continue
                         try:
@@ -205,28 +204,6 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                 return JsonResponse({"message": "Something went wrong! please reconfigure your app and save."},
                                     status=500)
 
-        # Deploying the app and adding a billing plan if it doesn't have one
-        if app.get_status_display() == "Not Started":
-            if app.owner.credits < app.plan:
-                return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
-            app.owner.credits -= app.plan
-            app.owner.credits_spend += app.plan
-            app.owner.save()
-            Order.objects.create(
-                create_time=datetime.now(timezone.utc),
-                update_time=datetime.now(timezone.utc),
-                transaction_amount=app.plan,
-                status="fa-check-circle text-success",
-                service="App Subscription Start",
-                description=f"{app.name} app",
-                customer=app.owner
-            )
-            if not app.owner.first_order_amount:
-                if app.owner.verified:
-                    app.owner.first_order_amount = app.plan
-                    app.owner.save()
-                    app.owner.referrer.customer.affiliate_commission += app.plan/2
-                    app.owner.referrer.customer.save()
         if app.status == "bg-danger":
             bpd_api.manage(app_id=app_id, action="start")
         if app.last_deployment_timestamp is None:
