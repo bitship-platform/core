@@ -13,7 +13,7 @@ from django.http import QueryDict, HttpResponse, HttpResponseForbidden
 
 from utils.oauth import Oauth
 from utils.hashing import Hasher
-from .models import App, File, Team
+from .models import App, File, Team, TeamPrivilege
 from utils.operations import update_customer, create_customer
 from utils.handlers import AlertHandler as Alert, PaypalHandler, WebhookHandler
 
@@ -216,11 +216,24 @@ class TeamsView(LoginRequiredMixin, View):
         if team_name is not None:
             team = get_object_or_404(self.model, name=team_name)
             return render(request, self.template_single, {"team": team})
-        teams = request.user.member.teams
-        return render(request, self.template_name)
+        teams = self.request.user.member.teams.all()
+        return render(request, self.template_name, {"teams": teams})
 
     def post(self, request):
-        return render(request, self.template_name)
+        if request.user.is_superuser:
+            team = self.model.objects.create(
+                name=request.POST.get("name"),
+                created_by=request.user.member
+            )
+            TeamPrivilege.objects.create(
+                team=team,
+                member=request.user.member,
+                edit=True,
+                manage=True,
+                admin=True
+            )
+            team.members.add(request.user.member)
+        return render(request, self.template_name, {"team": team})
 
     def put(self, request, team_name):
         return render(request, self.template_name)

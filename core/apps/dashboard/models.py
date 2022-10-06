@@ -72,6 +72,7 @@ class TeamPrivilege(models.Model):
     read = models.BooleanField(default=True)
     edit = models.BooleanField(default=False)
     manage = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
 
 
 class App(models.Model):
