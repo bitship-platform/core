@@ -141,7 +141,7 @@ class ManageView(LoginRequiredMixin, View, ResponseMixin):
         app = App.objects.get(pk=int(app_id))
         if file:
             file = File.objects.get(pk=file)
-            if file.folder.owner == request.user.member:
+            if file.folder.owner == request.user.member.teamprivilege_set.get(app=app).edit:
                 if file.folder == app.folder:
                     app.config = {}
                 file.delete()
@@ -270,7 +270,7 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
             return self.json_response_400()
         try:
             app = App.objects.get(id=int(app_id))
-            if request.user.member not in app.team.members:
+            if request.user.member not in app.team.members and request.user.member.teamprivilege_set.get(app=app).edit:
                 return self.json_response_401()
             remove_dir_from_storage(f"{request.user.username}/{app.folder.name}")
             remove_file_from_storage(f"{request.user.username}/{app.unique_id}.tar.gz")

@@ -230,14 +230,14 @@ def upload_location(instance, filename):
         if folder.name:
             path = f"/{folder.name}" + path
         folder = folder.folder
-    return f"{instance.folder.owner.id}" + path + f"/{filename}"
+    return f"{instance.folder.team.id}" + path + f"/{filename}"
 
 
 class Folder(models.Model):
     """
     Emulates an app folder
     """
-    owner = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
     app = models.OneToOneField(App, on_delete=models.CASCADE, null=True, blank=True, related_name="folder")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
@@ -263,7 +263,7 @@ class Folder(models.Model):
             except AttributeError:
                 folder = None
 
-        return f"/{self.folder.owner.id}" + path
+        return f"/{self.folder.team.id}" + path
 
 
 class File(models.Model):
@@ -288,7 +288,7 @@ class File(models.Model):
             except AttributeError:
                 folder = None
 
-        return f"/{self.folder.owner.id}" + path + f"/{self.name}"
+        return f"/{self.folder.team.id}" + path + f"/{self.name}"
 
     def get_size(self):
         mb_size = self.size//1000000
