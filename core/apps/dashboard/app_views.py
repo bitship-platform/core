@@ -206,27 +206,6 @@ class AppManageView(LoginRequiredMixin, View, ResponseMixin):
                                     status=500)
 
         # Deploying the app and adding a billing plan if it doesn't have one
-        if app.get_status_display() == "Not Started":
-            if app.owner.credits < app.plan:
-                return JsonResponse({"message": "You don't have enough credits for deploying"}, status=503)
-            app.owner.credits -= app.plan
-            app.owner.credits_spend += app.plan
-            app.owner.save()
-            Order.objects.create(
-                create_time=datetime.now(timezone.utc),
-                update_time=datetime.now(timezone.utc),
-                transaction_amount=app.plan,
-                status="fa-check-circle text-success",
-                service="App Subscription Start",
-                description=f"{app.name} app",
-                customer=app.owner
-            )
-            if not app.owner.first_order_amount:
-                if app.owner.verified:
-                    app.owner.first_order_amount = app.plan
-                    app.owner.save()
-                    app.owner.referrer.customer.affiliate_commission += app.plan/2
-                    app.owner.referrer.customer.save()
         if app.status == "bg-danger":
             bpd_api.manage(app_id=app_id, action="start")
         if app.last_deployment_timestamp is None:
