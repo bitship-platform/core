@@ -55,7 +55,7 @@ class Team(models.Model):
     id = models.SlugField(auto_created=True, primary_key=True)
     name = models.CharField(max_length=30)
     created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="created_teams")
-    members = models.ManyToManyField(Member, related_name="teams")
+    members = models.ManyToManyField(Member, related_name="teams", through="TeamMemberRelation")
 
     @classmethod
     def team_id_setter(cls, instance, **kwargs):
@@ -63,13 +63,9 @@ class Team(models.Model):
             instance.link = slugify(instance.name)
 
 
-class TeamPrivilege(models.Model):
+class TeamMemberRelation(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    read = models.BooleanField(default=True)
-    edit = models.BooleanField(default=False)
-    manage = models.BooleanField(default=False)
-    admin = models.BooleanField(default=False)
 
 
 class App(models.Model):
