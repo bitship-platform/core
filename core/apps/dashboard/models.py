@@ -66,6 +66,11 @@ class Team(models.Model):
 class TeamMemberRelation(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    banned = models.BooleanField(default=False)
+    read = models.BooleanField(default=True)
+    write = models.BooleanField(default=False)
+    execute = models.BooleanField(default=False)
+    manage = models.BooleanField(default=False)
 
 
 class App(models.Model):
