@@ -23,20 +23,17 @@ class Member(models.Model):
             return "https://cdn.discordapp.com/embed/avatars/1.png"
 
     def get_active_app_count(self):
-        return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger", "bg-warning"]))
+        return len(self.get_active_apps())
+
+    def get_active_apps(self):
+        return [app for team in self.teams.all() for app in team.app_set.all()]
 
     def reset(self):
-        self.coins = 0
-        self.coins_redeemed = 0
-        self.credits_spend = 0
-        self.app_set.all().delete()
-        self.order.all().delete()
-        self.verified = False
-        self.save()
+        pass
 
     @property
     def running_apps(self):
-        return len(self.app_set.filter(status__in=["bg-success", "bg-danger"]))
+        return len(self.teams.app_set.filter(status__in=["bg-success", "bg-danger"]))
 
     @property
     def terminated_apps(self):

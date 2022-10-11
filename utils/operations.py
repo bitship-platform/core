@@ -98,7 +98,7 @@ def update_customer(user_json: dict):
 @receiver(post_save, sender=App)
 def create_app_folder(sender, instance, created, **kwargs):
     if created:
-        Folder.objects.create(owner=instance.owner, name=instance.name, app=instance)
+        Folder.objects.create(owner=instance.created_by, name=instance.name, app=instance)
 
 
 @receiver(post_save, sender=File)
