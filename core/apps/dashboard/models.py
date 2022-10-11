@@ -23,20 +23,17 @@ class Member(models.Model):
             return "https://cdn.discordapp.com/embed/avatars/1.png"
 
     def get_active_app_count(self):
-        return len(self.app_set.filter(status__in=["bg-success", "bg-info", "bg-danger", "bg-warning"]))
+        return len(self.get_active_apps())
+
+    def get_active_apps(self):
+        return [app for team in self.teams.all() for app in team.app_set.all()]
 
     def reset(self):
-        self.coins = 0
-        self.coins_redeemed = 0
-        self.credits_spend = 0
-        self.app_set.all().delete()
-        self.order.all().delete()
-        self.verified = False
-        self.save()
+        pass
 
     @property
     def running_apps(self):
-        return len(self.app_set.filter(status__in=["bg-success", "bg-danger"]))
+        return len(self.teams.app_set.filter(status__in=["bg-success", "bg-danger"]))
 
     @property
     def terminated_apps(self):
@@ -58,7 +55,7 @@ class Team(models.Model):
     id = models.SlugField(auto_created=True, primary_key=True)
     name = models.CharField(max_length=30)
     created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="created_teams")
-    members = models.ManyToManyField(Member, related_name="teams")
+    members = models.ManyToManyField(Member, related_name="teams", through="TeamMemberRelation")
 
     @classmethod
     def team_id_setter(cls, instance, **kwargs):
@@ -66,13 +63,14 @@ class Team(models.Model):
             instance.link = slugify(instance.name)
 
 
-class TeamPrivilege(models.Model):
+class TeamMemberRelation(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    banned = models.BooleanField(default=False)
     read = models.BooleanField(default=True)
-    edit = models.BooleanField(default=False)
+    write = models.BooleanField(default=False)
+    execute = models.BooleanField(default=False)
     manage = models.BooleanField(default=False)
-    admin = models.BooleanField(default=False)
 
 
 class App(models.Model):

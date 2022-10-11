@@ -15,11 +15,10 @@ from utils.oauth import Oauth
 from utils.hashing import Hasher
 from .models import App, File, Team, TeamPrivilege
 from utils.operations import update_customer, create_customer
-from utils.handlers import AlertHandler as Alert, PaypalHandler, WebhookHandler
+from utils.handlers import AlertHandler as Alert, WebhookHandler
 
 oauth = Oauth(redirect_uri=settings.OAUTH_REDIRECT_URI, scope="identify%20email")
 hashing = Hasher()
-paypal = PaypalHandler(settings.PAYPAL_ID, settings.PAYPAL_SECRET)
 
 icon_cache = {v: k for k, v in App.STACK_CHOICES}
 status_cache = {v: k for k, v in App.STATUS_CHOICES}
@@ -68,7 +67,6 @@ class RedirectLoginView(View):
 
 
 class LoginView(View):
-    template_name = "dashboard/accounts/user_login.html"
     context = {}
     user_json = None
     access_token = None
@@ -88,32 +86,32 @@ class LoginView(View):
                 password = hashing.hashed_user_pass(self.user_id, self.email)
                 user = authenticate(username=self.user_id, password=password)
                 if user is None:
-                    customer = create_customer(self.user_json, password)
+                    member = create_customer(self.user_json, password)
                     webhook.send_embed(
                         {
                             "type": "rich",
                             "title": "",
-                            "description": f"New user signed up\n\nID: `{customer.id}`",
+                            "description": f"New user signed up\n\nID: `{member.id}`",
                             "color": 0xfd9c00,
                             "author": {
-                                "name": f"{customer.user.first_name}#{customer.tag}",
-                                "icon_url": f"{customer.get_avatar_url()}"
+                                "name": f"{member.user.first_name}#{member.tag}",
+                                "icon_url": f"{member.get_avatar_url()}"
                             }
                         }
                     )
-                    login(request, customer.user)
+                    login(request, member.user)
                     return redirect("/panel")
-                elif user.customer.banned:
+                elif user.member.banned:
                     msg = "Your account has been banned. Contact admin if you think this was a mistake."
                     webhook.send_embed(
                         {
                             "type": "rich",
                             "title": "",
-                            "description": f"Banned user attempted sign in\n\nID: `{user.customer.id}`",
+                            "description": f"Banned user attempted sign in\n\nID: `{user.member.id}`",
                             "color": 0xff0707,
                             "author": {
-                                "name": f"{user.first_name}#{user.customer.tag}",
-                                "icon_url": f"{user.customer.get_avatar_url()}"
+                                "name": f"{user.first_name}#{user.member.tag}",
+                                "icon_url": f"{user.member.get_avatar_url()}"
                             }
                         }
                     )
@@ -125,18 +123,18 @@ class LoginView(View):
                         {
                             "type": "rich",
                             "title": "",
-                            "description": f"User signed in\n\nID: `{user.customer.id}`",
+                            "description": f"User signed in\n\nID: `{user.member.id}`",
                             "color": 0x00aaff,
                             "author": {
-                                "name": f"{user.first_name}#{user.customer.tag}",
-                                "icon_url": f"{user.customer.get_avatar_url()}"
+                                "name": f"{user.first_name}#{user.member.tag}",
+                                "icon_url": f"{user.member.get_avatar_url()}"
                             }
                         }
                     )
                 return redirect("/panel")
             else:
                 msg = "Please add an email to your discord account and try again."
-        return render(request, self.template_name, {"Oauth": oauth, "msg": msg})
+        return HttpResponse(msg)
 
 
 class AdminLoginView(View):
@@ -150,7 +148,7 @@ class AdminLoginView(View):
         password = request.POST.get("password")
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.customer.banned:
+            if user.member.banned:
                 msg = "This account has been banned."
                 return render(request, self.template_name, {"msg": msg})
             else:
@@ -171,9 +169,12 @@ class DashView(LoginRequiredMixin, ListView, View):
 
     def get_queryset(self):
         if self.request.user.member.terminated_apps:
-            queryset = App.objects.filter(owner=self.request.user.member)
+            queryset = App.objects.filter(team__in=self.request.user.member.teams.all())
         else:
-            queryset = App.objects.filter(owner=self.request.user.member, status__in=list(status_cache.values())[:-1])
+            queryset = App.objects.filter(
+                team__in=self.request.user.member.teams.all(),
+                status__in=list(status_cache.values())[:-1]
+            )
         ordered_queryset = sorted(queryset, key=lambda query: self.order.get(query.get_status_display(), 0))
         return ordered_queryset
 
@@ -280,7 +281,7 @@ class SettingView(LoginRequiredMixin, View):
 
     def delete(self, request):
         user = User.objects.get(username=request.user.username)
-        user.customer.reset()
+        user.member.reset()
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
