@@ -9,7 +9,9 @@
 
 ### Release notes:
 
-Project is still under development so some features may not work/would require bug fix. 
-Dokku daemon handler API is still under early stages of development so the code is still not open source.
-It will be made open source once all the features are implemented and tested, currently the project works with the 
-latest private release of the dokku deployment handler and supports heroku platform API out of the box
+Project development has been halted. Some features may not work/would require bug fixes.
+Dokku daemon handler API was still under early stages of development with potential vulnerabilities and was subsequently the reason why its source code is still closed source.
+
+#### This project serves as a proof of concept for upcoming production-ready platform.
+ 
+
